@@ -1,6 +1,6 @@
 import sbt.addCompilerPlugin
 
-lazy val core = project
+lazy val global = project
   .in(file("."))
   .settings(commonSettings)
   .settings(
@@ -66,16 +66,4 @@ def scalacSettings(scalaVersion: String): Seq[String] =
     "-Ywarn-unused:patvars", // Warn if a variable bound in a pattern is unused.
     "-Ywarn-unused:privates", // Warn if a private member is unused.
     "-Ywarn-macros:after" //Tells the compiler to make the unused checks after macro expansion
-  ) ++ {
-    CrossVersion.partialVersion(scalaVersion) match {
-      case Some((2, 12)) =>
-        Seq(
-          "-Ypartial-unification", // Enable partial unification in type constructor inference
-          "-Xlint:unsound-match", // Pattern match may not be typesafe.
-          "-Xlint:nullary-override", // Warn when non-nullary `def f()' overrides nullary `def f'.
-          "-Xlint:by-name-right-associative", // By-name parameter of right associative operator.
-          "-Yno-adapted-args" // Do not adapt an argument list (either by inserting () or creating a tuple) to match the receiver.
-        )
-      case _ => Nil
-    }
-  }
+  )

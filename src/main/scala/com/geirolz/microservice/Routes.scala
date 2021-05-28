@@ -2,21 +2,20 @@ package com.geirolz.microservice
 
 import cats.effect.{ContextShift, IO, Timer}
 import com.geirolz.microservice.infra.config.Config
-import com.geirolz.microservice.infra.endpoints.routes.{InfraRoutes, RoutesProvider}
+import com.geirolz.microservice.route.InfraRoutes
 import org.http4s.{HttpApp, HttpRoutes}
-import org.http4s.server.Router
 import org.http4s.server.middleware.{RequestLogger, ResponseLogger}
 
-class Routes(implicit C: ContextShift[IO], T: Timer[IO]) extends RoutesProvider {
-  val routes: HttpRoutes[IO] = Router(
-    "/infra" -> InfraRoutes.make.routes
-  )
+//noinspection ScalaUnusedSymbol
+class Routes private (config: Config, env: Env)(implicit C: ContextShift[IO], T: Timer[IO]) {
+  val routes: HttpRoutes[IO] =
+    InfraRoutes.make.routes
 }
 object Routes {
 
   import org.http4s.implicits._
 
-  def makeApp(config: Config)(implicit C: ContextShift[IO], T: Timer[IO]): HttpApp[IO] = {
+  def makeApp(config: Config, env: Env)(implicit C: ContextShift[IO], T: Timer[IO]): HttpApp[IO] = {
     val loggingConfig = config.http.server.logging
     val loggers: HttpApp[IO] => HttpApp[IO] = {
       { http: HttpApp[IO] =>
@@ -32,6 +31,6 @@ object Routes {
       }
     }
 
-    loggers(new Routes().routes.orNotFound)
+    loggers(new Routes(config: Config, env: Env).routes.orNotFound)
   }
 }
