@@ -1,3 +1,8 @@
 package com.geirolz.microservice.repository.entity
 
-class UserEntity {}
+import com.geirolz.microservice.model.User
+
+class UserEntity {
+
+  def toDomain: User = ???
+}

@@ -7,5 +7,12 @@ import com.geirolz.microservice.repository.UserRepository
 
 class UserService(userRepository: UserRepository) {
 
-  def getById(id: UserId): IO[Option[User]] = userRepository.getById(id)
+  import cats.implicits._
+
+  def getById(id: UserId): IO[Option[User]] =
+    userRepository
+      .getById(id)
+      .nested
+      .map(_.toDomain)
+      .value
 }
