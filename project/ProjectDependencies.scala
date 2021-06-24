@@ -7,8 +7,8 @@ object ProjectDependencies {
     "org.typelevel" %% "cats-core" % "2.5.0",
     "org.typelevel" %% "cats-effect" % "2.5.0",
     //HTTP
-    "org.http4s" %% "http4s-dsl" % "0.21.22",
-    "org.http4s" %% "http4s-blaze-server" % "0.21.22",
+    "org.http4s" %% "http4s-dsl" % "0.21.24",
+    "org.http4s" %% "http4s-blaze-server" % "0.21.24",
     //TAPIR
     "com.softwaremill.sttp.tapir" %% "tapir-core" % "0.17.19",
     "com.softwaremill.sttp.tapir" %% "tapir-http4s-server" % "0.17.19",
