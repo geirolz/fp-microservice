@@ -7,11 +7,16 @@ import com.geirolz.microservice.route.endpoint.util.VersionedEndpoint
 
 private[route] object UserEndpointApi {
 
+  import com.geirolz.microservice.route.endpoint.util.EndpointCommonCodecs._
   import io.circe.generic.auto._
   import sttp.tapir._
   import sttp.tapir.generic.auto._
   import sttp.tapir.json.circe._
-  import com.geirolz.microservice.route.endpoint.util.EndpointCommonCodecs._
+
+  object Errors {
+    sealed trait ErrorInfo
+    case class UserNotFound(userId: UserId) extends ErrorInfo
+  }
 
   private val user: Endpoint[Unit, ErrorInfo, Unit, Any] =
     VersionedEndpoint.v1.in("user").errorOut(jsonBody[ErrorInfo])
@@ -20,9 +25,4 @@ private[route] object UserEndpointApi {
     user.get
       .in(query[UserId]("id"))
       .out(jsonBody[UserContract])
-
-  object Errors {
-    sealed trait ErrorInfo
-    case class UserNotFound(userId: UserId) extends ErrorInfo
-  }
 }

@@ -1,26 +1,23 @@
 package com.geirolz.microservice.model
 
-import cats.effect.IO
 import com.geirolz.microservice.BuildInfo
+
+import scala.util.Try
 
 case class AppInfo(
   name: String,
   version: String,
-  javaVersion: String,
   scalaVersion: String,
-  sbtVersion: String
+  sbtVersion: String,
+  javaVersion: Option[String]
 )
 object AppInfo {
-  def build: IO[AppInfo] =
-    for {
-      javaVersion <- IO.fromOption(Option(System.getProperty("java.version")))(
-        new RuntimeException("Unable to detect Java version")
-      )
-    } yield AppInfo(
+  val value: AppInfo =
+    AppInfo(
       name = BuildInfo.name,
       version = BuildInfo.version,
-      javaVersion = BuildInfo.scalaVersion,
-      scalaVersion = BuildInfo.sbtVersion,
-      sbtVersion = javaVersion
+      scalaVersion = BuildInfo.scalaVersion,
+      sbtVersion = BuildInfo.sbtVersion,
+      javaVersion = Try(Option(System.getProperty("java.version"))).toOption.flatten
     )
 }

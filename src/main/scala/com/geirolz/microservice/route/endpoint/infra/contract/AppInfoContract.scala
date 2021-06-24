@@ -8,7 +8,7 @@ private[route] case class AppInfoContract(
   version: String,
   scalaVersion: String,
   sbtVersion: String,
-  javaVersion: String
+  javaVersion: Option[String]
 )
 
 private[route] object AppInfoContract {

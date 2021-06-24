@@ -2,14 +2,14 @@ package com.geirolz.microservice
 
 import cats.effect.{ContextShift, IO, Timer}
 import com.geirolz.microservice.infra.config.Config
-import com.geirolz.microservice.route.InfraRoutes
+import com.geirolz.microservice.route.MainRoutes
 import org.http4s.{HttpApp, HttpRoutes}
 import org.http4s.server.middleware.{RequestLogger, ResponseLogger}
 
 //noinspection ScalaUnusedSymbol
 class Routes private (config: Config, env: Env)(implicit C: ContextShift[IO], T: Timer[IO]) {
   val routes: HttpRoutes[IO] =
-    InfraRoutes.make.routes
+    MainRoutes.make.routes
 }
 object Routes {
 
