@@ -31,6 +31,6 @@ object Routes {
       }
     }
 
-    loggers(new Routes(config: Config, env: Env).routes.orNotFound)
+    loggers(new Routes(config, env).routes.orNotFound)
   }
 }
