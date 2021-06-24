@@ -4,7 +4,7 @@ object ProjectDependencies {
 
   lazy val common: Seq[ModuleID] = Seq(
     //SCALA
-    "org.typelevel" %% "cats-core" % "2.5.0",
+    "org.typelevel" %% "cats-core" % "2.6.1",
     "org.typelevel" %% "cats-effect" % "2.5.0",
     //HTTP
     "org.http4s" %% "http4s-dsl" % "0.21.22",
