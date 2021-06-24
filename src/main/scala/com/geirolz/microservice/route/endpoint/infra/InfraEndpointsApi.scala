@@ -1,7 +1,7 @@
 package com.geirolz.microservice.route.endpoint.infra
 
-import com.geirolz.microservice.route.endpoint.infra.contract.HealthCheckReportContract
-import com.geirolz.microservice.route.endpoint.VersionedEndpoint
+import com.geirolz.microservice.route.endpoint.infra.contract.{AppInfoContract, AppMetricsReportContract}
+import com.geirolz.microservice.route.endpoint.util.VersionedEndpoint
 
 private[route] object InfraEndpointsApi {
 
@@ -13,8 +13,13 @@ private[route] object InfraEndpointsApi {
   private val infra: Endpoint[Unit, Unit, Unit, Any] =
     VersionedEndpoint.v1.in("infra")
 
-  val getHealthCheck: Endpoint[Unit, Unit, HealthCheckReportContract, Any] =
+  val getAppMetrics: Endpoint[Unit, Unit, AppMetricsReportContract, Any] =
     infra.get
-      .in("health")
-      .out(jsonBody[HealthCheckReportContract])
+      .in("metrics")
+      .out(jsonBody[AppMetricsReportContract])
+
+  val getAppInfo: Endpoint[Unit, Unit, AppInfoContract, Any] =
+    infra.get
+      .in("info")
+      .out(jsonBody[AppInfoContract])
 }

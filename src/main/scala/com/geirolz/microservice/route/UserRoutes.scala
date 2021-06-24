@@ -10,7 +10,7 @@ import sttp.tapir.server.http4s.Http4sServerInterpreter
 class UserRoutes private (userService: UserService)(implicit C: ContextShift[IO], T: Timer[IO]) {
 
   import com.geirolz.microservice.route.endpoint.user.contract.UserContract._
-  import com.geirolz.microservice.route.util.ToContractMapper._
+  import com.geirolz.microservice.route.endpoint.util.ToContractMapper._
 
   val routes: HttpRoutes[IO] =
     Http4sServerInterpreter.toRoutes(UserEndpointApi.getById)(userId => {

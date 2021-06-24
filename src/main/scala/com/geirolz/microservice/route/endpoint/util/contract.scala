@@ -1,4 +1,4 @@
-package com.geirolz.microservice.route.util
+package com.geirolz.microservice.route.endpoint.util
 
 import cats.effect.IO
 

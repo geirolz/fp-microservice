@@ -1,11 +1,14 @@
 import sbt.addCompilerPlugin
 
 lazy val global = (project in file("."))
+  .enablePlugins(BuildInfoPlugin)
   .settings(commonSettings)
   .settings(
     name := "microservice",
     description := "Basic template for microservices.",
-    organization := "com.geirolz"
+    organization := "com.geirolz",
+    buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion),
+    buildInfoPackage := "com.geirolz.microservice"
   )
 
 lazy val commonSettings = Seq(
