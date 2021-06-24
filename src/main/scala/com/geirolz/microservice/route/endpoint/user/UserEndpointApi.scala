@@ -1,19 +1,20 @@
 package com.geirolz.microservice.route.endpoint.user
 
 import com.geirolz.microservice.model.value.UserId
+import com.geirolz.microservice.route.endpoint.{EndpointStandardCodecs, VersionedEndpoint}
 import com.geirolz.microservice.route.endpoint.user.contract.UserContract
 import com.geirolz.microservice.route.endpoint.user.UserEndpointApi.Errors.ErrorInfo
-import com.geirolz.microservice.route.endpoint.EndpointsApi
 
-private[route] object UserEndpointApi extends EndpointsApi {
+private[route] object UserEndpointApi {
 
   import io.circe.generic.auto._
   import sttp.tapir._
   import sttp.tapir.generic.auto._
   import sttp.tapir.json.circe._
+  import EndpointStandardCodecs._
 
   private val user: Endpoint[Unit, ErrorInfo, Unit, Any] =
-    v1.in("user").errorOut(jsonBody[ErrorInfo])
+    VersionedEndpoint.v1.in("user").errorOut(jsonBody[ErrorInfo])
 
   val getById: Endpoint[UserId, ErrorInfo, UserContract, Any] =
     user.get

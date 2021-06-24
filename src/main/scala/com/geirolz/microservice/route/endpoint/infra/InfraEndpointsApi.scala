@@ -1,9 +1,9 @@
 package com.geirolz.microservice.route.endpoint.infra
 
 import com.geirolz.microservice.route.endpoint.infra.contract.HealthCheckReportContract
-import com.geirolz.microservice.route.endpoint.EndpointsApi
+import com.geirolz.microservice.route.endpoint.VersionedEndpoint
 
-private[route] object InfraEndpointsApi extends EndpointsApi {
+private[route] object InfraEndpointsApi {
 
   import io.circe.generic.auto._
   import sttp.tapir._
@@ -11,7 +11,7 @@ private[route] object InfraEndpointsApi extends EndpointsApi {
   import sttp.tapir.json.circe._
 
   private val infra: Endpoint[Unit, Unit, Unit, Any] =
-    v1.in("infra")
+    VersionedEndpoint.v1.in("infra")
 
   val getHealthCheck: Endpoint[Unit, Unit, HealthCheckReportContract, Any] =
     infra.get
