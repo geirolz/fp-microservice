@@ -19,7 +19,7 @@ object ProjectDependencies {
     //JSON
     "io.circe" %% "circe-core" % "0.13.0",
     //CONFIG
-    "com.github.pureconfig" %% "pureconfig" % "0.15.0",
+    "com.github.pureconfig" %% "pureconfig" % "0.16.0",
     //LOGGING
     "org.typelevel" %% "log4cats-slf4j" % "1.3.0",
     "org.slf4j" % "slf4j-api" % "1.7.30",
