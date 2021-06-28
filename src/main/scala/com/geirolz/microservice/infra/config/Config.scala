@@ -1,8 +1,19 @@
 package com.geirolz.microservice.infra.config
 
-case class Config(http: HttpConfig)
+case class Config(http: HttpConfig, db: DbConfigs)
 
-//htt4ps
+//db
+case class DbConfigs(
+  main: DbConfig
+)
+case class DbConfig(
+  driver: String,
+  url: String,
+  user: String,
+  pass: SecretString
+)
+
+//http
 case class HttpConfig(server: ServerConfig)
 case class ServerConfig(
   host: String,

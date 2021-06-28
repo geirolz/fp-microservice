@@ -1,5 +1,6 @@
 package com.geirolz.microservice.route.endpoint.util
 
+//COMMON
 private[endpoint] object VersionedEndpoint {
   import sttp.tapir._
 

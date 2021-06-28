@@ -25,9 +25,9 @@ object App extends IOApp {
       _      <- logger.info("Configuration successfully loaded.")
 
       //-------------------- ENV ----------------------
-      _   <- logger.info("Building environment...")
-      env <- Env.build(config)
-      _   <- logger.info("Environment successfully built.")
+      _ <- logger.info("Building environment...")
+      env = Env.build(config)
+      _ <- logger.info("Environment successfully built.")
 
       //------------------- SERVER --------------------
       _ <- logger.info("Building app server...")
