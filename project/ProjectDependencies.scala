@@ -17,7 +17,7 @@ object ProjectDependencies {
     "com.softwaremill.sttp.tapir" %% "tapir-openapi-circe-yaml" % "0.17.19",
     "com.softwaremill.sttp.tapir" %% "tapir-swagger-ui-http4s" % "0.17.19",
     //JSON
-    "io.circe" %% "circe-core" % "0.13.0",
+    "io.circe" %% "circe-core" % "0.14.1",
     //CONFIG
     "com.github.pureconfig" %% "pureconfig" % "0.15.0",
     //LOGGING
