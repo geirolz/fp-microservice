@@ -22,6 +22,7 @@ object App extends IOApp {
       //---------------- CONFIGURATION ----------------
       _      <- logger.info("Loading configuration...")
       config <- loadConfiguration
+      _      <- logger.info(config.toString)
       _      <- logger.info("Configuration successfully loaded.")
 
       //-------------------- ENV ----------------------
@@ -33,7 +34,6 @@ object App extends IOApp {
       _ <- logger.info("Building app server...")
       server = buildServer(config, env)
       _ <- server.serve.compile.drain
-      _ <- logger.info("Shutting down application...")
     } yield ExitCode.Success
   }
 

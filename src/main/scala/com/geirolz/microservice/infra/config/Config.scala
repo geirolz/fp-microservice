@@ -1,7 +1,12 @@
 package com.geirolz.microservice.infra.config
 
-case class Config(http: HttpConfig, db: DbConfigs)
+case class Config(http: HttpConfig, db: DbConfigs) {
+  import io.circe.generic.auto._
+  import io.circe.syntax._
 
+  override def toString: String = asPrettyString
+  def asPrettyString: String = this.asJson.toString()
+}
 //db
 case class DbConfigs(
   main: DbConfig

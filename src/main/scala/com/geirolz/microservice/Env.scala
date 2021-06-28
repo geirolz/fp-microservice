@@ -19,7 +19,7 @@ object Env {
       driver = config.db.main.driver,
       url = config.db.main.url,
       user = config.db.main.user,
-      pass = config.db.main.pass.value.mkString
+      pass = config.db.main.pass.stringValue
     )
 
     //repos
