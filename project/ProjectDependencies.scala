@@ -29,7 +29,7 @@ object ProjectDependencies {
   )
 
   private val db = {
-    val doobieVersion = "0.12.1"
+    val doobieVersion = "0.13.4"
     Seq(
       "org.tpolecat" %% "doobie-core" % doobieVersion,
       "org.tpolecat" %% "doobie-h2" % doobieVersion,
