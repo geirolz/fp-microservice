@@ -22,7 +22,7 @@ object ProjectDependencies {
     "com.github.pureconfig" %% "pureconfig" % "0.16.0",
     //LOGGING
     "org.typelevel" %% "log4cats-slf4j" % "1.3.1",
-    "org.slf4j" % "slf4j-api" % "1.7.30",
-    "org.slf4j" % "slf4j-simple" % "1.7.30"
+    "org.slf4j" % "slf4j-api" % "1.7.31",
+    "org.slf4j" % "slf4j-simple" % "1.7.31"
   )
 }
