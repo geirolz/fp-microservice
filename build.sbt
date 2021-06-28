@@ -13,7 +13,7 @@ lazy val global = (project in file("."))
 
 lazy val commonSettings = Seq(
   //scala
-  scalaVersion := "2.13.5",
+  scalaVersion := "2.13.6",
   scalacOptions ++= scalacSettings(scalaVersion.value),
   //dependencies
   resolvers ++= ProjectResolvers.all,
