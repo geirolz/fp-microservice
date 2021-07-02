@@ -1,4 +1,4 @@
-package com.geirolz.microservice.route.endpoint.util
+package com.geirolz.microservice.infra.route.endpoint.util
 
 //COMMON
 private[endpoint] object VersionedEndpoint {

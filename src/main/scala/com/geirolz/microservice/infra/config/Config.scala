@@ -7,15 +7,19 @@ case class Config(http: HttpConfig, db: DbConfigs) {
   override def toString: String = asPrettyString
   def asPrettyString: String = this.asJson.toString()
 }
+
 //db
 case class DbConfigs(
   main: DbConfig
 )
 case class DbConfig(
+  name: String,
   driver: String,
   url: String,
-  user: String,
-  pass: SecretString
+  user: Option[String],
+  pass: Option[SecretString],
+  migrationsTable: String,
+  migrationsLocations: List[String]
 )
 
 //http

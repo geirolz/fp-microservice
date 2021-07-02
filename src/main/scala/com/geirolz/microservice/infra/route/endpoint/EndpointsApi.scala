@@ -1,8 +1,8 @@
-package com.geirolz.microservice.route.endpoint
+package com.geirolz.microservice.infra.route.endpoint
 
+import com.geirolz.microservice.infra.route.endpoint.infra.InfraEndpointsApi
+import com.geirolz.microservice.infra.route.endpoint.user.UserEndpointApi
 import com.geirolz.microservice.model.AppInfo
-import com.geirolz.microservice.route.endpoint.infra.InfraEndpointsApi
-import com.geirolz.microservice.route.endpoint.user.UserEndpointApi
 import sttp.tapir.Endpoint
 import sttp.tapir.docs.openapi.OpenAPIDocsInterpreter
 import sttp.tapir.openapi.circe.yaml.RichOpenAPI
