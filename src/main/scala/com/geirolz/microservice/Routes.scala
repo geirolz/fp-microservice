@@ -2,7 +2,7 @@ package com.geirolz.microservice
 
 import cats.effect.{ContextShift, IO, Timer}
 import com.geirolz.microservice.infra.config.Config
-import com.geirolz.microservice.route.MainRoutes
+import com.geirolz.microservice.infra.route.MainRoutes
 import org.http4s.{HttpApp, HttpRoutes}
 import org.http4s.server.middleware.{RequestLogger, ResponseLogger}
 

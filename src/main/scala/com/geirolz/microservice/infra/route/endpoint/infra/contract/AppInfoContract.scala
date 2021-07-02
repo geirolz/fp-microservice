@@ -1,7 +1,7 @@
-package com.geirolz.microservice.route.endpoint.infra.contract
+package com.geirolz.microservice.infra.route.endpoint.infra.contract
 
+import com.geirolz.microservice.infra.route.endpoint.util.ToContractMapper
 import com.geirolz.microservice.model.AppInfo
-import com.geirolz.microservice.route.endpoint.util.ToContractMapper
 
 private[route] case class AppInfoContract(
   name: String,

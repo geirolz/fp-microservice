@@ -1,4 +1,4 @@
-package com.geirolz.microservice.route.endpoint.util
+package com.geirolz.microservice.infra.route.endpoint.util
 
 import com.geirolz.microservice.model.value.UserId
 import sttp.tapir.CodecFormat.TextPlain

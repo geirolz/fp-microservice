@@ -1,6 +1,6 @@
-package com.geirolz.microservice.route.endpoint.infra
+package com.geirolz.microservice.infra.route.endpoint.infra
 
-import com.geirolz.microservice.route.endpoint.infra.contract.{AppInfoContract, AppMetricsReportContract}
+import com.geirolz.microservice.infra.route.endpoint.infra.contract.{AppInfoContract, AppMetricsReportContract}
 
 private[route] object InfraEndpointsApi {
 
