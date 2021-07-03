@@ -34,7 +34,7 @@ object ProjectDependencies {
       "org.tpolecat" %% "doobie-core" % doobieVersion,
       "org.tpolecat" %% "doobie-h2" % doobieVersion,
       "org.tpolecat" %% "doobie-scalatest" % doobieVersion % "test",
-      "org.flywaydb" % "flyway-core" % "7.10.0"
+      "org.flywaydb" % "flyway-core" % "7.11.0"
     )
   }
 
