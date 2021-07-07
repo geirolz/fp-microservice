@@ -1,6 +1,7 @@
 package com.geirolz.microservice.common.db
 
-import cats.data.{NonEmptyList, Validated, ValidatedNel}
+import cats.data.{NonEmptyList, ValidatedNel}
+import cats.data.Validated.{Invalid, Valid}
 import cats.effect.{Async, ContextShift}
 import com.geirolz.microservice.common.config.DbConfig
 import doobie.util.transactor.Transactor
@@ -70,9 +71,10 @@ object Database {
             dbConfig.migrationsLocations.map(new Location(_)): _*
           )
       }
-      result <- initFlyway(config).flatMap {
-        case Validated.Valid(flyway) => F.delay(flyway.migrate().valid)
-        case Validated.Invalid(e)    => F.pure(e.invalid)
+      validatedFlyway <- initFlyway(config)
+      result <- validatedFlyway match {
+        case Valid(flyway)        => F.delay(flyway.migrate().valid)
+        case invalid @ Invalid(_) => F.pure(invalid)
       }
     } yield result
   }
