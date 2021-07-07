@@ -12,16 +12,15 @@ This is a normal sbt project, you can compile code with `sbt compile` and run it
 with `sbt run`.
 
 ### Technologies
-- effects                               -> [cats-effect](https://github.com/typelevel/cats-effect)
-- logging                               -> [log4cats](https://github.com/typelevel/log4cats)
-- jdbc (plain, transactions, etc..)     -> [doobie](https://github.com/tpolecat/doobie)
-- db migration                          -> [flyway](https://github.com/flyway/flyway)
-- tracing (jdbc, http, ...)             -> [kamon](https://github.com/kamon-io/Kamon), https://github.com/kamon-io/kamon-http4s
-- http client and server                -> [http4s](https://github.com/http4s/http4s)
-- http route definitions                -> [tapir](https://github.com/softwaremill/tapir)
-- config                                -> [pureconfig](https://github.com/pureconfig/pureconfig)
-- json (with decent errors)             -> [spray-json](https://github.com/spray/spray-json) till circe will have decent errors
-- jwt + cats-effects
+- [x] effects                               -> [cats-effect](https://github.com/typelevel/cats-effect)
+- [x] logging                               -> [log4cats](https://github.com/typelevel/log4cats)
+- [x] jdbc (plain, transactions, etc..)     -> [doobie](https://github.com/tpolecat/doobie)
+- [ ] db migration                          -> [flyway](https://github.com/flyway/flyway)
+- [ ] tracing (jdbc, http, ...)             -> [kamon](https://github.com/kamon-io/Kamon), https://github.com/kamon-io/kamon-http4s
+- [x] http client and server                -> [http4s](https://github.com/http4s/http4s)
+- [x] http route definitions                -> [tapir](https://github.com/softwaremill/tapir)
+- [x] config                                -> [pureconfig](https://github.com/pureconfig/pureconfig)
+- [ ] json (with decent errors)             -> [spray-json](https://github.com/spray/spray-json) till circe will have decent errors
 
 
 

@@ -10,7 +10,12 @@ lazy val global = (project in file("."))
     buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion),
     buildInfoPackage := "com.geirolz.microservice"
   )
+  .dependsOn(common)
 
+lazy val common = (project in file("common"))
+  .settings(commonSettings)
+
+//------------------------------------------------------------------------------
 lazy val commonSettings = Seq(
   //scala
   scalaVersion := "2.13.6",

@@ -10,6 +10,7 @@ import scala.concurrent.ExecutionContext
 
 object App extends IOApp {
 
+  import cats.implicits._
   import pureconfig._
   import pureconfig.generic.auto._
 
@@ -22,7 +23,7 @@ object App extends IOApp {
       //---------------- CONFIGURATION ----------------
       _      <- logger.info("Loading configuration...")
       config <- loadConfiguration
-      _      <- logger.info(config.toString)
+      _      <- logger.info(config.show)
       _      <- logger.info("Configuration successfully loaded.")
 
       //-------------------- ENV ----------------------

@@ -3,10 +3,11 @@ package com.geirolz.microservice
 import cats.data.Validated.{Invalid, Valid}
 import cats.effect.{ContextShift, IO}
 import com.geirolz.microservice.external.repository.UserRepository
-import com.geirolz.microservice.infra.config.{Config, DbConfig}
-import com.geirolz.microservice.infra.db.Db
+import com.geirolz.microservice.infra.config.Config
 import com.geirolz.microservice.service.UserService
 import com.geirolz.microservice.App.logger
+import com.geirolz.microservice.common.config.DbConfig
+import com.geirolz.microservice.common.db.Database
 import doobie.Transactor
 
 case class Env(
@@ -33,10 +34,10 @@ object Env {
     for {
       _               <- logger.debug(s"Initializing ${dbConfig.name} database")
       _               <- logger.debug(s"Applying migration for ${dbConfig.name}")
-      migrationResult <- Db.applyMigration(dbConfig)
+      migrationResult <- Database.migrate[IO](dbConfig)
       _ <- migrationResult match {
-        case Valid(migrationsCount) =>
-          logger.info(s" Applied $migrationsCount migrations to ${dbConfig.name} database")
+        case Valid(result) =>
+          logger.info(s" Applied ${result.migrationsExecuted} migrations to ${dbConfig.name} database")
         case Invalid(errors) =>
           IO.raiseError(
             new RuntimeException(
@@ -54,6 +55,6 @@ object Env {
             )
           )
       }
-    } yield Db.createTransactorFor(dbConfig)
+    } yield Database.createTransactorUsing[IO](dbConfig)
   }
 }
