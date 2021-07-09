@@ -8,7 +8,8 @@ object ProjectDependencies {
     config,
     db,
     http,
-    json
+    json,
+    tests
   ).flatten
 
   private val effects = {
@@ -58,5 +59,10 @@ object ProjectDependencies {
 
   private val json = Seq(
     "io.circe" %% "circe-core" % "0.14.1"
+  )
+
+  private val tests = Seq(
+    "org.scalactic" %% "scalactic" % "3.2.9",
+    "org.scalatest" %% "scalatest" % "3.2.9" % Test
   )
 }

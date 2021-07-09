@@ -3,7 +3,7 @@ package com.geirolz.microservice.service
 import cats.effect.IO
 import com.geirolz.microservice.external.repository.UserRepository
 import com.geirolz.microservice.model.User
-import com.geirolz.microservice.model.value.UserId
+import com.geirolz.microservice.model.datatype.UserId
 
 class UserService(userRepository: UserRepository) {
 

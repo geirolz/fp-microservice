@@ -1,6 +1,6 @@
 package com.geirolz.microservice.infra.route.endpoint.util
 
-import com.geirolz.microservice.model.value.UserId
+import com.geirolz.microservice.model.datatype.UserId
 import sttp.tapir.CodecFormat.TextPlain
 
 private[endpoint] object EndpointCommonCodecs {

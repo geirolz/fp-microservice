@@ -3,7 +3,7 @@ package com.geirolz.microservice.infra.route.endpoint.user
 import com.geirolz.microservice.common.route.endpoint.VersionedEndpoint
 import com.geirolz.microservice.infra.route.endpoint.user.contract.UserContract
 import com.geirolz.microservice.infra.route.endpoint.user.UserEndpointApi.Errors.ErrorInfo
-import com.geirolz.microservice.model.value.UserId
+import com.geirolz.microservice.model.datatype.UserId
 
 private[route] object UserEndpointApi {
 
