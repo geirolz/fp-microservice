@@ -1,6 +1,8 @@
 package com.geirolz.microservice.common.data
 
-import cats.{FlatMap, Functor}
+import cats.{FlatMap, Functor, Id}
+import cats.effect.IO
+import com.geirolz.microservice.common.data.ModelScopeMapper.{ModelScopeMapperIO, ModelScopeMapperId}
 
 import scala.annotation.{implicitAmbiguous, implicitNotFound}
 
@@ -27,11 +29,19 @@ final class ModelScopeMapper[F[_], S <: Scope, A, B] private (mapper: A => F[B])
     ModelScopeMapper(mapper.andThen(_.flatMap(f)))
 }
 object ModelScopeMapper extends ModelScopeMapperSyntax {
+
+  type ModelScopeMapperId[S <: Scope, A, B] = ModelScopeMapper[Id, S, A, B]
+  type ModelScopeMapperIO[S <: Scope, A, B] = ModelScopeMapper[IO, S, A, B]
+
   def apply[F[_], S <: Scope, A, B](f: A => F[B]): ModelScopeMapper[F, S, A, B] = new ModelScopeMapper[F, S, A, B](f)
+
+  def id[S <: Scope, A, B](f: A => B): ModelScopeMapperId[S, A, B] = ModelScopeMapper[Id, S, A, B](f)
 }
 
 sealed trait ModelScopeMapperSyntax {
-  implicit class TypeScopeMapperSyntaxOps[A](a: A) {
+  implicit class ModelScopeMapperSyntaxOps[A](a: A) {
     def toScope[F[_], S <: Scope](implicit m: ModelScopeMapper[F, S, A, _]): F[m.TargetType] = m(a)
+    def toScopeId[S <: Scope](implicit m: ModelScopeMapperId[S, A, _]): m.TargetType = m(a)
+    def toScopeIO[S <: Scope](implicit m: ModelScopeMapperIO[S, A, _]): IO[m.TargetType] = m(a)
   }
 }
