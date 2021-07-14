@@ -1,7 +1,7 @@
 package com.geirolz.microservice.infra.route.endpoint.infra.contract
 
-import com.geirolz.microservice.common.data.{Endpoint, ModelScopeMapper}
-import com.geirolz.microservice.common.data.ModelScopeMapper.ModelScopeMapperId
+import com.geirolz.microservice.common.data.{Endpoint, ModelMapper}
+import com.geirolz.microservice.common.data.ModelMapper.ModelMapperId
 import com.geirolz.microservice.model.AppMetricsReport
 
 private[route] case class AppMetricsReportContract(
@@ -14,8 +14,8 @@ private[route] case class AppMetricsReportContract(
 private[route] object AppMetricsReportContract {
 
   implicit val appMetricsReportContractEndpointMapper
-    : ModelScopeMapperId[Endpoint, AppMetricsReport, AppMetricsReportContract] =
-    ModelScopeMapper.id(c =>
+    : ModelMapperId[Endpoint, AppMetricsReport, AppMetricsReportContract] =
+    ModelMapper.id(c =>
       AppMetricsReportContract(
         c.usedMemory,
         c.freeMemory,

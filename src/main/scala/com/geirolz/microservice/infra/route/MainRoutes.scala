@@ -12,18 +12,18 @@ import sttp.tapir.swagger.http4s.SwaggerHttp4s
 class MainRoutes private (implicit C: ContextShift[IO], T: Timer[IO]) {
 
   import cats.implicits._
-  import com.geirolz.microservice.common.data.ModelScopeMapper._
+  import com.geirolz.microservice.common.data.ModelMapper._
   import com.geirolz.microservice.infra.route.endpoint.infra.contract.AppInfoContract._
   import com.geirolz.microservice.infra.route.endpoint.infra.contract.AppMetricsReportContract._
 
   private val appInfoRoute =
     Http4sServerInterpreter.toRoutes(InfraEndpointsApi.getAppInfo) { _ =>
-      IO.pure(AppInfo.value.toScopeId[Endpoint].asRight[Unit])
+      IO.pure(AppInfo.value.inScopeId[Endpoint].asRight[Unit])
     }
 
   private val appMetricsRoute =
     Http4sServerInterpreter.toRoutes(InfraEndpointsApi.getAppMetrics) { _ =>
-      AppMetricsReport.fromCurrentRuntime.map(_.toScopeId[Endpoint].asRight[Unit])
+      AppMetricsReport.fromCurrentRuntime.map(_.inScopeId[Endpoint].asRight[Unit])
     }
 
   private val swaggerRoute =
