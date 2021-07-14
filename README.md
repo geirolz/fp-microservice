@@ -16,12 +16,12 @@ with `sbt run`.
 - [x] effects                               -> [cats-effect](https://github.com/typelevel/cats-effect)
 - [x] logging                               -> [log4cats](https://github.com/typelevel/log4cats)
 - [x] jdbc (plain, transactions, etc..)     -> [doobie](https://github.com/tpolecat/doobie)
-- [ ] db migration                          -> [flyway](https://github.com/flyway/flyway)
-- [ ] tracing (jdbc, http, ...)             -> [kamon](https://github.com/kamon-io/Kamon), https://github.com/kamon-io/kamon-http4s
+- [x] db migration                          -> [flyway](https://github.com/flyway/flyway)
 - [x] http client and server                -> [http4s](https://github.com/http4s/http4s)
 - [x] http route definitions                -> [tapir](https://github.com/softwaremill/tapir)
 - [x] config                                -> [pureconfig](https://github.com/pureconfig/pureconfig)
 - [ ] json (with decent errors)             -> [spray-json](https://github.com/spray/spray-json) till circe will have decent errors
-
-
+- [ ] JWT
+- [ ] Rabbit Fs2
+- [ ] g8 ?
 
