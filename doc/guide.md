@@ -1,6 +1,3 @@
-# Purely Functional HTTP microservice
-
----
 ## How to use
 
 #### Project structure
