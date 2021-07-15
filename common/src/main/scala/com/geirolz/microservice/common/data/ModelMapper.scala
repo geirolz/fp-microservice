@@ -1,7 +1,7 @@
 package com.geirolz.microservice.common.data
 
 import cats.{Applicative, FlatMap, Functor, Id}
-import cats.effect.IO
+import cats.effect.{IO, LiftIO}
 import com.geirolz.microservice.common.data.ModelMapper.{ModelMapperIO, ModelMapperId}
 
 import scala.annotation.{implicitAmbiguous, implicitNotFound}
@@ -33,17 +33,28 @@ object ModelMapper extends ModelScopeMapperSyntax {
   type ModelMapperId[S <: Scope, A, B] = ModelMapper[Id, S, A, B]
   type ModelMapperIO[S <: Scope, A, B] = ModelMapper[IO, S, A, B]
 
+  /** Lift a plain function `A => B` into `A => Id[B]` to create a [[ModelMapper]] instance
+    * @param f Function from `A => B`
+    * @tparam S The scope where this function exists
+    * @tparam A Input type
+    * @tparam B Non-Monoidal Output type
+    * @return ModelMapper instance based on `Id` valid for the selected scope
+    */
+  def lift[S <: Scope, A, B](f: A => B): ModelMapperId[S, A, B] = new ModelMapper[Id, S, A, B](f)
+
   def apply[F[_], S <: Scope, A, B](f: A => F[B]): ModelMapper[F, S, A, B] = new ModelMapper[F, S, A, B](f)
 
-  def pure[F[_]: Applicative, S <: Scope, A, B](b: => B): ModelMapper[F, S, A, B] = apply(_ => Applicative[F].pure(b))
+  def pure[F[_]: Applicative, S <: Scope, A, B](b: B): ModelMapper[F, S, A, B] = apply(_ => Applicative[F].pure(b))
 
-  def id[S <: Scope, A, B](f: A => B): ModelMapperId[S, A, B] = ModelMapper[Id, S, A, B](f)
+  def id[S <: Scope, A]: ModelMapperId[S, A, A] = ModelMapper[Id, S, A, A](a => a)
 }
 
 sealed trait ModelScopeMapperSyntax {
   implicit class ModelScopeMapperSyntaxOps[A](a: A) {
-    def inScope[F[_], S <: Scope](implicit m: ModelMapper[F, S, A, _]): F[m.TargetType] = m(a)
-    def inScopeId[S <: Scope](implicit m: ModelMapperId[S, A, _]): m.TargetType = m(a)
-    def inScopeIO[S <: Scope](implicit m: ModelMapperIO[S, A, _]): IO[m.TargetType] = m(a)
+    def toScope[F[_], S <: Scope](implicit m: ModelMapper[F, S, A, _]): F[m.TargetType] = m(a)
+    def toScopeId[S <: Scope](implicit m: ModelMapperId[S, A, _]): m.TargetType = m(a)
+    def toScopeIO[S <: Scope](implicit m: ModelMapperIO[S, A, _]): IO[m.TargetType] = m(a)
+    def toScopeIOLifted[F[_]: LiftIO, S <: Scope](implicit m: ModelMapperIO[S, A, _]): F[m.TargetType] =
+      LiftIO[F].liftIO(m(a))
   }
 }

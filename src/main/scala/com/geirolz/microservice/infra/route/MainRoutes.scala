@@ -18,18 +18,21 @@ class MainRoutes private (implicit C: ContextShift[IO], T: Timer[IO]) {
 
   private val appInfoRoute =
     Http4sServerInterpreter.toRoutes(InfraEndpointsApi.getAppInfo) { _ =>
-      IO.pure(AppInfo.value.inScopeId[Endpoint].asRight[Unit])
+      IO.pure(AppInfo.value.toScopeId[Endpoint].asRight[Unit])
     }
 
   private val appMetricsRoute =
     Http4sServerInterpreter.toRoutes(InfraEndpointsApi.getAppMetrics) { _ =>
-      AppMetricsReport.fromCurrentRuntime.map(_.inScopeId[Endpoint].asRight[Unit])
+      AppMetricsReport.fromCurrentRuntime.map(_.toScopeId[Endpoint].asRight[Unit])
     }
 
   private val swaggerRoute =
     new SwaggerHttp4s(EndpointsApi.OpenApi.yaml).routes[IO]
 
-  val routes: HttpRoutes[IO] = appInfoRoute <+> appMetricsRoute <+> swaggerRoute
+  val routes: HttpRoutes[IO] =
+    appInfoRoute <+>
+    appMetricsRoute <+>
+    swaggerRoute
 }
 object MainRoutes {
   def make(implicit C: ContextShift[IO], T: Timer[IO]): MainRoutes = new MainRoutes()

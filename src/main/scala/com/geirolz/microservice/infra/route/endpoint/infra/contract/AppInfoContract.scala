@@ -15,7 +15,7 @@ private[route] case class AppInfoContract(
 private[route] object AppInfoContract {
 
   implicit val appInfoContractEndpointMapper: ModelMapperId[Endpoint, AppInfo, AppInfoContract] =
-    ModelMapper.id(c =>
+    ModelMapper.lift { c =>
       AppInfoContract(
         name = c.name,
         version = c.version,
@@ -23,5 +23,5 @@ private[route] object AppInfoContract {
         sbtVersion = c.sbtVersion,
         javaVersion = c.javaVersion
       )
-    )
+    }
 }

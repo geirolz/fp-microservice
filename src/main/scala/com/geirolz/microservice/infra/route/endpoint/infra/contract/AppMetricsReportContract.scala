@@ -15,12 +15,12 @@ private[route] object AppMetricsReportContract {
 
   implicit val appMetricsReportContractEndpointMapper
     : ModelMapperId[Endpoint, AppMetricsReport, AppMetricsReportContract] =
-    ModelMapper.id(c =>
+    ModelMapper.lift { c =>
       AppMetricsReportContract(
         c.usedMemory,
         c.freeMemory,
         c.totalMemory,
         c.maxMemory
       )
-    )
+    }
 }

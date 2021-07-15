@@ -8,5 +8,7 @@ private[route] case class UserContract(id: Long, name: String, surname: String)
 private[route] object UserContract {
 
   implicit val toContractMapper: ModelMapperId[Endpoint, User, UserContract] =
-    ModelMapper.id(user => UserContract(user.id.value, user.name, user.surname))
+    ModelMapper.lift { user =>
+      UserContract(user.id.value, user.name, user.surname)
+    }
 }
