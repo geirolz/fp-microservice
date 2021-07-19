@@ -3,8 +3,8 @@ package com.geirolz.microservice.external.repository
 import cats.effect.IO
 import com.geirolz.microservice.external.repository.entity.UserEntity
 import com.geirolz.microservice.external.repository.UserRepository.Query
-import com.geirolz.microservice.model.value.UserId
 import com.geirolz.microservice.model.User
+import com.geirolz.microservice.model.datatype.UserId
 import doobie.ConnectionIO
 import doobie.implicits._
 import doobie.util.transactor.Transactor

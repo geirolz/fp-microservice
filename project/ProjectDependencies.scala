@@ -8,7 +8,8 @@ object ProjectDependencies {
     config,
     db,
     http,
-    json
+    json,
+    tests
   ).flatten
 
   private val effects = {
@@ -34,13 +35,13 @@ object ProjectDependencies {
       "org.tpolecat" %% "doobie-core" % doobieVersion,
       "org.tpolecat" %% "doobie-h2" % doobieVersion,
       "org.tpolecat" %% "doobie-scalatest" % doobieVersion % "test",
-      "org.flywaydb" % "flyway-core" % "7.11.1"
+      "org.flywaydb" % "flyway-core" % "7.11.2"
     )
   }
 
   private val http = {
-    val http4sVersion = "0.21.24"
-    val tapirVersion = "0.18.0"
+    val http4sVersion = "0.21.25"
+    val tapirVersion = "0.17.20"
 
     Seq(
       //HTTP
@@ -58,5 +59,10 @@ object ProjectDependencies {
 
   private val json = Seq(
     "io.circe" %% "circe-core" % "0.14.1"
+  )
+
+  private val tests = Seq(
+    "org.scalactic" %% "scalactic" % "3.2.9",
+    "org.scalatest" %% "scalatest" % "3.2.9" % Test
   )
 }
