@@ -1,10 +1,14 @@
 ## How to create a new route
 Steps
-1. Create route endpoint definition 
-2. Create Route implementation
-3. Add route to service routes
+1. Create route tests
+2. Create route endpoint definition 
+3. Create route implementation
+4. Add route to service routes
 
-### 1. Create route endpoint definition
+### 1. Create route tests
+TODO
+
+### 2. Create route endpoint definition
 
 The package `[...].infra.route.endpoint` contains only the endpoint api definition and the contract model.
 So, to create a new endpoint definition we have to:
@@ -46,7 +50,7 @@ _UserEndpointApi.scala_
   case class UserId(value: Long) extends AnyVal
   
   
-  val getById: Endpoint[UserId, ErrorInfo, UserContract, Any] =
+  val getById: Endpoint[UserId, UserEndpointError, UserContract, Any] =
     user.get
       .in(query[UserId]("id"))
       .out(jsonBody[UserContract])
@@ -63,7 +67,7 @@ private[route] object UserEndpointError {
 }
 ```
 
-### 2. Create Route implementation
+### 2. Create route implementation
 TODO
 
 ### 3. Add route to service routes
