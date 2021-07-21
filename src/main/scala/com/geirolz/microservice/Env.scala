@@ -24,10 +24,10 @@ object Env {
       _                <- logger.info("Databases successfully initialized.")
 
       //----------------- REPOSITORY ---------------
-      userRepository = new UserRepository(mainDbTransactor)
+      userRepository = UserRepository(mainDbTransactor)
 
     } yield Env(
-      userService = new UserService(userRepository)
+      userService = UserService(userRepository)
     )
 
   private def initDatabase(dbConfig: DbConfig)(implicit cs: ContextShift[IO]): IO[Transactor[IO]] = {

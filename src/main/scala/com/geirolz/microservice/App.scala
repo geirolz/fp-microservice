@@ -2,7 +2,7 @@ package com.geirolz.microservice
 
 import cats.effect.{ExitCode, IO, IOApp}
 import com.geirolz.microservice.infra.config.Config
-import org.http4s.server.blaze.BlazeServerBuilder
+import org.http4s.blaze.server.BlazeServerBuilder
 import org.typelevel.log4cats.SelfAwareStructuredLogger
 import org.typelevel.log4cats.slf4j.Slf4jLogger
 

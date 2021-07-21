@@ -1,6 +1,6 @@
 package com.geirolz.microservice.infra.route
 
-import cats.effect.{ContextShift, IO, Timer}
+import cats.effect.{Concurrent, ContextShift, IO, Timer}
 import com.geirolz.microservice.common.data.Endpoint
 import com.geirolz.microservice.infra.route.endpoint.infra.InfraEndpointsApi
 import com.geirolz.microservice.infra.route.endpoint.EndpointsApi
@@ -9,7 +9,7 @@ import org.http4s.HttpRoutes
 import sttp.tapir.server.http4s.Http4sServerInterpreter
 import sttp.tapir.swagger.http4s.SwaggerHttp4s
 
-class MainRoutes private (implicit C: ContextShift[IO], T: Timer[IO]) {
+class MainRoutes private (implicit CS: ContextShift[IO], T: Timer[IO]) {
 
   import cats.implicits._
   import com.geirolz.microservice.common.data.ModelMapper._
@@ -17,12 +17,12 @@ class MainRoutes private (implicit C: ContextShift[IO], T: Timer[IO]) {
   import com.geirolz.microservice.infra.route.endpoint.infra.contract.AppMetricsReportContract._
 
   private val appInfoRoute =
-    Http4sServerInterpreter.toRoutes(InfraEndpointsApi.getAppInfo) { _ =>
+    Http4sServerInterpreter[IO]().toRoutes(InfraEndpointsApi.getAppInfo) { _ =>
       IO.pure(AppInfo.value.toScopeId[Endpoint].asRight[Unit])
     }
 
   private val appMetricsRoute =
-    Http4sServerInterpreter.toRoutes(InfraEndpointsApi.getAppMetrics) { _ =>
+    Http4sServerInterpreter[IO]().toRoutes(InfraEndpointsApi.getAppMetrics) { _ =>
       AppMetricsReport.fromCurrentRuntime.map(_.toScopeId[Endpoint].asRight[Unit])
     }
 

@@ -17,7 +17,7 @@ private[route] object UserEndpointApi {
 
   val getById: Endpoint[UserId, UserEndpointError, UserContract, Any] =
     user.get
-      .in(query[UserId]("id"))
+      .in(path[UserId])
       .out(jsonBody[UserContract])
       .errorOut(jsonBody[UserEndpointError])
 }

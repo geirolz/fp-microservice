@@ -26,12 +26,13 @@ object ProjectDependencies {
   )
 
   private val http = {
-    val http4sVersion = "0.21.25"
-    val tapirVersion = "0.17.20"
+    val http4sVersion = "0.22.0"
+    val tapirVersion = "0.18.1"
 
     Seq(
       //HTTP
       "org.http4s" %% "http4s-dsl" % http4sVersion,
+      "org.http4s" %% "http4s-circe" % http4sVersion,
       "org.http4s" %% "http4s-blaze-server" % http4sVersion,
       //TAPIR
       "com.softwaremill.sttp.tapir" %% "tapir-core" % tapirVersion,
@@ -64,7 +65,7 @@ object ProjectDependencies {
     Seq(
       "org.tpolecat" %% "doobie-core" % doobieVersion,
       "org.tpolecat" %% "doobie-h2" % doobieVersion,
-      "org.tpolecat" %% "doobie-scalatest" % doobieVersion % "test",
+      "org.tpolecat" %% "doobie-scalatest" % doobieVersion % Test,
       "org.flywaydb" % "flyway-core" % "7.11.3"
     )
   }

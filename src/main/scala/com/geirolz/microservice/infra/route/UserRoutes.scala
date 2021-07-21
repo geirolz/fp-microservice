@@ -8,20 +8,21 @@ import com.geirolz.microservice.service.UserService
 import org.http4s.HttpRoutes
 import sttp.tapir.server.http4s.Http4sServerInterpreter
 
-class UserRoutes private (userService: UserService)(implicit C: ContextShift[IO], T: Timer[IO]) {
+class UserRoutes private (userService: UserService)(implicit CS: ContextShift[IO], T: Timer[IO]) {
 
   import com.geirolz.microservice.infra.route.endpoint.user.contract.UserContract._
   import ModelMapper._
 
-  val routes: HttpRoutes[IO] =
-    Http4sServerInterpreter.toRoutes(UserEndpointApi.getById)(userId => {
-      userService
-        .getById(userId)
-        .map {
-          case Some(user) => Right(user.toScopeId[Endpoint])
-          case None       => Left(UserEndpointError.UserNotFound(userId))
-        }
-    })
+  private val getById: HttpRoutes[IO] = Http4sServerInterpreter[IO]().toRoutes(UserEndpointApi.getById)(userId => {
+    userService
+      .getById(userId)
+      .map {
+        case Some(user) => Right(user.toScopeId[Endpoint])
+        case None       => Left(UserEndpointError.UserNotFound(userId))
+      }
+  })
+
+  val routes: HttpRoutes[IO] = getById
 }
 object UserRoutes {
   def make(userService: UserService)(implicit C: ContextShift[IO], T: Timer[IO]): UserRoutes =

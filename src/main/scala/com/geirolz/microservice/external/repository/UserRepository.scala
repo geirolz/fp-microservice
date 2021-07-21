@@ -2,27 +2,31 @@ package com.geirolz.microservice.external.repository
 
 import cats.effect.IO
 import com.geirolz.microservice.external.repository.entity.UserEntity
-import com.geirolz.microservice.external.repository.UserRepository.Query
 import com.geirolz.microservice.model.User
 import com.geirolz.microservice.model.datatype.UserId
 import doobie.ConnectionIO
 import doobie.implicits._
 import doobie.util.transactor.Transactor
 
-class UserRepository(dbTransactor: Transactor[IO]) {
-
-  import cats.implicits._
-
-  def getById(id: UserId): IO[Option[User]] =
-    Query
-      .findUserById(id)
-      .transact(dbTransactor)
-      .nested
-      .map(_.toDomain)
-      .value
-
+trait UserRepository {
+  def getById(id: UserId): IO[Option[User]]
 }
 object UserRepository {
+
+  //TODO: TBD
+  def apply(dbTransactor: Transactor[IO]): UserRepository = new UserRepository {
+
+    import cats.implicits._
+
+    def getById(id: UserId): IO[Option[User]] =
+      Query
+        .findUserById(id)
+        .transact(dbTransactor)
+        .nested
+        .map(_.toDomain)
+        .value
+
+  }
 
   private[repository] object Query {
 
