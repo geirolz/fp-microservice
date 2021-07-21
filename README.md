@@ -27,4 +27,5 @@ To customize this project please read the [guide](doc/guide.md)
 - [ ] Rabbit Fs2
 - [ ] g8
 - [ ] Docker
+- [ ] Scala 3
 
