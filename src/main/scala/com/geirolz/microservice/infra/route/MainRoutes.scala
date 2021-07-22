@@ -1,6 +1,6 @@
 package com.geirolz.microservice.infra.route
 
-import cats.effect.{Concurrent, ContextShift, IO, Timer}
+import cats.effect.{ContextShift, IO, Timer}
 import com.geirolz.microservice.common.data.Endpoint
 import com.geirolz.microservice.infra.route.endpoint.infra.InfraEndpointsApi
 import com.geirolz.microservice.infra.route.endpoint.EndpointsApi

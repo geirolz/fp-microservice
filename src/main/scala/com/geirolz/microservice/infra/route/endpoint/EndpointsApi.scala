@@ -12,7 +12,6 @@ private[route] object EndpointsApi {
 
   val all: List[Endpoint[_, _, _, _]] = List(
     UserEndpointApi.getById,
-    UserEndpointApi.getById,
     InfraEndpointsApi.getAppInfo,
     InfraEndpointsApi.getAppMetrics
   )
