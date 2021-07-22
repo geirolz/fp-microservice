@@ -1,6 +1,5 @@
 package com.geirolz.microservice
 
-import cats.data.Validated.{Invalid, Valid}
 import cats.effect.{ContextShift, IO}
 import com.geirolz.microservice.external.repository.UserRepository
 import com.geirolz.microservice.infra.config.Config
@@ -34,27 +33,8 @@ object Env {
     for {
       _               <- logger.debug(s"Initializing ${dbConfig.name} database")
       _               <- logger.debug(s"Applying migration for ${dbConfig.name}")
-      migrationResult <- Database.migrate[IO](dbConfig)
-      _ <- migrationResult match {
-        case Valid(result) =>
-          logger.info(s" Applied ${result.migrationsExecuted} migrations to ${dbConfig.name} database")
-        case Invalid(errors) =>
-          IO.raiseError(
-            new RuntimeException(
-              errors
-                .map(error => s"""
-                 |Failed validation:
-                 |  - version: ${error.version}
-                 |  - path: ${error.filepath}
-                 |  - description: ${error.description}
-                 |  - errorCode: ${error.errorDetails.errorCode}
-                 |  - errorMessage: ${error.errorDetails.errorMessage}
-                """.stripMargin)
-                .toList
-                .mkString("\n\n")
-            )
-          )
-      }
+      migrationResult <- Database.migrate[IO](dbConfig).flatMap(Database.evalMigrationResult)
+      _               <- logger.info(s" Applied ${migrationResult.migrationsExecuted} migrations to ${dbConfig.name} database")
     } yield Database.createTransactorUsing[IO](dbConfig)
   }
 }

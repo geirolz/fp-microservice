@@ -16,6 +16,8 @@ object Database {
 
   import cats.implicits._
 
+  type MigrationResult = ValidatedNel[ValidateOutput, MigrateResult]
+
   def createTransactorUsing[F[_]: Async: ContextShift](config: DbConfig): Transactor[F] =
     (config.user, config.pass) match {
       case (Some(user), Some(pass)) =>
@@ -38,7 +40,27 @@ object Database {
     outOfOrder: Boolean = false,
     baselineOnMigrate: Boolean = false,
     ignorePendingMigrations: Boolean = false
-  )(implicit F: Async[F]): F[ValidatedNel[ValidateOutput, MigrateResult]] = {
+  )(implicit F: Async[F]): F[MigrationResult] =
+    F.delay {
+      Flyway.configure
+        .dataSource(
+          dbConfig.url,
+          dbConfig.user.orNull,
+          dbConfig.pass.map(_.stringValue).orNull
+        )
+        .group(group)
+        .outOfOrder(outOfOrder)
+        .baselineOnMigrate(baselineOnMigrate)
+        .ignorePendingMigrations(ignorePendingMigrations)
+        .table(dbConfig.migrationsTable)
+        .locations(
+          dbConfig.migrationsLocations.map(new Location(_)): _*
+        )
+    }.flatMap(migrate)
+
+  def migrate[F[_]](
+    config: FluentConfiguration
+  )(implicit F: Async[F]): F[MigrationResult] = {
 
     def initFlyway(flywayConfig: FluentConfiguration): F[ValidatedNel[ValidateOutput, Flyway]] =
       for {
@@ -55,27 +77,35 @@ object Database {
       } yield res
 
     for {
-      config <- F.pure {
-        Flyway.configure
-          .dataSource(
-            dbConfig.url,
-            dbConfig.user.orNull,
-            dbConfig.pass.map(_.stringValue).orNull
-          )
-          .group(group)
-          .outOfOrder(outOfOrder)
-          .baselineOnMigrate(baselineOnMigrate)
-          .ignorePendingMigrations(ignorePendingMigrations)
-          .table(dbConfig.migrationsTable)
-          .locations(
-            dbConfig.migrationsLocations.map(new Location(_)): _*
-          )
-      }
       validatedFlyway <- initFlyway(config)
       result <- validatedFlyway match {
         case Valid(flyway)        => F.delay(flyway.migrate().valid)
         case invalid @ Invalid(_) => F.pure(invalid)
       }
     } yield result
+  }
+
+  def evalMigrationResult[F[_]](
+    result: MigrationResult
+  )(implicit F: Async[F]): F[MigrateResult] = {
+    result match {
+      case Valid(result) => F.pure(result)
+      case Invalid(errors) =>
+        F.raiseError(
+          new RuntimeException(
+            errors
+              .map(error => s"""
+                               |Failed validation:
+                               |  - version: ${error.version}
+                               |  - path: ${error.filepath}
+                               |  - description: ${error.description}
+                               |  - errorCode: ${error.errorDetails.errorCode}
+                               |  - errorMessage: ${error.errorDetails.errorMessage}
+                """.stripMargin)
+              .toList
+              .mkString("\n\n")
+          )
+        )
+    }
   }
 }
