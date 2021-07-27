@@ -33,7 +33,7 @@ object Env {
     for {
       _               <- logger.debug(s"Initializing ${dbConfig.name} database")
       _               <- logger.debug(s"Applying migration for ${dbConfig.name}")
-      migrationResult <- Database.migrate[IO](dbConfig).flatMap(Database.evalMigrationResult)
+      migrationResult <- Database.migrate[IO](dbConfig)
       _               <- logger.info(s" Applied ${migrationResult.migrationsExecuted} migrations to ${dbConfig.name} database")
     } yield Database.createTransactorUsing[IO](dbConfig)
   }
