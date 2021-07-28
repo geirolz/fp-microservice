@@ -1,6 +1,6 @@
 package com.geirolz.microservice
 
-import cats.effect.{ContextShift, IO}
+import cats.effect.IO
 import com.geirolz.microservice.external.repository.UserRepository
 import com.geirolz.microservice.infra.config.Config
 import com.geirolz.microservice.service.UserService
@@ -14,7 +14,7 @@ case class Env(
 )
 object Env {
 
-  def load(config: Config)(implicit cs: ContextShift[IO]): IO[Env] =
+  def load(config: Config): IO[Env] =
     for {
 
       //-------------------- DB --------------------
@@ -29,7 +29,7 @@ object Env {
       userService = UserService(userRepository)
     )
 
-  private def initDatabase(dbConfig: DbConfig)(implicit cs: ContextShift[IO]): IO[Transactor[IO]] = {
+  private def initDatabase(dbConfig: DbConfig): IO[Transactor[IO]] = {
     for {
       _               <- logger.debug(s"Initializing ${dbConfig.name} database")
       _               <- logger.debug(s"Applying migration for ${dbConfig.name}")
