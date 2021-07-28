@@ -18,12 +18,12 @@ object Env {
     for {
 
       //-------------------- DB --------------------
-      _                <- logger.debug("Initializing databases...")
-      mainDbTransactor <- initDatabase(config.db.main)
-      _                <- logger.info("Databases successfully initialized.")
+      _ <- logger.debug("Initializing databases...")
+//      mainDbTransactor <- initDatabase(config.db.main)
+      _ <- logger.info("Databases successfully initialized.")
 
       //----------------- REPOSITORY ---------------
-      userRepository = UserRepository(mainDbTransactor)
+      userRepository = UserRepository(Database.createTransactorUsing[IO](config.db.main))
 
     } yield Env(
       userService = UserService(userRepository)
