@@ -1,6 +1,6 @@
 package com.geirolz.microservice.infra.route
 
-import cats.effect.{ContextShift, IO, Timer}
+import cats.effect.IO
 import com.geirolz.microservice.common.data.Endpoint
 import com.geirolz.microservice.infra.route.endpoint.infra.InfraEndpointsApi
 import com.geirolz.microservice.infra.route.endpoint.EndpointsApi
@@ -8,8 +8,9 @@ import com.geirolz.microservice.model.{AppInfo, AppMetricsReport}
 import org.http4s.HttpRoutes
 import sttp.tapir.server.http4s.Http4sServerInterpreter
 import sttp.tapir.swagger.http4s.SwaggerHttp4s
+import cats.effect.Temporal
 
-class MainRoutes private (implicit CS: ContextShift[IO], T: Timer[IO]) {
+class MainRoutes private (implicit CS: ContextShift[IO], T: Temporal[IO]) {
 
   import cats.implicits._
   import com.geirolz.microservice.common.data.ModelMapper._
@@ -35,5 +36,5 @@ class MainRoutes private (implicit CS: ContextShift[IO], T: Timer[IO]) {
     swaggerRoute
 }
 object MainRoutes {
-  def make(implicit C: ContextShift[IO], T: Timer[IO]): MainRoutes = new MainRoutes()
+  def make(implicit T: Temporal[IO]): MainRoutes = new MainRoutes()
 }
