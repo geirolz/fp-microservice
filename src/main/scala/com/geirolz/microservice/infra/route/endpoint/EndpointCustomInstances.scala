@@ -1,9 +1,11 @@
 package com.geirolz.microservice.infra.route.endpoint
 
-import cats.data.NonEmptyList
 import com.geirolz.microservice.model.datatype.UserId
+import io.circe.{Decoder, Encoder}
+import shapeless.Unwrapped
 import sttp.tapir.CodecFormat.TextPlain
 import sttp.tapir.Validator
+import sttp.tapir.integ.cats.TapirCodecCats
 
 private[endpoint] object EndpointCustomInstances
     extends EndpointCustomCodecsInstances
@@ -16,29 +18,32 @@ private[endpoint] object EndpointCustomInstances
   object StatusMapping extends EndpointCustomStatusMapping
 }
 
-sealed private trait EndpointCustomCodecsInstances {
+sealed private trait EndpointCustomCodecsInstances extends TapirCodecCats {
 
   import sttp.tapir._
 
+  //circe
+  implicit def decodeAnyVal[T, U](implicit
+    ev: T <:< AnyVal,
+    unwrapped: Unwrapped.Aux[T, U],
+    decoder: Decoder[U]
+  ): Decoder[T] = Decoder.instance[T] { cursor =>
+    decoder(cursor).map(value => unwrapped.wrap(value))
+  }
+
+  implicit def encodeAnyVal[T, U](implicit
+    ev: T <:< AnyVal,
+    unwrapped: Unwrapped.Aux[T, U],
+    encoder: Encoder[U]
+  ): Encoder[T] = Encoder.instance[T] { value =>
+    encoder(unwrapped.unwrap(value))
+  }
+
+  //tapir
   implicit val codecForUserId: Codec[String, UserId, TextPlain] = Codec.long.map(UserId)(_.value)
 }
 
-sealed private trait EndpointCustomSchemasInstances {
-
-  import sttp.tapir._
-
-  implicit def customSchemaForNonEmptyList[T: Schema]: Schema[NonEmptyList[T]] =
-    Schema(
-      schemaType = SchemaType.SArray(implicitly[Schema[T]])(_.toList),
-      isOptional = false,
-      validator = Validator.minSize(1).contramap(_.toList)
-    )
-
-  implicit val customSchemaForBigDecimal: Schema[BigDecimal] =
-    Schema.schemaForBigDecimal.copy(
-      schemaType = SchemaType.SNumber[BigDecimal]()
-    )
-}
+sealed private trait EndpointCustomSchemasInstances
 
 sealed private trait EndpointCustomValidators {
 
