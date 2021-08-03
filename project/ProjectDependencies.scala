@@ -17,7 +17,7 @@ object ProjectDependencies {
   private val effects = {
     Seq(
       "org.typelevel" %% "cats-core" % "2.6.1",
-      "org.typelevel" %% "cats-effect" % "2.5.2"
+      "org.typelevel" %% "cats-effect" % "3.2.1"
     )
   }
 
@@ -26,8 +26,8 @@ object ProjectDependencies {
   )
 
   private val http = {
-    val http4sVersion = "0.22.1"
-    val tapirVersion = "0.18.1"
+    val http4sVersion = "0.23.0"
+    val tapirVersion = "0.19.0-M4"
 
     Seq(
       //HTTP
@@ -51,7 +51,7 @@ object ProjectDependencies {
   )
 
   private val logging = Seq(
-    "org.typelevel" %% "log4cats-slf4j" % "1.3.1",
+    "org.typelevel" %% "log4cats-slf4j" % "2.1.1",
     "org.slf4j" % "slf4j-api" % "1.7.32",
     "org.slf4j" % "slf4j-simple" % "1.7.32"
   )
@@ -63,17 +63,17 @@ object ProjectDependencies {
 
   //externals services
   private val db = {
-    val doobieVersion = "0.13.4"
+    val doobieVersion = "1.0.0-M2"
     Seq(
+      "com.github.geirolz" %% "fly4s-core" % "0.0.1",
       "org.tpolecat" %% "doobie-core" % doobieVersion,
       "org.tpolecat" %% "doobie-h2" % doobieVersion,
-      "org.tpolecat" %% "doobie-scalatest" % doobieVersion % Test,
-      "org.flywaydb" % "flyway-core" % "7.11.3"
+      "org.tpolecat" %% "doobie-scalatest" % doobieVersion % Test
     )
   }
 
   private val rabbitMq = {
-    val fs2RabbitVersion = "3.0.1"
+    val fs2RabbitVersion = "4.1.0"
     Seq(
       "dev.profunktor" %% "fs2-rabbit" % fs2RabbitVersion,
       "dev.profunktor" %% "fs2-rabbit-circe" % fs2RabbitVersion
