@@ -40,12 +40,14 @@ object ProjectDependencies {
       "com.softwaremill.sttp.tapir" %% "tapir-json-circe" % tapirVersion,
       "com.softwaremill.sttp.tapir" %% "tapir-openapi-docs" % tapirVersion,
       "com.softwaremill.sttp.tapir" %% "tapir-openapi-circe-yaml" % tapirVersion,
-      "com.softwaremill.sttp.tapir" %% "tapir-swagger-ui-http4s" % tapirVersion
+      "com.softwaremill.sttp.tapir" %% "tapir-swagger-ui-http4s" % tapirVersion,
+      "com.softwaremill.sttp.tapir" %% "tapir-cats" % tapirVersion
     )
   }
 
   private val json = Seq(
-    "io.circe" %% "circe-core" % "0.14.1"
+    "io.circe" %% "circe-core" % "0.14.1",
+    "io.circe" %% "circe-generic-extras" % "0.14.1"
   )
 
   private val logging = Seq(

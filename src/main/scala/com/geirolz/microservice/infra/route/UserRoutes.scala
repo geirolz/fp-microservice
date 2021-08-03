@@ -1,11 +1,9 @@
 package com.geirolz.microservice.infra.route
 
-import cats.data.NonEmptyList
-import cats.effect.IO
+import cats.effect.{ContextShift, IO, Timer}
 import com.geirolz.microservice.common.data.{Endpoint, ModelMapper}
 import com.geirolz.microservice.infra.route.endpoint.user.UserEndpointApi
 import com.geirolz.microservice.infra.route.endpoint.user.contract.UserEndpointError
-import com.geirolz.microservice.model.datatype.UserId
 import com.geirolz.microservice.service.UserService
 import org.http4s.HttpRoutes
 import sttp.tapir.server.http4s.Http4sServerInterpreter
@@ -15,7 +13,6 @@ class UserRoutes private (userService: UserService)(implicit CS: ContextShift[IO
 
   import com.geirolz.microservice.infra.route.endpoint.user.contract.UserContract._
   import ModelMapper._
-  import cats.implicits._
 
   private val getById: HttpRoutes[IO] = Http4sServerInterpreter[IO]().toRoutes(UserEndpointApi.getById)(userId => {
     userService
@@ -26,11 +23,7 @@ class UserRoutes private (userService: UserService)(implicit CS: ContextShift[IO
       }
   })
 
-  private val test: HttpRoutes[IO] = Http4sServerInterpreter[IO]().toRoutes(UserEndpointApi.test)(t => {
-    IO.pure(Right[Unit, NonEmptyList[UserId]](NonEmptyList.one(t._1)))
-  })
-
-  val routes: HttpRoutes[IO] = getById <+> test
+  val routes: HttpRoutes[IO] = getById
 }
 object UserRoutes {
   def make(userService: UserService)(implicit T: Temporal[IO]): UserRoutes =

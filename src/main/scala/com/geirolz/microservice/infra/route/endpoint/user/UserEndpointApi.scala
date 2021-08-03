@@ -1,6 +1,5 @@
 package com.geirolz.microservice.infra.route.endpoint.user
 
-import cats.data.NonEmptyList
 import com.geirolz.microservice.common.route.endpoint.VersionedEndpoint
 import com.geirolz.microservice.infra.route.endpoint.user.contract.{UserContract, UserEndpointError}
 import com.geirolz.microservice.infra.route.endpoint.EndpointCustomInstances
@@ -26,19 +25,4 @@ private[route] object UserEndpointApi {
       )
       .out(jsonBody[UserContract])
       .errorOut(jsonBody[UserEndpointError])
-
-  val test: Endpoint[(UserId, UserContract), Unit, NonEmptyList[UserId], Any] =
-    user.post
-      .in("test")
-      .in(
-        path[UserId]("id")
-          .description("User unique identifier")
-          .validate(Validator.Min(10L, exclusive = true).contramap(_.value))
-      )
-      .in(
-        jsonBody[UserContract].schema(
-          _.modify(_.name)(_.validate(Validator.maxLength(5)))
-        )
-      )
-      .out(jsonBody[NonEmptyList[UserId]])
 }
