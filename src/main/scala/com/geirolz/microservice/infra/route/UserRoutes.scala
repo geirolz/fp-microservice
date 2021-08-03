@@ -1,6 +1,7 @@
 package com.geirolz.microservice.infra.route
 
-import cats.effect.{ContextShift, IO, Timer}
+import cats.effect.IO
+import cats.effect.kernel.Temporal
 import com.geirolz.microservice.common.data.{Endpoint, ModelMapper}
 import com.geirolz.microservice.infra.route.endpoint.user.UserEndpointApi
 import com.geirolz.microservice.infra.route.endpoint.user.contract.UserEndpointError
@@ -8,7 +9,7 @@ import com.geirolz.microservice.service.UserService
 import org.http4s.HttpRoutes
 import sttp.tapir.server.http4s.Http4sServerInterpreter
 
-class UserRoutes private (userService: UserService)(implicit CS: ContextShift[IO], T: Timer[IO]) {
+class UserRoutes private (userService: UserService)(implicit T: Temporal[IO]) {
 
   import com.geirolz.microservice.infra.route.endpoint.user.contract.UserContract._
   import ModelMapper._
@@ -25,6 +26,6 @@ class UserRoutes private (userService: UserService)(implicit CS: ContextShift[IO
   val routes: HttpRoutes[IO] = getById
 }
 object UserRoutes {
-  def make(userService: UserService)(implicit C: ContextShift[IO], T: Timer[IO]): UserRoutes =
+  def make(userService: UserService)(implicit T: Temporal[IO]): UserRoutes =
     new UserRoutes(userService)
 }

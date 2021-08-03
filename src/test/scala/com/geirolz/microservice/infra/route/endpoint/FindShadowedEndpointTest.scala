@@ -8,6 +8,9 @@ import sttp.tapir.testing.{FindShadowedEndpoints, ShadowedEndpoint}
 import sttp.tapir.Endpoint
 
 class FindShadowedEndpointTest extends AnyWordSpec with Matchers {
+
+  import cats.effect.unsafe.implicits.global
+
   "Application endpoints" should {
     "not have shadowing" in {
       ShadowedEndpoints.check[IO](EndpointsApi.all).unsafeRunSync()
@@ -15,7 +18,6 @@ class FindShadowedEndpointTest extends AnyWordSpec with Matchers {
   }
 }
 
-//---- TODO OPEN A PR TO TAPIR ----
 case class ShadowedEndpointException(endpoints: List[Endpoint[_, _, _, _]], ses: Set[ShadowedEndpoint])
     extends RuntimeException(s"${ses.size} endpoints shadowed.\n${ShadowedEndpoints.asPrettyString(ses)}")
 

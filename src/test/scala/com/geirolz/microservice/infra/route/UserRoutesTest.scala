@@ -1,6 +1,5 @@
 package com.geirolz.microservice.infra.route
 
-import cats.effect.{ContextShift, IO, Timer}
 import com.geirolz.microservice.infra.route.endpoint.user.contract.UserContract
 import com.geirolz.microservice.model.datatype.UserId
 import com.geirolz.microservice.model.User
@@ -8,15 +7,10 @@ import com.geirolz.microservice.service.UserService
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
-import scala.concurrent.{ExecutionContext, ExecutionContextExecutor}
-
 class UserRoutesTest extends AnyWordSpec with Matchers {
 
-  private val executionContext: ExecutionContextExecutor = ExecutionContext.global
-  implicit val contextShift: ContextShift[IO] = IO.contextShift(executionContext)
-  implicit val ioTimer: Timer[IO] = IO.timer(executionContext)
-
   import cats.effect._
+  import cats.effect.unsafe.implicits.global
   import com.geirolz.microservice.infra.route.endpoint.EndpointCustomInstances._
   import io.circe.generic.auto._
   import org.http4s._
