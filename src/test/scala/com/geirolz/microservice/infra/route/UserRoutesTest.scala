@@ -17,6 +17,7 @@ class UserRoutesTest extends AnyWordSpec with Matchers {
   implicit val ioTimer: Timer[IO] = IO.timer(executionContext)
 
   import cats.effect._
+  import com.geirolz.microservice.infra.route.endpoint.EndpointCustomInstances._
   import io.circe.generic.auto._
   import org.http4s._
   import org.http4s.circe._
@@ -52,7 +53,7 @@ class UserRoutesTest extends AnyWordSpec with Matchers {
         //asserts
         response.status shouldBe Status.Ok
         response.decodeJson[UserContract].unsafeRunSync() shouldBe UserContract(
-          id = 1,
+          id = UserId(1),
           name = "Mario",
           surname = "Rossi"
         )

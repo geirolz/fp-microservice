@@ -7,7 +7,7 @@ import sttp.tapir.CodecFormat.TextPlain
 import sttp.tapir.Validator
 import sttp.tapir.integ.cats.TapirCodecCats
 
-private[endpoint] object EndpointCustomInstances
+private[infra] object EndpointCustomInstances
     extends EndpointCustomCodecsInstances
     with EndpointCustomSchemasInstances
     with EndpointCustomValidators
@@ -18,7 +18,7 @@ private[endpoint] object EndpointCustomInstances
   object StatusMapping extends EndpointCustomStatusMapping
 }
 
-sealed private trait EndpointCustomCodecsInstances extends TapirCodecCats {
+sealed trait EndpointCustomCodecsInstances extends TapirCodecCats {
 
   import sttp.tapir._
 
@@ -43,9 +43,9 @@ sealed private trait EndpointCustomCodecsInstances extends TapirCodecCats {
   implicit val codecForUserId: Codec[String, UserId, TextPlain] = Codec.long.map(UserId)(_.value)
 }
 
-sealed private trait EndpointCustomSchemasInstances
+sealed trait EndpointCustomSchemasInstances
 
-sealed private trait EndpointCustomValidators {
+sealed trait EndpointCustomValidators {
 
   def rangeValidator[N: Numeric](
     min: N,
@@ -56,4 +56,4 @@ sealed private trait EndpointCustomValidators {
     Validator.min[N](min, minExclusive).and(Validator.max[N](max, maxExclusive))
 }
 
-sealed private trait EndpointCustomStatusMapping {}
+sealed trait EndpointCustomStatusMapping {}
