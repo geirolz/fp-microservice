@@ -67,6 +67,7 @@ object ProjectDependencies {
     Seq(
       "com.github.geirolz" %% "fly4s-core" % "0.0.2",
       "org.tpolecat" %% "doobie-core" % doobieVersion,
+      "org.tpolecat" %% "doobie-hikari" % doobieVersion,
       "org.tpolecat" %% "doobie-h2" % doobieVersion,
       "org.tpolecat" %% "doobie-scalatest" % doobieVersion % Test
     )

@@ -1,41 +1,54 @@
 package com.geirolz.microservice
 
-import cats.effect.IO
+import cats.effect.{IO, Resource}
+import com.geirolz.microservice.common.config.DbConfig
+import com.geirolz.microservice.common.logging.FLog
 import com.geirolz.microservice.external.repository.UserRepository
 import com.geirolz.microservice.infra.config.Config
 import com.geirolz.microservice.service.UserService
-import com.geirolz.microservice.App.logger
-import com.geirolz.microservice.common.config.DbConfig
-import com.geirolz.microservice.common.db.Database
-import doobie.Transactor
+import doobie.ExecutionContexts
+import doobie.hikari.HikariTransactor
 import fly4s.core.Fly4s
 import fly4s.core.data.{Fly4sConfig, Location}
 
 case class Env(
   userService: UserService
 )
-object Env {
+object Env extends FLog.IOLog with FLog.IOResourceLog {
 
   import fly4s.implicits._
 
-  def load(config: Config): IO[Env] =
+  def load(config: Config): Resource[IO, Env] =
     for {
 
       //-------------------- DB --------------------
-      _ <- logger.debug("Initializing databases...")
-//      mainDbTransactor <- initDatabase(config.db.main)
-      _ <- logger.info("Databases successfully initialized.")
+      _ <- resLogger.debug("Initializing databases...")
+      //main
+      mainDbTransactor <- createDbTransactor(config.db.main)
+        .evalTap(_ => applyMigrationToDb(config.db.main))
+      _ <- resLogger.info("Databases successfully initialized.")
 
       //----------------- REPOSITORY ---------------
-      userRepository = UserRepository(Database.createTransactorUsing[IO](config.db.main))
+      userRepository = UserRepository(mainDbTransactor)
 
     } yield Env(
       userService = UserService(userRepository)
     )
 
-  private def initDatabase(dbConfig: DbConfig): IO[Transactor[IO]] = {
+  private def createDbTransactor(dbConfig: DbConfig): Resource[IO, HikariTransactor[IO]] =
     for {
-      _ <- logger.debug(s"Initializing ${dbConfig.name} database")
+      nonBlockingOpsECForDoobie <- ExecutionContexts.fixedThreadPool[IO](32)
+      transactor <- HikariTransactor.newHikariTransactor[IO](
+        driverClassName = dbConfig.driver,
+        url = dbConfig.url,
+        user = dbConfig.user.getOrElse(""),
+        pass = dbConfig.pass.fold("")(_.stringValue),
+        nonBlockingOpsECForDoobie
+      )
+    } yield transactor
+
+  private def applyMigrationToDb(dbConfig: DbConfig): IO[Unit] =
+    for {
       _ <- logger.debug(s"Applying migration for ${dbConfig.name}")
       migrationResult <- Fly4s(
         Fly4sConfig(
@@ -47,6 +60,5 @@ object Env {
         )
       ).validateAndMigrate[IO].result
       _ <- logger.info(s" Applied ${migrationResult.migrationsExecuted} migrations to ${dbConfig.name} database")
-    } yield Database.createTransactorUsing[IO](dbConfig)
-  }
+    } yield ()
 }

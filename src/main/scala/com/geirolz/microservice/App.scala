@@ -2,44 +2,46 @@ package com.geirolz.microservice
 
 import cats.effect.{IO, IOApp, Resource}
 import com.comcast.ip4s.{Hostname, Port}
+import com.geirolz.microservice.common.logging.FLog
 import com.geirolz.microservice.infra.config.Config
 import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.server.Server
-import org.typelevel.log4cats.SelfAwareStructuredLogger
-import org.typelevel.log4cats.slf4j.Slf4jLogger
 
-object App extends IOApp.Simple {
+object App extends IOApp.Simple with FLog.IOLog with FLog.IOResourceLog {
 
   import cats.implicits._
   import pureconfig._
   import pureconfig.generic.auto._
 
-  implicit val logger: SelfAwareStructuredLogger[IO] = Slf4jLogger.getLogger[IO]
-
   override def run: IO[Unit] =
-    (for {
-      _ <- logger.info("Starting application...")
+    (
+      for {
+        //---------------- CONFIGURATION ----------------
+        _      <- resLogger.info("Loading configuration...")
+        config <- loadConfiguration
+        _      <- resLogger.info(config.show)
+        _      <- resLogger.info("Configuration successfully loaded.")
 
-      //---------------- CONFIGURATION ----------------
-      _      <- logger.info("Loading configuration...")
-      config <- loadConfiguration
-      _      <- logger.info(config.show)
-      _      <- logger.info("Configuration successfully loaded.")
+        //-------------------- ENV ----------------------
+        _   <- resLogger.info("Building environment...")
+        env <- Env.load(config)
+        _   <- resLogger.info("Environment successfully built.")
 
-      //-------------------- ENV ----------------------
-      _   <- logger.info("Building environment...")
-      env <- Env.load(config)
-      _   <- logger.info("Environment successfully built.")
+        //-------------------- SERVER ----------------------
+        _ <- resLogger.info("Building server...")
+        server = buildServer(config, env)
+        _ <- resLogger.info("Server successfully built.")
+      } yield server
+    ).use(server => {
+      logger.info("Starting application...") >> server.useForever
+    })
 
-      //------------------- SERVER --------------------
-      _ <- logger.info("Building app server...")
-      server = buildServer(config, env)
-    } yield server).flatMap(_.useForever)
-
-  private def loadConfiguration: IO[Config] =
-    ConfigSource.default.load[Config] match {
-      case Left(failures) => IO.raiseError(new RuntimeException(failures.prettyPrint()))
-      case Right(config)  => IO.pure(config)
+  private def loadConfiguration: Resource[IO, Config] =
+    Resource.eval {
+      ConfigSource.default.load[Config] match {
+        case Left(failures) => IO.raiseError(new RuntimeException(failures.prettyPrint()))
+        case Right(config)  => IO.pure(config)
+      }
     }
 
   private def buildServer(config: Config, env: Env): Resource[IO, Server] =
