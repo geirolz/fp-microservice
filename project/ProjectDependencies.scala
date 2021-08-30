@@ -63,7 +63,7 @@ object ProjectDependencies {
 
   //externals services
   private val db = {
-    val doobieVersion = "1.0.0-M5"
+    val doobieVersion = "1.0.0-RC1"
     Seq(
       "com.github.geirolz" %% "fly4s-core" % "0.0.2",
       "org.tpolecat" %% "doobie-core" % doobieVersion,
