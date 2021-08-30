@@ -2,12 +2,12 @@ package com.geirolz.microservice
 
 import cats.effect.{IO, IOApp, Resource}
 import com.comcast.ip4s.{Hostname, Port}
-import com.geirolz.microservice.common.logging.FLog
+import com.geirolz.microservice.common.logging.Logging
 import com.geirolz.microservice.infra.config.Config
 import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.server.Server
 
-object App extends IOApp.Simple with FLog.IOLog with FLog.IOResourceLog {
+object App extends IOApp.Simple with Logging.IOLog with Logging.IOResourceLog {
 
   import cats.implicits._
   import pureconfig._
@@ -17,20 +17,20 @@ object App extends IOApp.Simple with FLog.IOLog with FLog.IOResourceLog {
     (
       for {
         //---------------- CONFIGURATION ----------------
-        _      <- resLogger.info("Loading configuration...")
+        _      <- resourceLogger.info("Loading configuration...")
         config <- loadConfiguration
-        _      <- resLogger.info(config.show)
-        _      <- resLogger.info("Configuration successfully loaded.")
+        _      <- resourceLogger.info(config.show)
+        _      <- resourceLogger.info("Configuration successfully loaded.")
 
         //-------------------- ENV ----------------------
-        _   <- resLogger.info("Building environment...")
+        _   <- resourceLogger.info("Building environment...")
         env <- Env.load(config)
-        _   <- resLogger.info("Environment successfully built.")
+        _   <- resourceLogger.info("Environment successfully built.")
 
         //-------------------- SERVER ----------------------
-        _ <- resLogger.info("Building server...")
+        _ <- resourceLogger.info("Building server...")
         server = buildServer(config, env)
-        _ <- resLogger.info("Server successfully built.")
+        _ <- resourceLogger.info("Server successfully built.")
       } yield server
     ).use(server => {
       logger.info("Starting application...") >> server.useForever

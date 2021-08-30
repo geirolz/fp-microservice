@@ -1,7 +1,7 @@
 package com.geirolz.microservice.infra.route
 
 import com.geirolz.microservice.infra.route.endpoint.user.contract.UserContract
-import com.geirolz.microservice.model.datatype.UserId
+import com.geirolz.microservice.model.values.UserId
 import com.geirolz.microservice.model.User
 import com.geirolz.microservice.service.UserService
 import org.scalatest.matchers.should.Matchers

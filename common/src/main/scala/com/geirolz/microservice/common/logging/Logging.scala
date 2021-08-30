@@ -5,7 +5,7 @@ import cats.effect.{IO, Resource}
 import org.typelevel.log4cats.SelfAwareStructuredLogger
 import org.typelevel.log4cats.slf4j.Slf4jLogger
 
-object FLog {
+object Logging {
 
   trait FLogSupport {
     def logger[F[_]: SelfAwareStructuredLogger]: SelfAwareStructuredLogger[F] = implicitly[SelfAwareStructuredLogger[F]]
@@ -16,7 +16,7 @@ object FLog {
   }
 
   trait IOResourceLog extends FLogSupport { this: IOLog =>
-    implicit protected val resLogger: SelfAwareStructuredLogger[Resource[IO, *]] =
+    implicit protected val resourceLogger: SelfAwareStructuredLogger[Resource[IO, *]] =
       logger.mapK(new FunctionK[IO, Resource[IO, *]] {
         override def apply[A](fa: IO[A]): Resource[IO, A] = Resource.eval(fa)
       })

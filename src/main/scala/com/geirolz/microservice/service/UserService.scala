@@ -3,7 +3,7 @@ package com.geirolz.microservice.service
 import cats.effect.IO
 import com.geirolz.microservice.external.repository.UserRepository
 import com.geirolz.microservice.model.User
-import com.geirolz.microservice.model.datatype.UserId
+import com.geirolz.microservice.model.values.UserId
 
 trait UserService {
   def getById(id: UserId): IO[Option[User]]
