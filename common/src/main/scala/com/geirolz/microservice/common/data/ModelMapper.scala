@@ -65,8 +65,8 @@ object ModelMapper extends ModelScopeMapperSyntax {
 sealed trait ModelScopeMapperSyntax {
   implicit class ModelScopeMapperSyntaxOps[A](a: A) {
     def toScope[F[_], S <: Scope](implicit m: ModelMapper[F, S, A, ?]): F[m.TargetType] = m(a)
-    def toScopeId[S <: Scope](implicit m: ModelMapperId[S, A, ?]): m.TargetType         = m(a)
-    def toScopeIO[S <: Scope](implicit m: ModelMapperIO[S, A, ?]): IO[m.TargetType]     = m(a)
+    def toScopeId[S <: Scope](implicit m: ModelMapperId[S, A, ?]): m.TargetType = m(a)
+    def toScopeIO[S <: Scope](implicit m: ModelMapperIO[S, A, ?]): IO[m.TargetType] = m(a)
     def toScopeIOLifted[F[_]: LiftIO, S <: Scope](implicit
       m: ModelMapperIO[S, A, ?]
     ): F[m.TargetType] =
