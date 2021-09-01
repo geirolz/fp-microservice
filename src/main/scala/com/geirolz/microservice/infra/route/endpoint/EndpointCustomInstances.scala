@@ -1,6 +1,6 @@
 package com.geirolz.microservice.infra.route.endpoint
 
-import com.geirolz.microservice.model.datatype.UserId
+import com.geirolz.microservice.model.values.UserId
 import io.circe.{Decoder, Encoder}
 import shapeless.Unwrapped
 import sttp.tapir.CodecFormat.TextPlain

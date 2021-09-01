@@ -2,7 +2,7 @@ package com.geirolz.microservice
 
 import cats.effect.{IO, Resource}
 import com.geirolz.microservice.common.config.DbConfig
-import com.geirolz.microservice.common.logging.FLog
+import com.geirolz.microservice.common.logging.Logging
 import com.geirolz.microservice.external.repository.UserRepository
 import com.geirolz.microservice.infra.config.Config
 import com.geirolz.microservice.service.UserService
@@ -14,7 +14,7 @@ import fly4s.core.data.{Fly4sConfig, Location}
 case class Env(
   userService: UserService
 )
-object Env extends FLog.IOLog with FLog.IOResourceLog {
+object Env extends Logging.IOLog with Logging.IOResourceLog {
 
   import fly4s.implicits._
 
@@ -22,11 +22,11 @@ object Env extends FLog.IOLog with FLog.IOResourceLog {
     for {
 
       //-------------------- DB --------------------
-      _ <- resLogger.debug("Initializing databases...")
+      _ <- resourceLogger.info("Initializing databases...")
       //main
       mainDbTransactor <- createDbTransactor(config.db.main)
         .evalTap(_ => applyMigrationToDb(config.db.main))
-      _ <- resLogger.info("Databases successfully initialized.")
+      _ <- resourceLogger.info("Databases successfully initialized.")
 
       //----------------- REPOSITORY ---------------
       userRepository = UserRepository(mainDbTransactor)

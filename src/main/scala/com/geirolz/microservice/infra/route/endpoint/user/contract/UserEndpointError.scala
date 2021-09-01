@@ -1,6 +1,6 @@
 package com.geirolz.microservice.infra.route.endpoint.user.contract
 
-import com.geirolz.microservice.model.datatype.UserId
+import com.geirolz.microservice.model.values.UserId
 
 private[route] sealed trait UserEndpointError
 private[route] object UserEndpointError {

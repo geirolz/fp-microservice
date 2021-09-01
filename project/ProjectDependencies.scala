@@ -17,7 +17,7 @@ object ProjectDependencies {
   private val effects = {
     Seq(
       "org.typelevel" %% "cats-core" % "2.6.1",
-      "org.typelevel" %% "cats-effect" % "3.2.3"
+      "org.typelevel" %% "cats-effect" % "3.2.5"
     )
   }
 
@@ -26,8 +26,8 @@ object ProjectDependencies {
   )
 
   private val http = {
-    val http4sVersion = "0.23.1"
-    val tapirVersion = "0.19.0-M7"
+    val http4sVersion = "0.23.2"
+    val tapirVersion = "0.19.0-M4"
 
     Seq(
       //HTTP
@@ -63,7 +63,7 @@ object ProjectDependencies {
 
   //externals services
   private val db = {
-    val doobieVersion = "1.0.0-M5"
+    val doobieVersion = "1.0.0-RC1"
     Seq(
       "com.github.geirolz" %% "fly4s-core" % "0.0.2",
       "org.tpolecat" %% "doobie-core" % doobieVersion,
