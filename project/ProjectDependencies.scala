@@ -57,7 +57,7 @@ object ProjectDependencies {
   )
 
   private val tests = Seq(
-    "org.scalactic" %% "scalactic" % "3.2.9",
+    "org.scalactic" %% "scalactic" % "3.2.10",
     "org.scalatest" %% "scalatest" % "3.2.9" % Test
   )
 
