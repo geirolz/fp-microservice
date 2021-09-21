@@ -17,7 +17,7 @@ object ProjectDependencies {
   private val effects = {
     Seq(
       "org.typelevel" %% "cats-core" % "2.6.1",
-      "org.typelevel" %% "cats-effect" % "3.2.8"
+      "org.typelevel" %% "cats-effect" % "3.2.9"
     )
   }
 
@@ -26,8 +26,8 @@ object ProjectDependencies {
   )
 
   private val http = {
-    val http4sVersion = "0.23.3"
-    val tapirVersion = "0.19.0-M9"
+    val http4sVersion = "0.23.4"
+    val tapirVersion = "0.19.0-M4"
 
     Seq(
       //HTTP
@@ -57,8 +57,8 @@ object ProjectDependencies {
   )
 
   private val tests = Seq(
-    "org.scalactic" %% "scalactic" % "3.2.9",
-    "org.scalatest" %% "scalatest" % "3.2.9" % Test
+    "org.scalactic" %% "scalactic" % "3.2.10",
+    "org.scalatest" %% "scalatest" % "3.2.10" % Test
   )
 
   //externals services
