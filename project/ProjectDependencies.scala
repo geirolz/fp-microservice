@@ -22,7 +22,7 @@ object ProjectDependencies {
   }
 
   private val config = Seq(
-    "com.github.pureconfig" %% "pureconfig" % "0.16.0"
+    "com.github.pureconfig" %% "pureconfig" % "0.17.0"
   )
 
   private val http = {
