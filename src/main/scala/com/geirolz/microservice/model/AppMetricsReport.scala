@@ -12,7 +12,7 @@ object AppMetricsReport {
   def fromCurrentRuntime: IO[AppMetricsReport] = IO {
 
     val runtime = Runtime.getRuntime
-    val mb = 1024 * 1024
+    val mb      = 1024 * 1024
 
     AppMetricsReport(
       (runtime.totalMemory - runtime.freeMemory) / mb,

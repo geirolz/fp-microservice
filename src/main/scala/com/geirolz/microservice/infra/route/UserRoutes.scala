@@ -13,14 +13,15 @@ class UserRoutes private (userService: UserService) {
   import com.geirolz.microservice.infra.route.endpoint.user.contract.UserContract._
   import ModelMapper._
 
-  private val getById: HttpRoutes[IO] = Http4sServerInterpreter[IO]().toRoutes(UserEndpointApi.getById)(userId => {
-    userService
-      .getById(userId)
-      .map {
-        case Some(user) => Right(user.toScopeId[Endpoint])
-        case None       => Left(UserEndpointError.UserNotFound(userId))
-      }
-  })
+  private val getById: HttpRoutes[IO] =
+    Http4sServerInterpreter[IO]().toRoutes(UserEndpointApi.getById)(userId => {
+      userService
+        .getById(userId)
+        .map {
+          case Some(user) => Right(user.toScopeId[Endpoint])
+          case None       => Left(UserEndpointError.UserNotFound(userId))
+        }
+    })
 
   val routes: HttpRoutes[IO] = getById
 }

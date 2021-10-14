@@ -1,7 +1,5 @@
 package com.geirolz.microservice.model
 
-import com.geirolz.microservice.BuildInfo
-
 import scala.util.Try
 
 case class AppInfo(
@@ -14,10 +12,10 @@ case class AppInfo(
 object AppInfo {
   val value: AppInfo =
     AppInfo(
-      name = BuildInfo.name,
-      version = BuildInfo.version,
+      name         = BuildInfo.name,
+      version      = BuildInfo.version,
       scalaVersion = BuildInfo.scalaVersion,
-      sbtVersion = BuildInfo.sbtVersion,
-      javaVersion = Try(Option(System.getProperty("java.version"))).toOption.flatten
+      sbtVersion   = BuildInfo.sbtVersion,
+      javaVersion  = Try(Option(System.getProperty("java.version"))).toOption.flatten
     )
 }

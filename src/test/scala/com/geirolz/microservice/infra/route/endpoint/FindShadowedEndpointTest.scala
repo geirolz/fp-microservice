@@ -18,19 +18,27 @@ class FindShadowedEndpointTest extends AnyWordSpec with Matchers {
   }
 }
 
-case class ShadowedEndpointException(endpoints: List[Endpoint[_, _, _, _]], ses: Set[ShadowedEndpoint])
-    extends RuntimeException(s"${ses.size} endpoints shadowed.\n${ShadowedEndpoints.asPrettyString(ses)}")
+case class ShadowedEndpointException(
+  endpoints: List[Endpoint[_, _, _, _]],
+  ses: Set[ShadowedEndpoint]
+) extends RuntimeException(
+      s"${ses.size} endpoints shadowed.\n${ShadowedEndpoints.asPrettyString(ses)}"
+    )
 
 object ShadowedEndpoints {
 
-  def check[F[_]](endpoints: List[Endpoint[_, _, _, _]])(implicit F: MonadError[F, Throwable]): F[Unit] = {
+  def check[F[_]](
+    endpoints: List[Endpoint[_, _, _, _]]
+  )(implicit F: MonadError[F, Throwable]): F[Unit] = {
     find(endpoints) match {
       case ses if ses.isEmpty => F.pure(())
       case ses                => F.raiseError(ShadowedEndpointException(endpoints, ses))
     }
   }
 
-  def find(endpoints: List[Endpoint[_, _, _, _]]): Set[ShadowedEndpoint] = FindShadowedEndpoints(endpoints)
+  def find(endpoints: List[Endpoint[_, _, _, _]]): Set[ShadowedEndpoint] = FindShadowedEndpoints(
+    endpoints
+  )
 
   def asPrettyString(ses: Set[ShadowedEndpoint]): String =
     ses.map(_.toString()).mkString("\n")

@@ -25,8 +25,8 @@ object Env extends Logging.IOLog with Logging.IOResourceLog {
       _ <- resourceLogger.info("Initializing databases...")
       //main
       mainDbTransactor <- createDbTransactor(config.db.main)
-        .evalTap(_ => applyMigrationToDb(config.db.main))
-      _ <- resourceLogger.info("Databases successfully initialized.")
+      _                <- applyMigrationToDb(config.db.main)
+      _                <- resourceLogger.info("Databases successfully initialized.")
 
       //----------------- REPOSITORY ---------------
       userRepository = UserRepository(mainDbTransactor)
@@ -40,25 +40,31 @@ object Env extends Logging.IOLog with Logging.IOResourceLog {
       nonBlockingOpsECForDoobie <- ExecutionContexts.fixedThreadPool[IO](32)
       transactor <- HikariTransactor.newHikariTransactor[IO](
         driverClassName = dbConfig.driver,
-        url = dbConfig.url,
-        user = dbConfig.user.getOrElse(""),
-        pass = dbConfig.pass.fold("")(_.stringValue),
+        url             = dbConfig.url,
+        user            = dbConfig.user.getOrElse(""),
+        pass            = dbConfig.pass.fold("")(_.stringValue),
         nonBlockingOpsECForDoobie
       )
     } yield transactor
 
-  private def applyMigrationToDb(dbConfig: DbConfig): IO[Unit] =
-    for {
-      _ <- logger.debug(s"Applying migration for ${dbConfig.name}")
-      migrationResult <- Fly4s(
-        Fly4sConfig(
-          url = dbConfig.url,
-          user = dbConfig.user,
-          password = dbConfig.pass.map(_.stringValue.toCharArray),
-          table = dbConfig.migrationsTable,
+  private def applyMigrationToDb(dbConfig: DbConfig): Resource[IO, IO[Unit]] =
+    Fly4s
+      .make[IO](
+        url      = dbConfig.url,
+        user     = dbConfig.user,
+        password = dbConfig.pass.map(_.stringValue.toCharArray),
+        config = Fly4sConfig(
+          table     = dbConfig.migrationsTable,
           locations = Location.ofAll(dbConfig.migrationsLocations: _*)
         )
-      ).validateAndMigrate[IO].result
-      _ <- logger.info(s" Applied ${migrationResult.migrationsExecuted} migrations to ${dbConfig.name} database")
-    } yield ()
+      )
+      .map(fl4s =>
+        for {
+          _               <- logger.debug(s"Applying migration for ${dbConfig.name}")
+          migrationResult <- fl4s.validateAndMigrate[IO].result
+          _ <- logger.info(
+            s" Applied ${migrationResult.migrationsExecuted} migrations to ${dbConfig.name} database"
+          )
+        } yield ()
+      )
 }

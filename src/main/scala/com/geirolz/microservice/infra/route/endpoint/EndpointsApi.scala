@@ -19,8 +19,8 @@ private[route] object EndpointsApi {
   object OpenApi {
     val yaml: String = OpenAPIDocsInterpreter()
       .toOpenAPI(
-        es = EndpointsApi.all,
-        title = AppInfo.value.name,
+        es      = EndpointsApi.all,
+        title   = AppInfo.value.name,
         version = AppInfo.value.version
       )
       .toYaml
