@@ -17,11 +17,11 @@ private[route] object AppInfoContract {
   implicit val appInfoContractEndpointMapper: ModelMapperId[Endpoint, AppInfo, AppInfoContract] =
     ModelMapper.lift { c =>
       AppInfoContract(
-        name = c.name,
-        version = c.version,
+        name         = c.name,
+        version      = c.version,
         scalaVersion = c.scalaVersion,
-        sbtVersion = c.sbtVersion,
-        javaVersion = c.javaVersion
+        sbtVersion   = c.sbtVersion,
+        javaVersion  = c.javaVersion
       )
     }
 }

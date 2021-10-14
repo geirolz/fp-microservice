@@ -8,7 +8,8 @@ import org.typelevel.log4cats.slf4j.Slf4jLogger
 object Logging {
 
   trait FLogSupport {
-    def logger[F[_]: SelfAwareStructuredLogger]: SelfAwareStructuredLogger[F] = implicitly[SelfAwareStructuredLogger[F]]
+    def logger[F[_]: SelfAwareStructuredLogger]: SelfAwareStructuredLogger[F] =
+      implicitly[SelfAwareStructuredLogger[F]]
   }
 
   trait IOLog extends FLogSupport {

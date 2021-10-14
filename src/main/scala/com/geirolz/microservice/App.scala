@@ -32,9 +32,9 @@ object App extends IOApp.Simple with Logging.IOLog with Logging.IOResourceLog {
         server = buildServer(config, env)
         _ <- resourceLogger.info("Server successfully built.")
       } yield server
-    ).use(server => {
+    ).use { server =>
       logger.info("Starting application...") >> server.useForever
-    })
+    }
 
   private def loadConfiguration: Resource[IO, Config] =
     Resource.eval {

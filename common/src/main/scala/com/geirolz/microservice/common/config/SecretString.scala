@@ -5,7 +5,7 @@ import io.circe.Encoder
 import pureconfig.ConfigReader
 
 class SecretString private (value: Array[Char]) {
-  def stringValue: String = value.mkString
+  def stringValue: String       = value.mkString
   override def toString: String = SecretString.placeHolder
 }
 object SecretString {

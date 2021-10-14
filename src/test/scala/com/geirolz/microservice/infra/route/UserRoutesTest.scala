@@ -27,8 +27,8 @@ class UserRoutesTest extends AnyWordSpec with Matchers {
             IO.pure(
               Some(
                 User(
-                  id = id,
-                  name = "Mario",
+                  id      = id,
+                  name    = "Mario",
                   surname = "Rossi"
                 )
               )
@@ -38,7 +38,7 @@ class UserRoutesTest extends AnyWordSpec with Matchers {
         val routes: HttpRoutes[IO] = UserRoutes.make(userService).routes
         val request: Request[IO] = Request(
           method = Method.GET,
-          uri = uri"api/v1/user/1"
+          uri    = uri"api/v1/user/1"
         )
 
         //exec
@@ -47,8 +47,8 @@ class UserRoutesTest extends AnyWordSpec with Matchers {
         //asserts
         response.status shouldBe Status.Ok
         response.decodeJson[UserContract].unsafeRunSync() shouldBe UserContract(
-          id = UserId(1),
-          name = "Mario",
+          id      = UserId(1),
+          name    = "Mario",
           surname = "Rossi"
         )
       }

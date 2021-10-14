@@ -27,7 +27,7 @@ object ProjectDependencies {
 
   private val http = {
     val http4sVersion = "0.23.6"
-    val tapirVersion = "0.19.0-M4"
+    val tapirVersion  = "0.19.0-M4"
 
     Seq(
       //HTTP
@@ -65,7 +65,7 @@ object ProjectDependencies {
   private val db = {
     val doobieVersion = "1.0.0-RC1"
     Seq(
-      "com.github.geirolz" %% "fly4s-core" % "0.0.2",
+      "com.github.geirolz" %% "fly4s-core" % "0.0.3",
       "org.tpolecat" %% "doobie-core" % doobieVersion,
       "org.tpolecat" %% "doobie-hikari" % doobieVersion,
       "org.tpolecat" %% "doobie-h2" % doobieVersion,

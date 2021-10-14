@@ -24,12 +24,12 @@ object Routes {
       { http: HttpApp[IO] =>
         RequestLogger.httpApp(
           logHeaders = loggingConfig.request.logHeaders,
-          logBody = loggingConfig.request.logBody
+          logBody    = loggingConfig.request.logBody
         )(http)
       } andThen { http: HttpApp[IO] =>
         ResponseLogger.httpApp(
           logHeaders = loggingConfig.response.logHeaders,
-          logBody = loggingConfig.response.logBody
+          logBody    = loggingConfig.response.logBody
         )(http)
       }
     }
