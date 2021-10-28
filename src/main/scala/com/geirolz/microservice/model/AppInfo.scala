@@ -1,6 +1,7 @@
 package com.geirolz.microservice.model
 
 import scala.util.Try
+import com.geirolz.microservice.BuildInfo
 
 case class AppInfo(
   name: String,

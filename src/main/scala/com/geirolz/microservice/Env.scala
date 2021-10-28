@@ -55,7 +55,7 @@ object Env extends Logging.IOLog with Logging.IOResourceLog {
         password = dbConfig.pass.map(_.stringValue.toCharArray),
         config = Fly4sConfig(
           table     = dbConfig.migrationsTable,
-          locations = Location.ofAll(dbConfig.migrationsLocations: _*)
+          locations = Location.of(dbConfig.migrationsLocations: _*)
         )
       )
       .map(fl4s =>
