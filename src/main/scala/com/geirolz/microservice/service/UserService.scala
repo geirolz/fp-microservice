@@ -10,7 +10,7 @@ trait UserService {
 }
 object UserService {
 
-  //TODO: TBD
+  // TODO: TBD
   def apply(userRepository: UserRepository): UserService = new UserService {
     override def getById(id: UserId): IO[Option[User]] =
       userRepository.getById(id)

@@ -21,7 +21,7 @@ class UserRoutesTest extends AnyWordSpec with Matchers {
     "invoked with existing user Id" should {
       "reply with the user information" in {
 
-        //given
+        // given
         val userService = new UserService {
           override def getById(id: UserId): IO[Option[User]] =
             IO.pure(
@@ -41,10 +41,10 @@ class UserRoutesTest extends AnyWordSpec with Matchers {
           uri    = uri"api/v1/user/1"
         )
 
-        //exec
+        // exec
         val response: Response[IO] = routes.orNotFound.run(request).unsafeRunSync()
 
-        //asserts
+        // asserts
         response.status shouldBe Status.Ok
         response.decodeJson[UserContract].unsafeRunSync() shouldBe UserContract(
           id      = UserId(1),

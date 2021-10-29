@@ -17,15 +17,15 @@ lazy val common = (project in file("common"))
 
 //------------------------------------------------------------------------------
 lazy val commonSettings = Seq(
-  //scala
+  // scala
   scalaVersion := "2.13.6",
   scalacOptions ++= scalacSettings(scalaVersion.value),
-  //dependencies
+  // dependencies
   resolvers ++= ProjectResolvers.all,
   libraryDependencies ++= ProjectDependencies.common,
-  //fmt
+  // fmt
   scalafmtOnCompile := true,
-  //plugins
+  // plugins
   addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.13.2" cross CrossVersion.full),
   addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1")
 )
@@ -72,5 +72,5 @@ def scalacSettings(scalaVersion: String): Seq[String] =
 //    "-Ywarn-unused:explicits", // Warn if a explicit value parameter is unused.
 //    "-Ywarn-unused:patvars", // Warn if a variable bound in a pattern is unused.
 //    "-Ywarn-unused:privates", // Warn if a private member is unused.
-    "-Ywarn-macros:after" //Tells the compiler to make the unused checks after macro expansion
+    "-Ywarn-macros:after" // Tells the compiler to make the unused checks after macro expansion
   )
