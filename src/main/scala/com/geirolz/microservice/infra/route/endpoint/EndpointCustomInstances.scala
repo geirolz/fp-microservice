@@ -20,7 +20,7 @@ sealed trait EndpointCustomCodecsInstances extends TapirCodecCats {
 
   import sttp.tapir._
 
-  //tapir
+  // tapir
   implicit val codecForUserId: Codec[String, UserId, TextPlain] = Codec.long.map(UserId)(_.value)
 }
 

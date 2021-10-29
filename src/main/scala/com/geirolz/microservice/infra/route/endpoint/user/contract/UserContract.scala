@@ -13,7 +13,7 @@ private[route] object UserContract {
   import io.circe.generic.auto._
   import io.circe.generic.semiauto._
 
-  //circe
+  // circe
   implicit val circeUserContractEncoder: Encoder[UserContract] = deriveEncoder[UserContract]
   implicit val circeUserContractDecoder: Decoder[UserContract] = deriveDecoder[UserContract]
 

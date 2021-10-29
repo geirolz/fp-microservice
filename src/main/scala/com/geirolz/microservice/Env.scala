@@ -21,14 +21,14 @@ object Env extends Logging.IOLog with Logging.IOResourceLog {
   def load(config: Config): Resource[IO, Env] =
     for {
 
-      //-------------------- DB --------------------
+      // -------------------- DB --------------------
       _ <- resourceLogger.info("Initializing databases...")
-      //main
+      // main
       mainDbTransactor <- createDbTransactor(config.db.main)
       _                <- applyMigrationToDb(config.db.main)
       _                <- resourceLogger.info("Databases successfully initialized.")
 
-      //----------------- REPOSITORY ---------------
+      // ----------------- REPOSITORY ---------------
       userRepository = UserRepository(mainDbTransactor)
 
     } yield Env(

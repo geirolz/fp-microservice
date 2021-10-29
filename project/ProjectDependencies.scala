@@ -9,7 +9,7 @@ object ProjectDependencies {
     json,
     logging,
     tests,
-    //externals services
+    // externals services
     db,
     rabbitMq
   ).flatten
@@ -30,11 +30,11 @@ object ProjectDependencies {
     val tapirVersion  = "0.19.0-M4"
 
     Seq(
-      //HTTP
+      // HTTP
       "org.http4s" %% "http4s-dsl" % http4sVersion,
       "org.http4s" %% "http4s-circe" % http4sVersion,
       "org.http4s" %% "http4s-ember-server" % http4sVersion,
-      //TAPIR
+      // TAPIR
       "com.softwaremill.sttp.tapir" %% "tapir-core" % tapirVersion,
       "com.softwaremill.sttp.tapir" %% "tapir-http4s-server" % tapirVersion,
       "com.softwaremill.sttp.tapir" %% "tapir-json-circe" % tapirVersion,
@@ -61,7 +61,7 @@ object ProjectDependencies {
     "org.scalatest" %% "scalatest" % "3.2.10" % Test
   )
 
-  //externals services
+  // externals services
   private val db = {
     val doobieVersion = "1.0.0-RC1"
     Seq(

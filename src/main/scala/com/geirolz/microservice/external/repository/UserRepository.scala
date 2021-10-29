@@ -13,7 +13,7 @@ trait UserRepository {
 }
 object UserRepository {
 
-  //TODO: TBD
+  // TODO: TBD
   def apply(dbTransactor: Transactor[IO]): UserRepository = new UserRepository {
 
     import cats.implicits._

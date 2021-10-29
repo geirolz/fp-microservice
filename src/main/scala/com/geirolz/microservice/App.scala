@@ -16,18 +16,18 @@ object App extends IOApp.Simple with Logging.IOLog with Logging.IOResourceLog {
   override def run: IO[Unit] =
     (
       for {
-        //---------------- CONFIGURATION ----------------
+        // ---------------- CONFIGURATION ----------------
         _      <- resourceLogger.info("Loading configuration...")
         config <- loadConfiguration
         _      <- resourceLogger.info(config.show)
         _      <- resourceLogger.info("Configuration successfully loaded.")
 
-        //-------------------- ENV ----------------------
+        // -------------------- ENV ----------------------
         _   <- resourceLogger.info("Building environment...")
         env <- Env.load(config)
         _   <- resourceLogger.info("Environment successfully built.")
 
-        //-------------------- SERVER ----------------------
+        // -------------------- SERVER ----------------------
         _ <- resourceLogger.info("Building server...")
         server = buildServer(config, env)
         _ <- resourceLogger.info("Server successfully built.")
