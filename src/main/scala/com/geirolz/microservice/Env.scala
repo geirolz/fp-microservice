@@ -9,6 +9,8 @@ import doobie.hikari.HikariTransactor
 import fly4s.core.Fly4s
 import fly4s.core.data.{Fly4sConfig, Location}
 
+import javax.sql.DataSource
+
 case class Env(
   userService: UserService
 )
@@ -22,9 +24,9 @@ object Env extends Logging.IOLog with Logging.IOResourceLog {
       // -------------------- DB --------------------
       _ <- resourceLogger.info("Initializing databases...")
       // main
-      mainDbTransactor <- createDbTransactor(config.db.main)
-      _                <- applyMigrationToDb(config.db.main)
-      _                <- resourceLogger.info("Databases successfully initialized.")
+      mainDbTransactor: HikariTransactor[IO] <- createDbTransactor(config.db.main)
+      _ <- applyMigrationToDb(mainDbTransactor.kernel, config.db.main)
+      _ <- resourceLogger.info("Databases successfully initialized.")
 
       // ----------------- REPOSITORY ---------------
       userRepository = UserRepository(mainDbTransactor)
@@ -36,21 +38,23 @@ object Env extends Logging.IOLog with Logging.IOResourceLog {
   private def createDbTransactor(dbConfig: DbConfig): Resource[IO, HikariTransactor[IO]] =
     for {
       nonBlockingOpsECForDoobie <- ExecutionContexts.fixedThreadPool[IO](32)
+      dbPass                    <- dbConfig.pass.map(_.resource[IO]()).getOrElse(Resource.pure(""))
       transactor <- HikariTransactor.newHikariTransactor[IO](
         driverClassName = dbConfig.driver,
         url             = dbConfig.url,
         user            = dbConfig.user.getOrElse(""),
-        pass            = dbConfig.pass.fold("")(_.stringValue),
+        pass            = dbPass,
         nonBlockingOpsECForDoobie
       )
     } yield transactor
 
-  private def applyMigrationToDb(dbConfig: DbConfig): Resource[IO, IO[Unit]] =
+  private def applyMigrationToDb(
+    datasource: DataSource,
+    dbConfig: DbConfig
+  ): Resource[IO, IO[Unit]] =
     Fly4s
-      .make[IO](
-        url      = dbConfig.url,
-        user     = dbConfig.user,
-        password = dbConfig.pass.map(_.stringValue.toCharArray),
+      .makeFor[IO](
+        IO.pure(datasource),
         config = Fly4sConfig(
           table     = dbConfig.migrationsTable,
           locations = Location.of(dbConfig.migrationsLocations*)

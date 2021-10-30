@@ -1,7 +1,7 @@
 package com.geirolz.microservice
 
 import cats.Show
-import com.geirolz.microservice.common.config.SecretString
+import com.geirolz.microservice.common.config.Secret
 
 case class Config(http: HttpConfig, db: DbConfigs)
 object Config {
@@ -22,7 +22,7 @@ case class DbConfig(
   driver: String,
   url: String,
   user: Option[String],
-  pass: Option[SecretString],
+  pass: Option[Secret],
   migrationsTable: String,
   migrationsLocations: List[String]
 )
