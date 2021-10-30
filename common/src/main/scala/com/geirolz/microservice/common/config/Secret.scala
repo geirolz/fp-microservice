@@ -3,19 +3,18 @@ package com.geirolz.microservice.common.config
 import cats.Show
 import cats.effect.{Async, Resource}
 import io.circe.Encoder
-import org.typelevel.log4cats.Logger
 import pureconfig.ConfigReader
 
 class Secret private (key: String, value: Array[Char]) {
 
   import cats.implicits.*
 
-  def resource[F[_]: Async: Logger](
-    logAction: Logger[F] => String => F[Unit] = l => l.info _
+  def resource[F[_]: Async](
+    logAction: String => F[Unit]
   ): Resource[F, String] = {
     var s = value.mkString
     Resource.make(
-      logAction(Logger[F])(s"Using secret '$key'").as(s)
+      logAction(s"Using secret '$key'").as(s)
     )(_ =>
       Async[F].delay {
         s = null

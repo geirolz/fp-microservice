@@ -38,7 +38,7 @@ object Env extends Logging.IOLog with Logging.IOResourceLog {
   private def createDbTransactor(dbConfig: DbConfig): Resource[IO, HikariTransactor[IO]] =
     for {
       nonBlockingOpsECForDoobie <- ExecutionContexts.fixedThreadPool[IO](32)
-      dbPass                    <- dbConfig.pass.map(_.resource[IO]()).getOrElse(Resource.pure(""))
+      dbPass <- dbConfig.pass.map(_.resource[IO](logger.info)).getOrElse(Resource.pure(""))
       transactor <- HikariTransactor.newHikariTransactor[IO](
         driverClassName = dbConfig.driver,
         url             = dbConfig.url,
