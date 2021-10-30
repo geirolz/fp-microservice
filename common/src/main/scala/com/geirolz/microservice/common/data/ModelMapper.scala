@@ -7,16 +7,22 @@ import com.geirolz.microservice.common.data.ModelMapper.{ModelMapperIO, ModelMap
 import scala.annotation.{implicitAmbiguous, implicitNotFound}
 
 trait Scope
-sealed trait Domain extends Scope
-sealed trait Persistence extends Scope
-sealed trait Endpoint extends Scope
-sealed trait Queue extends Scope
+object Scope {
+  sealed trait Domain extends Scope
+  sealed trait Persistence extends Scope
+  sealed trait Endpoint extends Scope
+  sealed trait Queue extends Scope
+  sealed trait EventIn extends Scope
+  sealed trait EventOut extends Scope
+  sealed trait ReadOp extends Scope
+  sealed trait WriteOp extends Scope
+}
 
 @implicitNotFound(msg = "Cannot find a mapper for the scope ${S}")
 @implicitAmbiguous(msg = "Multiple mapper for the same type ${M2} and same scope ${S}")
 final class ModelMapper[F[_], S <: Scope, A, B] private (mapper: A => F[B]) {
 
-  import cats.implicits._
+  import cats.implicits.*
 
   type TargetType = B
 
@@ -58,11 +64,11 @@ object ModelMapper extends ModelScopeMapperSyntax {
 
 sealed trait ModelScopeMapperSyntax {
   implicit class ModelScopeMapperSyntaxOps[A](a: A) {
-    def toScope[F[_], S <: Scope](implicit m: ModelMapper[F, S, A, _]): F[m.TargetType] = m(a)
-    def toScopeId[S <: Scope](implicit m: ModelMapperId[S, A, _]): m.TargetType         = m(a)
-    def toScopeIO[S <: Scope](implicit m: ModelMapperIO[S, A, _]): IO[m.TargetType]     = m(a)
+    def toScope[F[_], S <: Scope](implicit m: ModelMapper[F, S, A, ?]): F[m.TargetType] = m(a)
+    def toScopeId[S <: Scope](implicit m: ModelMapperId[S, A, ?]): m.TargetType         = m(a)
+    def toScopeIO[S <: Scope](implicit m: ModelMapperIO[S, A, ?]): IO[m.TargetType]     = m(a)
     def toScopeIOLifted[F[_]: LiftIO, S <: Scope](implicit
-      m: ModelMapperIO[S, A, _]
+      m: ModelMapperIO[S, A, ?]
     ): F[m.TargetType] =
       LiftIO[F].liftIO(m(a))
   }

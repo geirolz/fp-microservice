@@ -1,13 +1,13 @@
-package com.geirolz.microservice.infra.config
+package com.geirolz.microservice
 
 import cats.Show
-import com.geirolz.microservice.common.config.DbConfig
+import com.geirolz.microservice.common.config.SecretString
 
 case class Config(http: HttpConfig, db: DbConfigs)
 object Config {
 
-  import io.circe.generic.auto._
-  import io.circe.syntax._
+  import io.circe.generic.auto.*
+  import io.circe.syntax.*
 
   implicit val showInstanceForConfig: Show[Config] = _.asJson.toString()
 }
@@ -15,6 +15,16 @@ object Config {
 //db
 case class DbConfigs(
   main: DbConfig
+)
+
+case class DbConfig(
+  name: String,
+  driver: String,
+  url: String,
+  user: Option[String],
+  pass: Option[SecretString],
+  migrationsTable: String,
+  migrationsLocations: List[String]
 )
 
 //http

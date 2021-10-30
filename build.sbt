@@ -72,5 +72,7 @@ def scalacSettings(scalaVersion: String): Seq[String] =
 //    "-Ywarn-unused:explicits", // Warn if a explicit value parameter is unused.
 //    "-Ywarn-unused:patvars", // Warn if a variable bound in a pattern is unused.
 //    "-Ywarn-unused:privates", // Warn if a private member is unused.
-    "-Ywarn-macros:after" // Tells the compiler to make the unused checks after macro expansion
+    "-Ywarn-macros:after", //Tells the compiler to make the unused checks after macro expansion
+    "-Xsource:3",
+    "-P:kind-projector:underscore-placeholders"
   )

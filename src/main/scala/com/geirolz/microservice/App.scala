@@ -3,7 +3,7 @@ package com.geirolz.microservice
 import cats.effect.{IO, IOApp, Resource}
 import com.comcast.ip4s.{Hostname, Port}
 import com.geirolz.microservice.common.logging.Logging
-import com.geirolz.microservice.infra.config.Config
+import com.geirolz.microservice.Config
 import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.server.Server
 

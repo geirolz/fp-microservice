@@ -2,8 +2,8 @@ package com.geirolz.microservice
 
 import cats.effect.IO
 import cats.implicits.toSemigroupKOps
-import com.geirolz.microservice.infra.config.Config
-import com.geirolz.microservice.infra.route.{MainRoutes, UserRoutes}
+import com.geirolz.microservice.Config
+import com.geirolz.microservice.route.{MainRoutes, UserRoutes}
 import org.http4s.{HttpApp, HttpRoutes}
 import org.http4s.server.middleware.{RequestLogger, ResponseLogger}
 

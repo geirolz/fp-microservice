@@ -15,16 +15,18 @@ with `sbt run`.
 
 To customize this project please read the [guide](doc/guide.md)
 
-### Technologies
+### Technologies stack
 - [x] Effects                               -> [cats-effect](https://github.com/typelevel/cats-effect)
 - [x] Logging                               -> [log4cats](https://github.com/typelevel/log4cats)
 - [x] Jdbc (plain, transactions, etc..)     -> [doobie](https://github.com/tpolecat/doobie)
-- [x] Db migration                          -> [flyway](https://github.com/flyway/flyway)
+- [x] Db migration                          -> [fly4s](https://github.com/geirolz/fly4s)
 - [x] Http client and server                -> [http4s](https://github.com/http4s/http4s)
 - [x] Http route definitions                -> [tapir](https://github.com/softwaremill/tapir)
 - [x] Config                                -> [pureconfig](https://github.com/pureconfig/pureconfig)
-- [ ] Json (with decent errors)             -> [spray-json](https://github.com/spray/spray-json) till circe will have decent errors
-- [ ] Rabbit Fs2
+- [x] Json                                  -> [circe](https://github.com/circe/circe)
+- [x] Tests                                 -> [scalatest](https://github.com/scalatest/scalatest)
+- [ ] Rabbit Client                         -> [fs2-rabbit](https://github.com/profunktor/fs2-rabbit)
+- [ ] Kafka Client                          -> [fs2-kafka](https://github.com/fd4s/fs2-kafka)
 - [ ] g8
 - [ ] Docker
 - [ ] Scala 3

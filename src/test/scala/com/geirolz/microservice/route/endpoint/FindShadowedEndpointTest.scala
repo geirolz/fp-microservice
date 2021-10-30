@@ -1,4 +1,4 @@
-package com.geirolz.microservice.infra.route.endpoint
+package com.geirolz.microservice.route.endpoint
 
 import cats.MonadError
 import cats.effect.IO
@@ -19,7 +19,7 @@ class FindShadowedEndpointTest extends AnyWordSpec with Matchers {
 }
 
 case class ShadowedEndpointException(
-  endpoints: List[Endpoint[_, _, _, _]],
+  endpoints: List[Endpoint[?, ?, ?, ?]],
   ses: Set[ShadowedEndpoint]
 ) extends RuntimeException(
       s"${ses.size} endpoints shadowed.\n${ShadowedEndpoints.asPrettyString(ses)}"
@@ -28,7 +28,7 @@ case class ShadowedEndpointException(
 object ShadowedEndpoints {
 
   def check[F[_]](
-    endpoints: List[Endpoint[_, _, _, _]]
+    endpoints: List[Endpoint[?, ?, ?, ?]]
   )(implicit F: MonadError[F, Throwable]): F[Unit] = {
     find(endpoints) match {
       case ses if ses.isEmpty => F.pure(())
@@ -36,7 +36,7 @@ object ShadowedEndpoints {
     }
   }
 
-  def find(endpoints: List[Endpoint[_, _, _, _]]): Set[ShadowedEndpoint] = FindShadowedEndpoints(
+  def find(endpoints: List[Endpoint[?, ?, ?, ?]]): Set[ShadowedEndpoint] = FindShadowedEndpoints(
     endpoints
   )
 

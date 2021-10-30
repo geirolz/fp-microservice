@@ -1,10 +1,8 @@
 package com.geirolz.microservice
 
 import cats.effect.{IO, Resource}
-import com.geirolz.microservice.common.config.DbConfig
 import com.geirolz.microservice.common.logging.Logging
 import com.geirolz.microservice.external.repository.UserRepository
-import com.geirolz.microservice.infra.config.Config
 import com.geirolz.microservice.service.UserService
 import doobie.ExecutionContexts
 import doobie.hikari.HikariTransactor
@@ -16,7 +14,7 @@ case class Env(
 )
 object Env extends Logging.IOLog with Logging.IOResourceLog {
 
-  import fly4s.implicits._
+  import fly4s.implicits.*
 
   def load(config: Config): Resource[IO, Env] =
     for {
@@ -55,7 +53,7 @@ object Env extends Logging.IOLog with Logging.IOResourceLog {
         password = dbConfig.pass.map(_.stringValue.toCharArray),
         config = Fly4sConfig(
           table     = dbConfig.migrationsTable,
-          locations = Location.of(dbConfig.migrationsLocations: _*)
+          locations = Location.of(dbConfig.migrationsLocations*)
         )
       )
       .map(fl4s =>

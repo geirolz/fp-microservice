@@ -1,4 +1,4 @@
-package com.geirolz.microservice.infra.route.endpoint.user.contract
+package com.geirolz.microservice.route.endpoint.user.contract
 
 import com.geirolz.microservice.model.values.UserId
 

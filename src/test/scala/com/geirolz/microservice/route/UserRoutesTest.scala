@@ -1,6 +1,6 @@
-package com.geirolz.microservice.infra.route
+package com.geirolz.microservice.route
 
-import com.geirolz.microservice.infra.route.endpoint.user.contract.UserContract
+import com.geirolz.microservice.route.endpoint.user.contract.UserContract
 import com.geirolz.microservice.model.values.UserId
 import com.geirolz.microservice.model.User
 import com.geirolz.microservice.service.UserService
@@ -9,13 +9,12 @@ import org.scalatest.wordspec.AnyWordSpec
 
 class UserRoutesTest extends AnyWordSpec with Matchers {
 
-  import cats.effect._
+  import cats.effect.*
   import cats.effect.unsafe.implicits.global
-  import com.geirolz.microservice.infra.route.endpoint.EndpointCustomInstances._
-  import io.circe.generic.auto._
-  import org.http4s._
-  import org.http4s.circe._
-  import org.http4s.implicits._
+  import io.circe.generic.auto.*
+  import org.http4s.*
+  import org.http4s.circe.*
+  import org.http4s.implicits.*
 
   "UserRoutes getById route" when {
     "invoked with existing user Id" should {

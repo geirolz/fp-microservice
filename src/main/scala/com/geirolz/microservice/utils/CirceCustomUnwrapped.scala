@@ -3,7 +3,7 @@ package com.geirolz.microservice.utils
 import io.circe.{Decoder, Encoder}
 import shapeless.Unwrapped
 
-object CustomCirceCodecs {
+object CirceCustomUnwrapped {
 
   implicit def decodeAnyVal[T, U](implicit
     ev: T <:< AnyVal,
