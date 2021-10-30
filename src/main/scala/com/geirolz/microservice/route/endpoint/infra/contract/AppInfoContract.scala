@@ -1,7 +1,6 @@
 package com.geirolz.microservice.route.endpoint.infra.contract
 
 import com.geirolz.microservice.common.data.{ModelMapper, Scope}
-import com.geirolz.microservice.common.data.ModelMapper.ModelMapperId
 import com.geirolz.microservice.model.AppInfo
 
 private[route] case class AppInfoContract(
@@ -14,14 +13,14 @@ private[route] case class AppInfoContract(
 
 private[route] object AppInfoContract {
 
-  implicit val appInfoContractEndpointMapper: ModelMapperId[Scope.Endpoint, AppInfo, AppInfoContract] =
-    ModelMapper.lift { c =>
+  implicit val scopeEndpointMapper: ModelMapper[Scope.Endpoint, AppInfo, AppInfoContract] =
+    ModelMapper.forScope[Scope.Endpoint] { c =>
       AppInfoContract(
-        name = c.name,
-        version = c.version,
+        name         = c.name,
+        version      = c.version,
         scalaVersion = c.scalaVersion,
-        sbtVersion = c.sbtVersion,
-        javaVersion = c.javaVersion
+        sbtVersion   = c.sbtVersion,
+        javaVersion  = c.javaVersion
       )
     }
 }

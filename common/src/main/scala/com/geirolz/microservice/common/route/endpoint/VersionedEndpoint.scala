@@ -2,7 +2,7 @@ package com.geirolz.microservice.common.route.endpoint
 
 object VersionedEndpoint {
 
-  import sttp.tapir._
+  import sttp.tapir.*
 
   val v1: Endpoint[Unit, Unit, Unit, Any] = v(1)
   val v2: Endpoint[Unit, Unit, Unit, Any] = v(2)

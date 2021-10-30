@@ -6,7 +6,6 @@ import com.geirolz.microservice.route.endpoint.user.contract.{UserContract, User
 
 private[route] object UserEndpointApi {
 
-  import com.geirolz.microservice.route.endpoint.EndpointCustomInstances.*
   import io.circe.generic.auto.*
   import sttp.tapir.*
   import sttp.tapir.generic.auto.*
