@@ -12,7 +12,7 @@ class UserRoutes private (userService: UserService) {
 
   import com.geirolz.microservice.common.data.ModelMapper.*
 
-  implicit val scopeCtx: TypedScopeContext[Scope.Endpoint] = ScopeContext.of[Scope.Endpoint]
+  implicit private val scopeCtx: TypedScopeContext[Scope.Endpoint] = ScopeContext.of[Scope.Endpoint]
 
   private val getById: HttpRoutes[IO] =
     Http4sServerInterpreter[IO]().toRoutes(UserEndpointApi.getById)(userId => {

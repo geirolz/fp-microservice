@@ -30,4 +30,5 @@ To customize this project please read the [guide](doc/guide.md)
 - [ ] g8
 - [ ] Docker
 - [ ] Scala 3
+- [ ] Open Telemetry
 
