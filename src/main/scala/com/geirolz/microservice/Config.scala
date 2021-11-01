@@ -14,10 +14,10 @@ object Config {
 
 //db
 case class DbConfigs(
-  main: DbConfig
+  main: DatabaseConfig
 )
 
-case class DbConfig(
+case class DatabaseConfig(
   name: String,
   driver: String,
   url: String,

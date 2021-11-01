@@ -18,7 +18,7 @@ object Env extends Logging.IOLog with Logging.IOResourceLog {
 
   import fly4s.implicits.*
 
-  def load(config: Config): Resource[IO, Env] =
+  def make(config: Config): Resource[IO, Env] =
     for {
 
       // -------------------- DB --------------------
@@ -35,7 +35,7 @@ object Env extends Logging.IOLog with Logging.IOResourceLog {
       userService = UserService(userRepository)
     )
 
-  private def createDbTransactor(dbConfig: DbConfig): Resource[IO, HikariTransactor[IO]] =
+  private def createDbTransactor(dbConfig: DatabaseConfig): Resource[IO, HikariTransactor[IO]] =
     for {
       nonBlockingOpsECForDoobie <- ExecutionContexts.fixedThreadPool[IO](32)
       dbPass <- dbConfig.pass
@@ -52,8 +52,8 @@ object Env extends Logging.IOLog with Logging.IOResourceLog {
 
   private def applyMigrationToDb(
     datasource: DataSource,
-    dbConfig: DbConfig
-  ): Resource[IO, IO[Unit]] =
+    dbConfig: DatabaseConfig
+  ): Resource[IO, Unit] =
     Fly4s
       .makeFor[IO](
         IO.pure(datasource),
@@ -62,7 +62,7 @@ object Env extends Logging.IOLog with Logging.IOResourceLog {
           locations = Location.of(dbConfig.migrationsLocations*)
         )
       )
-      .map(fl4s =>
+      .evalMap(fl4s =>
         for {
           _               <- logger.debug(s"Applying migration for ${dbConfig.name}")
           migrationResult <- fl4s.validateAndMigrate[IO].result

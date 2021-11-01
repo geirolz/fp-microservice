@@ -24,7 +24,7 @@ object App extends IOApp.Simple with Logging.IOLog with Logging.IOResourceLog {
 
         // -------------------- ENV ----------------------
         _   <- resourceLogger.info("Building environment...")
-        env <- Env.load(config)
+        env <- Env.make(config)
         _   <- resourceLogger.info("Environment successfully built.")
 
         // -------------------- SERVER ----------------------
