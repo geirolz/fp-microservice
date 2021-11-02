@@ -34,7 +34,7 @@ object ProjectDependencies {
       "org.http4s" %% "http4s-dsl" % http4sVersion,
       "org.http4s" %% "http4s-circe" % http4sVersion,
       "org.http4s" %% "http4s-ember-server" % http4sVersion,
-      //TAPIR
+      // TAPIR
       "com.softwaremill.sttp.tapir" %% "tapir-core" % tapirVersion,
       "com.softwaremill.sttp.tapir" %% "tapir-http4s-server" % tapirVersion,
       "com.softwaremill.sttp.tapir" %% "tapir-json-circe" % tapirVersion,
@@ -65,7 +65,7 @@ object ProjectDependencies {
   private val db = {
     val doobieVersion = "1.0.0-RC1"
     Seq(
-      "com.github.geirolz" %% "fly4s-core" % "0.0.4",
+      "com.github.geirolz" %% "fly4s-core" % "0.0.5",
       "org.tpolecat" %% "doobie-core" % doobieVersion,
       "org.tpolecat" %% "doobie-hikari" % doobieVersion,
       "org.tpolecat" %% "doobie-h2" % doobieVersion,
