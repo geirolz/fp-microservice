@@ -1,7 +1,6 @@
 package com.geirolz.microservice.route
 
 import cats.effect.IO
-import com.geirolz.microservice.common.data.{Scope, ScopeContext, TypedScopeContext}
 import com.geirolz.microservice.model.{AppInfo, AppMetricsReport}
 import com.geirolz.microservice.route.endpoint.{DocsEndpointsApi, EndpointsApi}
 import com.geirolz.microservice.route.endpoint.infra.InfraEndpointsApi
@@ -10,6 +9,7 @@ import com.geirolz.microservice.route.endpoint.infra.contract.{
   AppMetricsReportContract
 }
 import org.http4s.HttpRoutes
+import scope.{Scope, ScopeContext, TypedScopeContext}
 import sttp.tapir.docs.openapi.{OpenAPIDocsInterpreter, OpenAPIDocsOptions}
 import sttp.tapir.openapi.OpenAPI
 import sttp.tapir.server.http4s.Http4sServerInterpreter
@@ -18,25 +18,25 @@ import sttp.tapir.swagger.SwaggerUI
 class MainRoutes private () {
 
   import cats.implicits.*
-  import com.geirolz.microservice.common.data.ModelMapper.*
   import io.circe.syntax.*
+  import scope.syntax.*
   import sttp.tapir.openapi.circe.*
   import sttp.tapir.openapi.circe.yaml.*
 
-  implicit private val scope: TypedScopeContext[Scope.Endpoint] = ScopeContext.of[Scope.Endpoint]
+  implicit private val scopeCtx: TypedScopeContext[Scope.Endpoint] = ScopeContext.of[Scope.Endpoint]
 
   private val http4sInterpreter: Http4sServerInterpreter[IO] =
     Http4sServerInterpreter[IO]()
 
   private val appInfoRoute =
     http4sInterpreter.toRoutes(InfraEndpointsApi.getAppInfo) { _ =>
-      IO.pure(AppInfo.value.inScope.as[AppInfoContract].asRight[Unit])
+      IO.pure(AppInfo.value.scoped.as[AppInfoContract].asRight[Unit])
     }
 
   private val appMetricsRoute =
     http4sInterpreter.toRoutes(InfraEndpointsApi.getAppMetrics) { _ =>
       AppMetricsReport.fromCurrentRuntime.map(
-        _.inScope.as[AppMetricsReportContract].asRight[Unit]
+        _.scoped.as[AppMetricsReportContract].asRight[Unit]
       )
     }
 

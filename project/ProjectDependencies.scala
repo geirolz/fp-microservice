@@ -3,6 +3,7 @@ import sbt._
 object ProjectDependencies {
 
   lazy val common: Seq[ModuleID] = Seq(
+    general,
     effects,
     config,
     http,
@@ -14,12 +15,15 @@ object ProjectDependencies {
     rabbitMq
   ).flatten
 
-  private val effects = {
+  private val general = Seq(
+    "com.github.geirolz" %% "scope-core" % "0.0.1"
+  )
+
+  private val effects =
     Seq(
       "org.typelevel" %% "cats-core" % "2.6.1",
       "org.typelevel" %% "cats-effect" % "3.2.9"
     )
-  }
 
   private val config = Seq(
     "com.github.pureconfig" %% "pureconfig" % "0.17.0"

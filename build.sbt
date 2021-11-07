@@ -1,10 +1,26 @@
 import sbt.addCompilerPlugin
 
+lazy val appName = "fp-microservice"
 lazy val global = (project in file("."))
-  .enablePlugins(BuildInfoPlugin)
+  .enablePlugins(BuildInfoPlugin, DockerPlugin)
   .settings(commonSettings)
   .settings(
-    name := "microservice",
+    Seq(
+      assemblyJarName / assembly := file(s"$appName.jar"),
+      docker / dockerfile := {
+        val artifact: File     = assembly.value
+        val artifactTargetPath = s"/app/${artifact.name}"
+
+        new Dockerfile {
+          from("openjdk:8-jre")
+          add(artifact, artifactTargetPath)
+          entryPoint("java", "-jar", artifactTargetPath)
+        }
+      }
+    )
+  )
+  .settings(
+    name := "fp-microservice",
     description := "Basic template for microservices.",
     organization := "com.geirolz",
     buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion),
@@ -19,7 +35,7 @@ lazy val common = (project in file("common"))
 lazy val commonSettings = Seq(
   // scala
   scalaVersion := "2.13.7",
-  scalacOptions ++= scalacSettings(scalaVersion.value),
+  scalacOptions ++= scalacSettings,
   // dependencies
   resolvers ++= ProjectResolvers.all,
   libraryDependencies ++= ProjectDependencies.common,
@@ -30,7 +46,7 @@ lazy val commonSettings = Seq(
   addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1")
 )
 
-def scalacSettings(scalaVersion: String): Seq[String] =
+def scalacSettings: Seq[String] =
   Seq(
     //    "-Xlog-implicits",
     "-deprecation", // Emit warning and location for usages of deprecated APIs.

@@ -1,6 +1,6 @@
 package com.geirolz.microservice.route.endpoint.user
 
-import com.geirolz.microservice.common.route.endpoint.VersionedEndpoint
+import com.geirolz.microservice.common.route.endpoint.Api
 import com.geirolz.microservice.model.values.UserId
 import com.geirolz.microservice.route.endpoint.user.contract.{UserContract, UserEndpointError}
 
@@ -12,7 +12,7 @@ private[route] object UserEndpointApi {
   import sttp.tapir.json.circe.*
 
   private val user: Endpoint[Unit, Unit, Unit, Any] =
-    VersionedEndpoint.v1.in("user")
+    Api.v1.in("user")
 
   val getById: Endpoint[UserId, UserEndpointError, UserContract, Any] =
     user.get

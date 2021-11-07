@@ -1,6 +1,6 @@
 package com.geirolz.microservice.common.route.endpoint
 
-object VersionedEndpoint {
+object Api {
 
   import sttp.tapir.*
 
