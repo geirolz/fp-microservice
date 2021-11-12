@@ -12,12 +12,12 @@ private[route] object InfraEndpointsApi {
   import sttp.tapir.generic.auto.*
   import sttp.tapir.json.circe.*
 
-  val getAppMetrics: Endpoint[Unit, Unit, AppMetricsReportContract, Any] =
+  val getAppMetrics: PublicEndpoint[Unit, Unit, AppMetricsReportContract, Any] =
     endpoint.get
       .in("metrics")
       .out(jsonBody[AppMetricsReportContract])
 
-  val getAppInfo: Endpoint[Unit, Unit, AppInfoContract, Any] =
+  val getAppInfo: PublicEndpoint[Unit, Unit, AppInfoContract, Any] =
     endpoint.get
       .in("info")
       .out(jsonBody[AppInfoContract])

@@ -5,7 +5,7 @@ import cats.effect.IO
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import sttp.tapir.testing.{FindShadowedEndpoints, ShadowedEndpoint}
-import sttp.tapir.Endpoint
+import sttp.tapir.{AnyEndpoint, Endpoint}
 
 class FindShadowedEndpointTest extends AnyWordSpec with Matchers {
 
@@ -19,7 +19,7 @@ class FindShadowedEndpointTest extends AnyWordSpec with Matchers {
 }
 
 case class ShadowedEndpointException(
-  endpoints: List[Endpoint[?, ?, ?, ?]],
+  endpoints: List[AnyEndpoint],
   ses: Set[ShadowedEndpoint]
 ) extends RuntimeException(
       s"${ses.size} endpoints shadowed.\n${ShadowedEndpoints.asPrettyString(ses)}"
@@ -28,7 +28,7 @@ case class ShadowedEndpointException(
 object ShadowedEndpoints {
 
   def check[F[_]](
-    endpoints: List[Endpoint[?, ?, ?, ?]]
+    endpoints: List[AnyEndpoint]
   )(implicit F: MonadError[F, Throwable]): F[Unit] = {
     find(endpoints) match {
       case ses if ses.isEmpty => F.pure(())
@@ -36,7 +36,7 @@ object ShadowedEndpoints {
     }
   }
 
-  def find(endpoints: List[Endpoint[?, ?, ?, ?]]): Set[ShadowedEndpoint] = FindShadowedEndpoints(
+  def find(endpoints: List[AnyEndpoint]): Set[ShadowedEndpoint] = FindShadowedEndpoints(
     endpoints
   )
 

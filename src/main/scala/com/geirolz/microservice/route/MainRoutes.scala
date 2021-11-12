@@ -25,20 +25,24 @@ class MainRoutes private () {
 
   implicit private val scopeCtx: TypedScopeContext[Scope.Endpoint] = ScopeContext.of[Scope.Endpoint]
 
-  private val http4sInterpreter: Http4sServerInterpreter[IO] =
-    Http4sServerInterpreter[IO]()
+  private val interpreter: Http4sServerInterpreter[IO] =
+    Http4sServerInterpreter[IO](ServerConfiguration.options)
 
   private val appInfoRoute =
-    http4sInterpreter.toRoutes(InfraEndpointsApi.getAppInfo) { _ =>
-      IO.pure(AppInfo.value.scoped.as[AppInfoContract].asRight[Unit])
-    }
+    interpreter.toRoutes(
+      InfraEndpointsApi.getAppInfo
+        .serverLogic(_ => AppInfo.value.scoped.as[AppInfoContract].asRight[Unit].pure[IO])
+    )
 
   private val appMetricsRoute =
-    http4sInterpreter.toRoutes(InfraEndpointsApi.getAppMetrics) { _ =>
-      AppMetricsReport.fromCurrentRuntime.map(
-        _.scoped.as[AppMetricsReportContract].asRight[Unit]
-      )
-    }
+    interpreter.toRoutes(
+      InfraEndpointsApi.getAppMetrics
+        .serverLogic(_ =>
+          AppMetricsReport.fromCurrentRuntime.map(
+            _.scoped.as[AppMetricsReportContract].asRight[Unit]
+          )
+        )
+    )
 
   private val docsRoute: HttpRoutes[IO] = {
 
@@ -54,13 +58,14 @@ class MainRoutes private () {
 
     val jsonDocs: String = openApi.asJson.deepDropNullValues.toString
 
-    http4sInterpreter.toRoutes(DocsEndpointsApi.getYamlDocs) { _ =>
-      IO.pure(Right(yamlDocs))
-    } <+>
-    http4sInterpreter.toRoutes(DocsEndpointsApi.getJsonDocs) { _ =>
-      IO.pure(Right(jsonDocs))
-    } <+>
-    http4sInterpreter.toRoutes(
+    interpreter.toRoutes(
+      DocsEndpointsApi.getYamlDocs.serverLogic(_ => yamlDocs.asRight[Unit].pure[IO])
+    )
+    <+>
+    interpreter.toRoutes(
+      DocsEndpointsApi.getJsonDocs.serverLogic(_ => jsonDocs.asRight[Unit].pure[IO])
+    )
+    interpreter.toRoutes(
       SwaggerUI[IO](
         yaml   = yamlDocs,
         prefix = List("docs")

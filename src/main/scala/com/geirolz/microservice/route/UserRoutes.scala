@@ -13,15 +13,20 @@ class UserRoutes private (userService: UserService) {
   import scope.syntax.*
   implicit private val scopeCtx: TypedScopeContext[Scope.Endpoint] = ScopeContext.of[Scope.Endpoint]
 
+  private val interpreter: Http4sServerInterpreter[IO] =
+    Http4sServerInterpreter[IO](ServerConfiguration.options)
+
   private val getById: HttpRoutes[IO] =
-    Http4sServerInterpreter[IO]().toRoutes(UserEndpointApi.getById)(userId => {
-      userService
-        .getById(userId)
-        .map {
-          case Some(user) => Right(user.scoped.as[UserContract])
-          case None       => Left(UserEndpointError.UserNotFound(userId))
-        }
-    })
+    interpreter.toRoutes(
+      UserEndpointApi.getById.serverLogic[IO](userId => {
+        userService
+          .getById(userId)
+          .map {
+            case Some(user) => Right(user.scoped.as[UserContract])
+            case None       => Left(UserEndpointError.UserNotFound(userId))
+          }
+      })
+    )
 
   val routes: HttpRoutes[IO] = getById
 }

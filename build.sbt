@@ -1,6 +1,6 @@
 import sbt.addCompilerPlugin
 
-lazy val appName = "fp-microservice"
+lazy val appName = "fp-http-microservice"
 lazy val global = (project in file("."))
   .enablePlugins(BuildInfoPlugin, DockerPlugin)
   .settings(commonSettings)
@@ -20,7 +20,7 @@ lazy val global = (project in file("."))
     )
   )
   .settings(
-    name := "fp-microservice",
+    name := appName,
     description := "Basic template for microservices.",
     organization := "com.geirolz",
     buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion),

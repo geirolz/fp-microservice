@@ -11,10 +11,10 @@ private[route] object UserEndpointApi {
   import sttp.tapir.generic.auto.*
   import sttp.tapir.json.circe.*
 
-  private val user: Endpoint[Unit, Unit, Unit, Any] =
+  private val user: PublicEndpoint[Unit, Unit, Unit, Any] =
     Api.v1.in("user")
 
-  val getById: Endpoint[UserId, UserEndpointError, UserContract, Any] =
+  val getById: PublicEndpoint[UserId, UserEndpointError, UserContract, Any] =
     user.get
       .in(
         path[UserId]("id")
