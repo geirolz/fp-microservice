@@ -16,7 +16,7 @@ object ProjectDependencies {
   ).flatten
 
   private val general = Seq(
-    "com.github.geirolz" %% "scope-core" % "0.0.1"
+    "com.github.geirolz" %% "scope-core" % "0.0.2"
   )
 
   private val effects =
