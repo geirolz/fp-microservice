@@ -2,7 +2,6 @@ package com.geirolz.microservice
 
 import cats.effect.IO
 import cats.implicits.toSemigroupKOps
-import com.geirolz.microservice.Config
 import com.geirolz.microservice.route.{MainRoutes, UserRoutes}
 import org.http4s.{HttpApp, HttpRoutes}
 import org.http4s.server.middleware.{RequestLogger, ResponseLogger}
@@ -16,7 +15,7 @@ class Routes private (@unused config: Config, env: Env) {
 }
 object Routes {
 
-  import org.http4s.implicits._
+  import org.http4s.implicits.*
 
   def makeApp(config: Config, env: Env): HttpApp[IO] = {
     val loggingConfig = config.http.server.logging

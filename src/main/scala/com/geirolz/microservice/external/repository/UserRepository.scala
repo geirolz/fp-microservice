@@ -5,7 +5,7 @@ import com.geirolz.microservice.external.repository.entity.UserEntity
 import com.geirolz.microservice.model.User
 import com.geirolz.microservice.model.values.UserId
 import doobie.ConnectionIO
-import doobie.implicits._
+import doobie.implicits.*
 import doobie.util.transactor.Transactor
 
 trait UserRepository {
@@ -16,7 +16,7 @@ object UserRepository {
   // TODO: TBD
   def apply(dbTransactor: Transactor[IO]): UserRepository = new UserRepository {
 
-    import cats.implicits._
+    import cats.implicits.*
 
     def getById(id: UserId): IO[Option[User]] =
       Query

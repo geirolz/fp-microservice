@@ -9,9 +9,8 @@ import org.http4s.server.Server
 
 object App extends IOApp.Simple with Logging.IOLog with Logging.IOResourceLog {
 
-  import cats.implicits._
-  import pureconfig._
-  import pureconfig.generic.auto._
+  import cats.implicits.*
+  import pureconfig.*
 
   override def run: IO[Unit] =
     (
@@ -47,8 +46,8 @@ object App extends IOApp.Simple with Logging.IOLog with Logging.IOResourceLog {
   private def buildServer(config: Config, env: Env): Resource[IO, Server] =
     EmberServerBuilder
       .default[IO]
-      .withHost(Hostname.fromString(config.http.server.host).get)
-      .withPort(Port.fromInt(config.http.server.port).get)
+      .withHost(config.http.server.host)
+      .withPort(config.http.server.port)
       .withHttpApp(Routes.makeApp(config, env))
       .build
 }

@@ -25,9 +25,14 @@ object ProjectDependencies {
       "org.typelevel" %% "cats-effect" % "3.3.0"
     )
 
-  private val config = Seq(
-    "com.github.pureconfig" %% "pureconfig" % "0.17.1"
-  )
+  private val config = {
+    val pureConfigVersion = "0.17.1"
+    Seq(
+      "com.github.pureconfig" %% "pureconfig-core" % pureConfigVersion,
+      "com.github.pureconfig" %% "pureconfig-generic" % pureConfigVersion,
+      "com.github.pureconfig" %% "pureconfig-http4s" % pureConfigVersion
+    )
+  }
 
   private val http = {
     val http4sVersion = "0.23.6"

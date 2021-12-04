@@ -55,7 +55,6 @@ class MainRoutes private () {
         )
 
     val yamlDocs: String = openApi.toYaml
-
     val jsonDocs: String = openApi.asJson.deepDropNullValues.toString
 
     interpreter.toRoutes(
