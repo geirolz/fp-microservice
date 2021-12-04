@@ -1,9 +1,10 @@
 package com.geirolz.microservice.model
 
-import com.geirolz.microservice.model.values.UserId
+import com.geirolz.microservice.model.values.{FirstName, LastName, MiddleName, UserId}
 
 case class User(
   id: UserId,
-  name: String,
-  surname: String
+  firstName: FirstName,
+  middleName: Option[MiddleName],
+  lastName: LastName
 )

@@ -7,32 +7,37 @@ import com.geirolz.microservice.model.values.UserId
 import doobie.ConnectionIO
 import doobie.implicits.*
 import doobie.util.transactor.Transactor
+import scope.{Scope, ScopeContext, TypedScopeContext}
 
 trait UserRepository {
   def getById(id: UserId): IO[Option[User]]
 }
+
 object UserRepository {
 
-  // TODO: TBD
-  def apply(dbTransactor: Transactor[IO]): UserRepository = new UserRepository {
+  import cats.implicits.*
+  import scope.syntax.*
 
-    import cats.implicits.*
+  implicit protected val scopeCtx: TypedScopeContext[Scope.Persistence] =
+    ScopeContext.of[Scope.Persistence]
+
+  def apply(dbTransactor: Transactor[IO]): UserRepository = new UserRepository {
 
     def getById(id: UserId): IO[Option[User]] =
       Query
         .findUserById(id)
+        .option
         .transact(dbTransactor)
         .nested
-        .map(_.toDomain)
+        .map(_.scoped.as[User])
         .value
 
   }
 
   private[repository] object Query {
 
-    def findUserById(userId: UserId): ConnectionIO[Option[UserEntity]] =
+    def findUserById(userId: UserId): doobie.Query0[UserEntity.Read] =
       sql"SELECT * FROM user WHERE id == ${userId.value}"
-        .query[UserEntity]
-        .option
+        .query[UserEntity.Read]
   }
 }

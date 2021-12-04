@@ -1,11 +1,16 @@
 package com.geirolz.microservice.route.endpoint.user.contract
 
 import com.geirolz.microservice.model.User
-import com.geirolz.microservice.model.values.UserId
+import com.geirolz.microservice.model.values.{FirstName, LastName, MiddleName, UserId}
 import io.circe.{Decoder, Encoder}
 import scope.{ModelMapper, Scope}
 
-private[route] case class UserContract(id: UserId, name: String, surname: String)
+private[route] case class UserContract(
+  id: UserId,
+  firstName: FirstName,
+  middleName: Option[MiddleName],
+  lastName: LastName
+)
 private[route] object UserContract {
 
   import io.circe.generic.auto.*
@@ -17,6 +22,11 @@ private[route] object UserContract {
 
   implicit val scopeEndpointMapper: ModelMapper[Scope.Endpoint, User, UserContract] =
     ModelMapper.scoped[Scope.Endpoint] { user =>
-      UserContract(user.id, user.name, user.surname)
+      UserContract(
+        id         = user.id,
+        firstName  = user.firstName,
+        middleName = user.middleName,
+        lastName   = user.lastName
+      )
     }
 }
