@@ -11,7 +11,7 @@ object ServerConfiguration {
   val options: Http4sServerOptions[IO, IO] = Http4sServerOptions
     .customInterceptors[IO, IO]
     .rejectInterceptor(RejectInterceptor.default[IO])
-    .decodeFailureHandler(DefaultDecodeFailureHandler.handler)
+    .decodeFailureHandler(DefaultDecodeFailureHandler.default)
     .exceptionHandler(DefaultExceptionHandler.handler)
     .serverLog(Http4sServerOptions.Log.defaultServerLog[IO])
     .options
