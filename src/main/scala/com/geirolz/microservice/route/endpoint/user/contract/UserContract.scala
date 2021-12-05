@@ -1,12 +1,13 @@
 package com.geirolz.microservice.route.endpoint.user.contract
 
 import com.geirolz.microservice.model.User
-import com.geirolz.microservice.model.values.{FirstName, LastName, MiddleName, UserId}
+import com.geirolz.microservice.model.values.{Email, FirstName, LastName, MiddleName, UserId}
 import io.circe.{Decoder, Encoder}
 import scope.{ModelMapper, Scope}
 
 private[route] case class UserContract(
   id: UserId,
+  email: Email,
   firstName: FirstName,
   middleName: Option[MiddleName],
   lastName: LastName
@@ -24,6 +25,7 @@ private[route] object UserContract {
     ModelMapper.scoped[Scope.Endpoint] { user =>
       UserContract(
         id         = user.id,
+        email      = user.email,
         firstName  = user.firstName,
         middleName = user.middleName,
         lastName   = user.lastName

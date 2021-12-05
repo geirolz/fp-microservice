@@ -7,19 +7,16 @@ import com.geirolz.microservice.model.values.UserId
 import doobie.ConnectionIO
 import doobie.implicits.*
 import doobie.util.transactor.Transactor
-import scope.{Scope, ScopeContext, TypedScopeContext}
+import scope.{InScope, Scope, ScopeContext, TypedScopeContext}
 
 trait UserRepository {
   def getById(id: UserId): IO[Option[User]]
 }
 
-object UserRepository {
+object UserRepository extends InScope[Scope.Persistence] {
 
   import cats.implicits.*
   import scope.syntax.*
-
-  implicit protected val scopeCtx: TypedScopeContext[Scope.Persistence] =
-    ScopeContext.of[Scope.Persistence]
 
   def apply(dbTransactor: Transactor[IO]): UserRepository = new UserRepository {
 
