@@ -11,14 +11,14 @@ import fly4s.core.data.{Fly4sConfig, Location}
 
 import javax.sql.DataSource
 
-case class Env(
+case class AppEnv(
   userService: UserService
 )
-object Env extends Logging.IOLog with Logging.IOResourceLog {
+object AppEnv extends Logging.IOLog with Logging.IOResourceLog {
 
   import fly4s.implicits.*
 
-  def make(config: Config): Resource[IO, Env] =
+  def make(config: Config): Resource[IO, AppEnv] =
     for {
 
       // -------------------- DB --------------------
@@ -31,7 +31,7 @@ object Env extends Logging.IOLog with Logging.IOResourceLog {
       // ----------------- REPOSITORY ---------------
       userRepository = UserRepository(mainDbTransactor)
 
-    } yield Env(
+    } yield AppEnv(
       userService = UserService(userRepository)
     )
 

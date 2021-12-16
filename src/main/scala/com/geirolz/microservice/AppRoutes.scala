@@ -8,16 +8,16 @@ import org.http4s.server.middleware.{RequestLogger, ResponseLogger}
 
 import scala.annotation.unused
 
-class Routes private (@unused config: Config, env: Env) {
+class AppRoutes private (@unused config: Config, env: AppEnv) {
   val routes: HttpRoutes[IO] =
     MainRoutes.make.routes <+>
     UserRoutes.make(env.userService).routes
 }
-object Routes {
+object AppRoutes {
 
   import org.http4s.implicits.*
 
-  def makeApp(config: Config, env: Env): HttpApp[IO] = {
+  def makeApp(config: Config, env: AppEnv): HttpApp[IO] = {
     val loggingConfig = config.http.server.logging
     val loggers: HttpApp[IO] => HttpApp[IO] = {
       { http: HttpApp[IO] =>
@@ -33,6 +33,6 @@ object Routes {
       }
     }
 
-    loggers(new Routes(config, env).routes.orNotFound)
+    loggers(new AppRoutes(config, env).routes.orNotFound)
   }
 }

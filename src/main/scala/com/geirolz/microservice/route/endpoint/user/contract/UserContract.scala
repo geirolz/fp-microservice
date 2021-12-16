@@ -21,8 +21,9 @@ private[route] object UserContract {
   implicit val circeUserContractEncoder: Encoder[UserContract] = deriveEncoder[UserContract]
   implicit val circeUserContractDecoder: Decoder[UserContract] = deriveDecoder[UserContract]
 
+  // scope
   implicit val scopeEndpointMapper: ModelMapper[Scope.Endpoint, User, UserContract] =
-    ModelMapper.scoped[Scope.Endpoint] { user =>
+    ModelMapper.scoped { user =>
       UserContract(
         id         = user.id,
         email      = user.email,

@@ -23,16 +23,15 @@ object UserEntity {
   )
   object Read {
     implicit val scopePersistenceMapper: ModelMapper[Scope.Persistence, UserEntity.Read, User] =
-      ModelMapper
-        .scoped[Scope.Persistence] { entity =>
-          User(
-            id         = entity.id,
-            email      = entity.email,
-            firstName  = entity.firstName,
-            middleName = entity.middleName,
-            lastName   = entity.lastName
-          )
-        }
+      ModelMapper.scoped { entity =>
+        User(
+          id         = entity.id,
+          email      = entity.email,
+          firstName  = entity.firstName,
+          middleName = entity.middleName,
+          lastName   = entity.lastName
+        )
+      }
   }
 
 }

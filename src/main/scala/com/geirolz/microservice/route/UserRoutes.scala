@@ -11,7 +11,9 @@ import sttp.tapir.server.http4s.Http4sServerInterpreter
 class UserRoutes private (userService: UserService) {
 
   import scope.syntax.*
-  implicit private val scopeCtx: TypedScopeContext[Scope.Endpoint] = ScopeContext.of[Scope.Endpoint]
+
+  implicit private val scopeCtx: TypedScopeContext[Scope.Endpoint] =
+    ScopeContext.of[Scope.Endpoint]
 
   private val interpreter: Http4sServerInterpreter[IO] =
     Http4sServerInterpreter[IO](ServerConfiguration.options)

@@ -23,7 +23,8 @@ class MainRoutes private () {
   import sttp.tapir.openapi.circe.*
   import sttp.tapir.openapi.circe.yaml.*
 
-  implicit private val scopeCtx: TypedScopeContext[Scope.Endpoint] = ScopeContext.of[Scope.Endpoint]
+  implicit private val scopeCtx: TypedScopeContext[Scope.Endpoint] =
+    ScopeContext.of[Scope.Endpoint]
 
   private val interpreter: Http4sServerInterpreter[IO] =
     Http4sServerInterpreter[IO](ServerConfiguration.options)

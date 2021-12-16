@@ -23,7 +23,7 @@ object App extends IOApp.Simple with Logging.IOLog with Logging.IOResourceLog {
 
         // -------------------- ENV ----------------------
         _   <- resourceLogger.info("Building environment...")
-        env <- Env.make(config)
+        env <- AppEnv.make(config)
         _   <- resourceLogger.info("Environment successfully built.")
 
         // -------------------- SERVER ----------------------
@@ -43,11 +43,11 @@ object App extends IOApp.Simple with Logging.IOLog with Logging.IOResourceLog {
       }
     }
 
-  private def buildServer(config: Config, env: Env): Resource[IO, Server] =
+  private def buildServer(config: Config, env: AppEnv): Resource[IO, Server] =
     EmberServerBuilder
       .default[IO]
       .withHost(config.http.server.host)
       .withPort(config.http.server.port)
-      .withHttpApp(Routes.makeApp(config, env))
+      .withHttpApp(AppRoutes.makeApp(config, env))
       .build
 }
