@@ -1,41 +1,44 @@
 package com.geirolz.microservice
 
-import cats.effect.{IO, IOApp, Resource}
+import cats.effect.{IO, IOApp, Resource, ResourceIO}
 import com.comcast.ip4s.{Hostname, Port}
-import com.geirolz.microservice.common.logging.Logging
 import com.geirolz.microservice.Config
 import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.server.Server
+import org.typelevel.log4cats.slf4j.Slf4jLogger
+import org.typelevel.log4cats.SelfAwareStructuredLogger
 
-object App extends IOApp.Simple with Logging.IOLog with Logging.IOResourceLog {
+object App extends IOApp.Simple {
 
   import cats.implicits.*
   import pureconfig.*
+
+  implicit private val logger: SelfAwareStructuredLogger[IO] = Slf4jLogger.getLogger[IO]
 
   override def run: IO[Unit] =
     (
       for {
         // ---------------- CONFIGURATION ----------------
-        _      <- resourceLogger.info("Loading configuration...")
+        _      <- logger.info("Loading configuration...").to[ResourceIO]
         config <- loadConfiguration
-        _      <- resourceLogger.info(config.show)
-        _      <- resourceLogger.info("Configuration successfully loaded.")
+        _      <- logger.info(config.show).to[ResourceIO]
+        _      <- logger.info("Configuration successfully loaded.").to[ResourceIO]
 
         // -------------------- ENV ----------------------
         _   <- resourceLogger.info("Building environment...")
         env <- AppEnv.make(config)
-        _   <- resourceLogger.info("Environment successfully built.")
+        _   <- logger.info("Environment successfully built.").to[ResourceIO]
 
         // -------------------- SERVER ----------------------
-        _ <- resourceLogger.info("Building server...")
+        _ <- logger.info("Building server...").to[ResourceIO]
         server = buildServer(config, env)
-        _ <- resourceLogger.info("Server successfully built.")
+        _ <- logger.info("Server successfully built.").to[ResourceIO]
       } yield server
     ).use { server =>
       logger.info("Starting application...") >> server.useForever
     }
 
-  private def loadConfiguration: Resource[IO, Config] =
+  private def loadConfiguration: ResourceIO[Config] =
     Resource.eval {
       ConfigSource.default.load[Config] match {
         case Left(failures) => IO.raiseError(new RuntimeException(failures.prettyPrint()))
@@ -43,7 +46,7 @@ object App extends IOApp.Simple with Logging.IOLog with Logging.IOResourceLog {
       }
     }
 
-  private def buildServer(config: Config, env: AppEnv): Resource[IO, Server] =
+  private def buildServer(config: Config, env: AppEnv): ResourceIO[Server] =
     EmberServerBuilder
       .default[IO]
       .withHost(config.http.server.host)

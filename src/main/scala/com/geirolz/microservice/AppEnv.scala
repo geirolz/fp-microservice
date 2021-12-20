@@ -1,32 +1,34 @@
 package com.geirolz.microservice
 
-import cats.effect.{IO, Resource}
-import com.geirolz.microservice.common.logging.Logging
+import cats.effect.{IO, Resource, ResourceIO}
 import com.geirolz.microservice.external.repository.UserRepository
 import com.geirolz.microservice.service.UserService
 import doobie.ExecutionContexts
 import doobie.hikari.HikariTransactor
 import fly4s.core.Fly4s
 import fly4s.core.data.{Fly4sConfig, Location}
+import org.typelevel.log4cats.slf4j.Slf4jLogger
+import org.typelevel.log4cats.SelfAwareStructuredLogger
 
 import javax.sql.DataSource
 
 case class AppEnv(
   userService: UserService
 )
-object AppEnv extends Logging.IOLog with Logging.IOResourceLog {
+object AppEnv {
 
   import fly4s.implicits.*
+  implicit private val logger: SelfAwareStructuredLogger[IO] =
+    Slf4jLogger.getLogger[IO]
 
   def make(config: Config): Resource[IO, AppEnv] =
     for {
 
       // -------------------- DB --------------------
-      _ <- resourceLogger.info("Initializing databases...")
-      // main
-      mainDbTransactor: HikariTransactor[IO] <- createDbTransactor(config.db.main)
-      _ <- applyMigrationToDb(mainDbTransactor.kernel, config.db.main)
-      _ <- resourceLogger.info("Databases successfully initialized.")
+      _                <- logger.info("Initializing databases...").to[ResourceIO]
+      mainDbTransactor <- createDatabaseTransactor(config.db.main)
+      _                <- migrateDatabase(mainDbTransactor.kernel, config.db.main)
+      _                <- logger.info("Databases successfully initialized.").to[ResourceIO]
 
       // ----------------- REPOSITORY ---------------
       userRepository = UserRepository(mainDbTransactor)
@@ -35,7 +37,9 @@ object AppEnv extends Logging.IOLog with Logging.IOResourceLog {
       userService = UserService(userRepository)
     )
 
-  private def createDbTransactor(dbConfig: DatabaseConfig): Resource[IO, HikariTransactor[IO]] =
+  private def createDatabaseTransactor(
+    dbConfig: DatabaseConfig
+  ): Resource[IO, HikariTransactor[IO]] =
     for {
       nonBlockingOpsECForDoobie <- ExecutionContexts.fixedThreadPool[IO](32)
       dbPass <- dbConfig.pass
@@ -50,7 +54,7 @@ object AppEnv extends Logging.IOLog with Logging.IOResourceLog {
       )
     } yield transactor
 
-  private def applyMigrationToDb(
+  private def migrateDatabase(
     datasource: DataSource,
     dbConfig: DatabaseConfig
   ): Resource[IO, Unit] =
