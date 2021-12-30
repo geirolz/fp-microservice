@@ -22,7 +22,7 @@ object ProjectDependencies {
   private val effects =
     Seq(
       "org.typelevel" %% "cats-core" % "2.7.0",
-      "org.typelevel" %% "cats-effect" % "3.3.1"
+      "org.typelevel" %% "cats-effect" % "3.3.2"
     )
 
   private val config = {
