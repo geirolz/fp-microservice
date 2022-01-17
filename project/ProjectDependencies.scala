@@ -22,7 +22,7 @@ object ProjectDependencies {
   private val effects =
     Seq(
       "org.typelevel" %% "cats-core" % "2.7.0",
-      "org.typelevel" %% "cats-effect" % "3.3.1"
+      "org.typelevel" %% "cats-effect" % "3.3.4"
     )
 
   private val config = {
@@ -61,8 +61,8 @@ object ProjectDependencies {
 
   private val logging = Seq(
     "org.typelevel" %% "log4cats-slf4j" % "2.1.1",
-    "org.slf4j" % "slf4j-api" % "1.7.32",
-    "org.slf4j" % "slf4j-simple" % "1.7.32"
+    "org.slf4j" % "slf4j-api" % "1.7.33",
+    "org.slf4j" % "slf4j-simple" % "1.7.33"
   )
 
   private val tests = Seq(
@@ -72,9 +72,9 @@ object ProjectDependencies {
 
   // externals services
   private val db = {
-    val doobieVersion = "1.0.0-RC1"
+    val doobieVersion = "1.0.0-RC2"
     Seq(
-      "com.github.geirolz" %% "fly4s-core" % "0.0.7",
+      "com.github.geirolz" %% "fly4s-core" % "0.0.8",
       "org.tpolecat" %% "doobie-core" % doobieVersion,
       "org.tpolecat" %% "doobie-hikari" % doobieVersion,
       "org.tpolecat" %% "doobie-h2" % doobieVersion,
