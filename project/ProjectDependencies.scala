@@ -74,7 +74,7 @@ object ProjectDependencies {
   private val db = {
     val doobieVersion = "1.0.0-RC2"
     Seq(
-      "com.github.geirolz" %% "fly4s-core" % "0.0.8",
+      "com.github.geirolz" %% "fly4s-core" % "0.0.9",
       "org.tpolecat" %% "doobie-core" % doobieVersion,
       "org.tpolecat" %% "doobie-hikari" % doobieVersion,
       "org.tpolecat" %% "doobie-h2" % doobieVersion,
