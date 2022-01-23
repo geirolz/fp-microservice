@@ -13,9 +13,13 @@ object Config {
   import io.circe.generic.auto.*
   import io.circe.syntax.*
   import pureconfig.generic.auto.*
+  import pureconfig.generic.semiauto.*
+  import pureconfig.module.ip4s.*
   import pureconfig.module.http4s.*
 
-  implicit val configReader: ConfigReader[Config] = ConfigReader[Config]
+  implicit val configReader: ConfigReader[Config]              = deriveReader[Config]
+  implicit val dbConfigReader: ConfigReader[DatabaseConfig]    = deriveReader[DatabaseConfig]
+  implicit val serverConfiggReader: ConfigReader[ServerConfig] = deriveReader[ServerConfig]
 
   // ------------------- CIRCE -------------------
   implicit val hostnameCirceEncoder: Encoder[Hostname] =
@@ -39,8 +43,8 @@ case class DatabaseConfig(
   name: String,
   driver: String,
   url: String,
-  user: Option[String],
-  pass: Option[Secret],
+  username: Option[String],
+  password: Option[Secret],
   migrationsTable: String,
   migrationsLocations: List[String]
 )

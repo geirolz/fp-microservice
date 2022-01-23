@@ -10,6 +10,18 @@ Simple POC for dockerized HTTP microservice using Scala in a functional programm
 
 ### Usage
 
+Run docker compose in the project folder to startup the postgress instance
+
+```shell
+docker-compose up
+```
+
+And then create the dabase if not present
+
+```shell
+docker exec -it fp-ms-db /bin/bash -c "createdb -U postgres fp_ms_dev"
+```
+
 This is a normal sbt project, you can compile code with `sbt compile` and run it
 with `sbt run`.
 

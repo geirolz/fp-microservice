@@ -6,7 +6,7 @@ import pureconfig.ConfigReader
 
 import java.nio.charset.StandardCharsets
 
-case class Secret private (value: Array[Byte]) {
+case class Secret(value: Array[Byte]) extends AnyVal {
 
   def stringValue: String = new String(value, StandardCharsets.UTF_8)
 
@@ -15,9 +15,6 @@ case class Secret private (value: Array[Byte]) {
 object Secret {
 
   val placeHolder = "** MASKED **"
-
-  def apply(value: Array[Byte]): Secret =
-    new Secret(value)
 
   def apply(value: String): Secret =
     Secret(value.getBytes(StandardCharsets.UTF_8))

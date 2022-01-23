@@ -46,8 +46,8 @@ object AppEnv {
       transactor <- HikariTransactor.newHikariTransactor[IO](
         driverClassName = dbConfig.driver,
         url             = dbConfig.url,
-        user            = dbConfig.user.getOrElse(""),
-        pass            = dbConfig.pass.map(_.stringValue).getOrElse(""),
+        user            = dbConfig.username.getOrElse(""),
+        pass            = dbConfig.password.map(_.stringValue).getOrElse(""),
         nonBlockingOpsECForDoobie
       )
     } yield transactor
@@ -66,7 +66,7 @@ object AppEnv {
       )
       .evalMap(fl4s =>
         logger.debug(s"Applying migration for ${dbConfig.name}") >>
-        fl4s.validateAndMigrate.result.attempt
+        fl4s.migrate.attempt
           .flatMap {
             case Left(ex) =>
               logger.error(ex)(
