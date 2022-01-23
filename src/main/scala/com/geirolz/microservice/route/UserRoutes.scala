@@ -5,15 +5,12 @@ import com.geirolz.microservice.route.endpoint.user.UserEndpointApi
 import com.geirolz.microservice.route.endpoint.user.contract.{UserContract, UserEndpointError}
 import com.geirolz.microservice.service.UserService
 import org.http4s.HttpRoutes
-import scope.{Scope, ScopeContext, TypedScopeContext}
+import scope.{InScope, Scope, ScopeContext, TypedScopeContext}
 import sttp.tapir.server.http4s.Http4sServerInterpreter
 
-class UserRoutes private (userService: UserService) {
+class UserRoutes private (userService: UserService) extends InScope[Scope.Endpoint] {
 
   import scope.syntax.*
-
-  implicit private val scopeCtx: TypedScopeContext[Scope.Endpoint] =
-    ScopeContext.of[Scope.Endpoint]
 
   private val interpreter: Http4sServerInterpreter[IO] =
     Http4sServerInterpreter[IO](ServerConfiguration.options)

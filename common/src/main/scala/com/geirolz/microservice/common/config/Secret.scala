@@ -1,27 +1,14 @@
 package com.geirolz.microservice.common.config
 
 import cats.Show
-import cats.effect.{Async, Resource}
 import io.circe.Encoder
 import pureconfig.ConfigReader
 
-class Secret private (key: String, value: Array[Char]) {
+import java.nio.charset.StandardCharsets
 
-  import cats.implicits.*
+case class Secret private (value: Array[Byte]) {
 
-  def resource[F[_]: Async](
-    logAction: String => F[Unit]
-  ): Resource[F, String] = {
-    var s = value.mkString
-    Resource.make(
-      logAction(s"Using secret '$key'").as(s)
-    )(_ =>
-      Async[F].delay {
-        s = null
-        System.gc()
-      }
-    )
-  }
+  def stringValue: String = new String(value, StandardCharsets.UTF_8)
 
   override def toString: String = Secret.placeHolder
 }
@@ -29,17 +16,18 @@ object Secret {
 
   val placeHolder = "** MASKED **"
 
-  def apply(key: String, value: Array[Char]): Secret = new Secret(key, value)
+  def apply(value: Array[Byte]): Secret =
+    new Secret(value)
 
-  def apply(key: String, value: String): Secret = Secret(key, value.toCharArray)
+  def apply(value: String): Secret =
+    Secret(value.getBytes(StandardCharsets.UTF_8))
 
   implicit val encoderInstanceForSecretString: Encoder[Secret] =
     Encoder.encodeString.contramap(_.toString)
 
   implicit val configReaderForSecretString: ConfigReader[Secret] =
-    ConfigReader.fromCursor(c => {
-      c.asString.map(s => Secret(c.path, s.toCharArray))
-    })
+    ConfigReader.stringConfigReader
+      .map(str => Secret(str.getBytes(StandardCharsets.UTF_8)))
 
   implicit val showInstanceForSecretString: Show[Secret] =
     _ => placeHolder

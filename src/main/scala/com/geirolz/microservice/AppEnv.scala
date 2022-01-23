@@ -18,6 +18,7 @@ case class AppEnv(
 object AppEnv {
 
   import fly4s.implicits.*
+
   implicit private val logger: SelfAwareStructuredLogger[IO] =
     Slf4jLogger.getLogger[IO]
 
@@ -42,14 +43,11 @@ object AppEnv {
   ): Resource[IO, HikariTransactor[IO]] =
     for {
       nonBlockingOpsECForDoobie <- ExecutionContexts.fixedThreadPool[IO](32)
-      dbPass <- dbConfig.pass
-        .map(_.resource[IO](logger.info(_)))
-        .getOrElse(Resource.pure[IO, String](""))
       transactor <- HikariTransactor.newHikariTransactor[IO](
         driverClassName = dbConfig.driver,
         url             = dbConfig.url,
         user            = dbConfig.user.getOrElse(""),
-        pass            = dbPass,
+        pass            = dbConfig.pass.map(_.stringValue).getOrElse(""),
         nonBlockingOpsECForDoobie
       )
     } yield transactor
@@ -67,12 +65,18 @@ object AppEnv {
         )
       )
       .evalMap(fl4s =>
-        for {
-          _               <- logger.debug(s"Applying migration for ${dbConfig.name}")
-          migrationResult <- fl4s.validateAndMigrate[IO].result
-          _ <- logger.info(
-            s" Applied ${migrationResult.migrationsExecuted} migrations to ${dbConfig.name} database"
-          )
-        } yield ()
+        logger.debug(s"Applying migration for ${dbConfig.name}") >>
+        fl4s.validateAndMigrate.result.attempt
+          .flatMap {
+            case Left(ex) =>
+              logger.error(ex)(
+                s"Unable to apply database ${dbConfig.name} migrations."
+              )
+            case Right(result) =>
+              logger.info(
+                s"Applied ${result.migrationsExecuted} " +
+                s"migrations to ${dbConfig.name} database"
+              )
+          }
       )
 }

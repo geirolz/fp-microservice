@@ -9,22 +9,19 @@ import com.geirolz.microservice.route.endpoint.infra.contract.{
   AppMetricsReportContract
 }
 import org.http4s.HttpRoutes
-import scope.{Scope, ScopeContext, TypedScopeContext}
+import scope.{InScope, Scope}
 import sttp.tapir.docs.openapi.{OpenAPIDocsInterpreter, OpenAPIDocsOptions}
 import sttp.tapir.openapi.OpenAPI
 import sttp.tapir.server.http4s.Http4sServerInterpreter
 import sttp.tapir.swagger.SwaggerUI
 
-class MainRoutes private () {
+class MainRoutes private () extends InScope[Scope.Endpoint] {
 
   import cats.implicits.*
   import io.circe.syntax.*
   import scope.syntax.*
   import sttp.tapir.openapi.circe.*
   import sttp.tapir.openapi.circe.yaml.*
-
-  implicit private val scopeCtx: TypedScopeContext[Scope.Endpoint] =
-    ScopeContext.of[Scope.Endpoint]
 
   private val interpreter: Http4sServerInterpreter[IO] =
     Http4sServerInterpreter[IO](ServerConfiguration.options)

@@ -1,8 +1,6 @@
 package com.geirolz.microservice
 
 import cats.effect.{IO, IOApp, Resource, ResourceIO}
-import com.comcast.ip4s.{Hostname, Port}
-import com.geirolz.microservice.Config
 import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.server.Server
 import org.typelevel.log4cats.slf4j.Slf4jLogger
@@ -25,7 +23,7 @@ object App extends IOApp.Simple {
         _      <- logger.info("Configuration successfully loaded.").to[ResourceIO]
 
         // -------------------- ENV ----------------------
-        _   <- resourceLogger.info("Building environment...")
+        _   <- logger.info("Building environment...").to[ResourceIO]
         env <- AppEnv.make(config)
         _   <- logger.info("Environment successfully built.").to[ResourceIO]
 
