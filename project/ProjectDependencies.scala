@@ -61,8 +61,8 @@ object ProjectDependencies {
 
   private val logging = Seq(
     "org.typelevel" %% "log4cats-slf4j" % "2.2.0",
-    "org.slf4j" % "slf4j-api" % "1.7.35",
-    "org.slf4j" % "slf4j-simple" % "1.7.35"
+    "org.slf4j" % "slf4j-api" % "1.7.36",
+    "org.slf4j" % "slf4j-simple" % "1.7.36"
   )
 
   private val tests = Seq(
