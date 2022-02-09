@@ -86,7 +86,7 @@ object ProjectDependencies {
   }
 
   private val rabbitMq = {
-    val fs2RabbitVersion = "4.1.0"
+    val fs2RabbitVersion = "4.1.1"
     Seq(
       "dev.profunktor" %% "fs2-rabbit" % fs2RabbitVersion,
       "dev.profunktor" %% "fs2-rabbit-circe" % fs2RabbitVersion
