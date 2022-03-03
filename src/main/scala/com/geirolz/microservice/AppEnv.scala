@@ -66,17 +66,17 @@ object AppEnv {
       )
       .evalMap(fl4s =>
         logger.debug(s"Applying migration for ${dbConfig.name}") >>
-        fl4s.migrate.attempt
-          .flatMap {
-            case Left(ex) =>
-              logger.error(ex)(
-                s"Unable to apply database ${dbConfig.name} migrations."
-              )
-            case Right(result) =>
-              logger.info(
-                s"Applied ${result.migrationsExecuted} " +
-                s"migrations to ${dbConfig.name} database"
-              )
-          }
+          fl4s.migrate.attempt
+            .flatMap {
+              case Left(ex) =>
+                logger.error(ex)(
+                  s"Unable to apply database ${dbConfig.name} migrations."
+                )
+              case Right(result) =>
+                logger.info(
+                  s"Applied ${result.migrationsExecuted} " +
+                    s"migrations to ${dbConfig.name} database"
+                )
+            }
       )
 }

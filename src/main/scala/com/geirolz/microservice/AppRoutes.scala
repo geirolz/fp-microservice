@@ -11,7 +11,7 @@ import scala.annotation.unused
 class AppRoutes private (@unused config: Config, env: AppEnv) {
   val routes: HttpRoutes[IO] =
     MainRoutes.make.routes <+>
-    UserRoutes.make(env.userService).routes
+      UserRoutes.make(env.userService).routes
 }
 object AppRoutes {
 

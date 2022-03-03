@@ -72,8 +72,8 @@ class MainRoutes private () extends InScope[Scope.Endpoint] {
 
   val routes: HttpRoutes[IO] =
     appInfoRoute <+>
-    appMetricsRoute <+>
-    docsRoute
+      appMetricsRoute <+>
+      docsRoute
 }
 object MainRoutes {
   def make: MainRoutes = new MainRoutes()
