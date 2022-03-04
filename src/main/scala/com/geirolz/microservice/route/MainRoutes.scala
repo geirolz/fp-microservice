@@ -13,7 +13,7 @@ import scope.{InScope, Scope}
 import sttp.tapir.docs.openapi.{OpenAPIDocsInterpreter, OpenAPIDocsOptions}
 import sttp.tapir.openapi.OpenAPI
 import sttp.tapir.server.http4s.Http4sServerInterpreter
-import sttp.tapir.swagger.SwaggerUI
+import sttp.tapir.swagger.{SwaggerUI, SwaggerUIOptions}
 
 class MainRoutes private () extends InScope[Scope.Endpoint] {
 
@@ -64,8 +64,8 @@ class MainRoutes private () extends InScope[Scope.Endpoint] {
     )
     interpreter.toRoutes(
       SwaggerUI[IO](
-        yaml   = yamlDocs,
-        prefix = List("docs")
+        yaml = yamlDocs,
+        SwaggerUIOptions.default.contextPath(List("docs"))
       )
     )
   }
