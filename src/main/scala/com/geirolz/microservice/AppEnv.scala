@@ -17,8 +17,6 @@ case class AppEnv(
 )
 object AppEnv {
 
-  import fly4s.implicits.*
-
   implicit private val logger: SelfAwareStructuredLogger[IO] =
     Slf4jLogger.getLogger[IO]
 
