@@ -1,35 +1,31 @@
 import sbt.addCompilerPlugin
 
-lazy val appName = "fp-microservice"
-lazy val global = (project in file("."))
-  .enablePlugins(BuildInfoPlugin, DockerPlugin)
-  .settings(commonSettings)
-  .settings(
-    Seq(
-      assemblyJarName / assembly := file(s"$appName.jar"),
-      docker / dockerfile := {
-        val artifact: File     = assembly.value
-        val artifactTargetPath = s"/app/${artifact.name}"
+lazy val appName: String = "fp-microservice"
+lazy val appOrg: String  = "com.geirolz"
+lazy val appPackage: String = s"$appOrg.$appName"
+  .replace(" ", "")
+  .replace("-", "")
 
-        new Dockerfile {
-          from("openjdk:8-jre")
-          add(artifact, artifactTargetPath)
-          entryPoint("java", "-jar", artifactTargetPath)
-        }
-      }
-    )
-  )
+lazy val global = (project in file("."))
+  .enablePlugins(BuildInfoPlugin, JavaAppPackaging, DockerPlugin)
+  .settings(commonSettings: _*)
   .settings(
     name := appName,
     description := "Basic template for microservices.",
-    organization := "com.geirolz",
-    buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion),
-    buildInfoPackage := "com.geirolz.microservice"
+    organization := appOrg,
+    buildInfoKeys := List(
+      name,
+      version,
+      scalaVersion,
+      sbtVersion
+    ),
+    buildInfoPackage := appPackage,
+    Compile / mainClass := Some(s"$appPackage.App")
   )
   .dependsOn(common)
 
 lazy val common = (project in file("common"))
-  .settings(commonSettings)
+  .settings(commonSettings: _*)
 
 //------------------------------------------------------------------------------
 lazy val commonSettings = Seq(
