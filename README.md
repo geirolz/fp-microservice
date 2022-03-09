@@ -29,21 +29,21 @@ To customize this project please read the [guide](doc/guide.md)
 
 ### Technologies stack
 
-| SCOPE                               | TECH                                                                        |
-|-------------------------------------|-----------------------------------------------------------------------------|
-| ✅ Effects                           | [cats-effect](https://github.com/typelevel/cats-effect)                     |
-| ✅ Logging                           | [log4cats](https://github.com/typelevel/log4cats)                           |
-| ✅ Jdbc (plain, transactions, etc..) | [doobie](https://github.com/tpolecat/doobie)                                |
-| ✅ Db migration                      | [fly4s](https://github.com/geirolz/fly4s)                                   |
-| ✅ Http client and server            | [http4s](https://github.com/http4s/http4s)                                  |
-| ✅ Http route definitions            | [tapir](https://github.com/softwaremill/tapir)                              |
-| ✅ Config                            | [pureconfig](https://github.com/pureconfig/pureconfig)                      |
-| ✅ Json                              | [circe](https://github.com/circe/circe)                                     |
-| ✅ Tests                             | [scalatest](https://github.com/scalatest/scalatest) planning to use `munit` |
-| ⬜  Rabbit Client                    | [fs2-rabbit](https://github.com/profunktor/fs2-rabbit)                      |
-| ⬜  Kafka Client                     | [fs2-kafka](https://github.com/fd4s/fs2-kafka)                              |
-| ⬜  g8                               |                                                                             |
-| ⬜  Docker                           |                                                                             |
-| ⬜  Scala 3                          |                                                                             |
-| ⬜  Open Telemetry                   |                                                                             |
+| SCOPE                               | TECH                                                    |
+|-------------------------------------|---------------------------------------------------------|
+| ✅ Effects                           | [cats-effect](https://github.com/typelevel/cats-effect) |
+| ✅ Logging                           | [log4cats](https://github.com/typelevel/log4cats)       |
+| ✅ Jdbc (plain, transactions, etc..) | [doobie](https://github.com/tpolecat/doobie)            |
+| ✅ Db migration                      | [fly4s](https://github.com/geirolz/fly4s)               |
+| ✅ Http client and server            | [http4s](https://github.com/http4s/http4s)              |
+| ✅ Http route definitions            | [tapir](https://github.com/softwaremill/tapir)          |
+| ✅ Config                            | [pureconfig](https://github.com/pureconfig/pureconfig)  |
+| ✅ Json                              | [circe](https://github.com/circe/circe)                 |
+| ⬜ Tests                             | [munit](https://github.com/scalameta/munit)             |
+| ⬜ Rabbit Client                     | [fs2-rabbit](https://github.com/profunktor/fs2-rabbit)  |
+| ⬜ Kafka Client                      | [fs2-kafka](https://github.com/fd4s/fs2-kafka)          |
+| ⬜ g8                                |                                                         |
+| ⬜ Docker                            |                                                         |
+| ⬜ Scala 3                           |                                                         |
+| ⬜ Open Telemetry                    |                                                         |
 
