@@ -17,7 +17,7 @@ case class AppEnv(
 )
 object AppEnv {
 
-  implicit private val logger: SelfAwareStructuredLogger[IO] =
+  private val logger: SelfAwareStructuredLogger[IO] =
     Slf4jLogger.getLogger[IO]
 
   def make(config: Config): Resource[IO, AppEnv] =
