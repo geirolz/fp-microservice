@@ -1,5 +1,15 @@
 version: "3"
 services:
+  app:
+    image: "fp-microservice:0.1.0-SNAPSHOT"
+    container_name: "fp-ms"
+    ports:
+      - "9000:8080"
+    environment:
+      - MAIN_DB_HOST="localhost:5432"
+      - MAIN_DB_NAME="fp_ms_dev"
+      - MAIN_DB_USERNAME="postgres"
+      - MAIN_DB_PASSWORD="postgres"
   main-db:
     image: "postgres:14"
     container_name: "fp-ms-db"

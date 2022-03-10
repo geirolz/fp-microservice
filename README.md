@@ -10,25 +10,37 @@ Simple POC for dockerized HTTP microservice using Scala in a functional programm
 
 ### Usage
 
-Run docker compose in the project folder to startup the postgress instance
+Run docker compose in the project folder to startup the postgress instance and app instance
 
 ```shell
 docker-compose up
 ```
 
-And then create the dabase if not present
+And then create the database if not present
 
 ```shell
 docker exec -it fp-ms-db /bin/bash -c "createdb -U postgres fp_ms_dev"
 ```
+
+
+You can reach the app via browser, run
+```shell
+open http://localhost:9000/info
+```
+
+N.B. You should use `http` and not `https` beware that Chrome by default use `https`
+
+--- 
 
 This is a normal sbt project, you can compile code with `sbt compile` and run it
 with `sbt run`.
 
 To customize this project please read the [guide](doc/guide.md)
 
-### Technologies stack
 
+--- 
+
+### Application stack
 | SCOPE                               | TECH                                                    |
 |-------------------------------------|---------------------------------------------------------|
 | ✅ Effects                           | [cats-effect](https://github.com/typelevel/cats-effect) |
@@ -42,8 +54,17 @@ To customize this project please read the [guide](doc/guide.md)
 | ⬜ Tests                             | [munit](https://github.com/scalameta/munit)             |
 | ⬜ Rabbit Client                     | [fs2-rabbit](https://github.com/profunktor/fs2-rabbit)  |
 | ⬜ Kafka Client                      | [fs2-kafka](https://github.com/fd4s/fs2-kafka)          |
-| ⬜ g8                                |                                                         |
-| ⬜ Docker                            |                                                         |
-| ⬜ Scala 3                           |                                                         |
-| ⬜ Open Telemetry                    |                                                         |
 
+
+### Infrastructure stack
+| SCOPE                     | TECH                                       |
+|---------------------------|--------------------------------------------|
+| ⬜ Project as template     | [g8](http://www.foundweekends.org/giter8/) |
+| ✅ Containerized app       | [Docker](https://www.docker.com/)          |
+| ⬜ Containers orchestrator | [K8s](https://kubernetes.io/)              |
+| ⬜ Service mesh            | [Istio](https://istio.io/)                 |
+
+
+#### Nice to have
+- Redis
+- MongoDB

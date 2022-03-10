@@ -10,6 +10,9 @@ lazy val global = (project in file("."))
   .enablePlugins(BuildInfoPlugin, JavaAppPackaging, DockerPlugin)
   .settings(commonSettings: _*)
   .settings(
+    dockerExposedPorts ++= Seq(8080)
+  )
+  .settings(
     name := appName,
     description := "Basic template for microservices.",
     organization := appOrg,

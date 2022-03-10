@@ -16,7 +16,7 @@ object App extends IOApp.Simple {
   override def run: IO[Unit] =
     (
       for {
-        // ---------------- CONFIGURATION ----------------
+        // --------------- CONFIGURATION -----------------
         _      <- logger.info("Loading configuration...").to[ResourceIO]
         config <- loadConfiguration
         _      <- logger.info(config.show).to[ResourceIO]
@@ -27,7 +27,7 @@ object App extends IOApp.Simple {
         env <- AppEnv.make(config)
         _   <- logger.info("Environment successfully built.").to[ResourceIO]
 
-        // -------------------- SERVER ----------------------
+        // ------------------- SERVER --------------------
         _ <- logger.info("Building server...").to[ResourceIO]
         server = buildServer(config, env)
         _ <- logger.info("Server successfully built.").to[ResourceIO]
