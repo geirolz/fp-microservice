@@ -4,6 +4,7 @@ object Api {
 
   import sttp.tapir.*
 
+  val v0: PublicEndpoint[Unit, Unit, Unit, Any] = v(0)
   val v1: PublicEndpoint[Unit, Unit, Unit, Any] = v(1)
   val v2: PublicEndpoint[Unit, Unit, Unit, Any] = v(2)
   val v3: PublicEndpoint[Unit, Unit, Unit, Any] = v(3)

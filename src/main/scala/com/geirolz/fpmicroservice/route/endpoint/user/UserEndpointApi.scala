@@ -3,6 +3,11 @@ package com.geirolz.fpmicroservice.route.endpoint.user
 import com.geirolz.fpmicroservice.common.route.endpoint.Api
 import com.geirolz.fpmicroservice.model.values.UserId
 import com.geirolz.fpmicroservice.route.endpoint.user.contract.{UserContract, UserEndpointError}
+import com.geirolz.fpmicroservice.route.endpoint.user.contract.UserEndpointError.{
+  Unknown,
+  UserNotFound
+}
+import sttp.model.StatusCode
 
 private[route] object UserEndpointApi {
 
@@ -12,7 +17,7 @@ private[route] object UserEndpointApi {
   import sttp.tapir.json.circe.*
 
   private val user: PublicEndpoint[Unit, Unit, Unit, Any] =
-    Api.v1.in("user")
+    Api.v0.in("user")
 
   val getById: PublicEndpoint[UserId, UserEndpointError, UserContract, Any] =
     user.get
@@ -22,5 +27,15 @@ private[route] object UserEndpointApi {
           .validate(Validator.Min(0L, exclusive = true).contramap(_.value))
       )
       .out(jsonBody[UserContract])
-      .errorOut(jsonBody[UserEndpointError])
+      .errorOut(
+        oneOf[UserEndpointError](
+          oneOfVariant(
+            statusCode(StatusCode.NotFound)
+              .and(jsonBody[UserNotFound].description("not found"))
+          ),
+          oneOfDefaultVariant(
+            jsonBody[Unknown].description("unknown")
+          )
+        )
+      )
 }
