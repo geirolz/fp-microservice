@@ -15,7 +15,7 @@ import sttp.tapir.openapi.OpenAPI
 import sttp.tapir.server.http4s.Http4sServerInterpreter
 import sttp.tapir.swagger.{SwaggerUI, SwaggerUIOptions}
 
-class MainRoutes private () extends InScope[Scope.Endpoint] {
+class MainRoutes private extends InScope[Scope.Endpoint] {
 
   import cats.implicits.*
   import io.circe.syntax.*
@@ -76,5 +76,5 @@ class MainRoutes private () extends InScope[Scope.Endpoint] {
       docsRoute
 }
 object MainRoutes {
-  def make: MainRoutes = new MainRoutes()
+  def make: MainRoutes = new MainRoutes
 }
