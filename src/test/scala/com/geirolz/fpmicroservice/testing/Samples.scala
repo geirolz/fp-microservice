@@ -1,4 +1,4 @@
-package com.geirolz.fpmicroserivice.testing
+package com.geirolz.fpmicroservice.testing
 
 import com.geirolz.fpmicroservice.model.values.{Email, FirstName, LastName, MiddleName, UserId}
 import com.geirolz.fpmicroservice.model.User

@@ -1,4 +1,4 @@
-package com.geirolz.fpmicroserivice.testing
+package com.geirolz.fpmicroservice.testing
 
 import cats.effect.IO
 import com.geirolz.fpmicroservice.model.User

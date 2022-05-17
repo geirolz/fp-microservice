@@ -9,7 +9,7 @@ import com.geirolz.fpmicroservice.route.endpoint.user.contract.UserEndpointError
 }
 import sttp.model.StatusCode
 
-private[route] object UserEndpointApi {
+object UserEndpointApi {
 
   import io.circe.generic.auto.*
   import sttp.tapir.*
