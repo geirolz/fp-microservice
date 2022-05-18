@@ -36,7 +36,7 @@ object ProjectDependencies {
 
   private val http = {
     val http4sVersion = "0.23.11"
-    val tapirVersion  = "0.20.1"
+    val tapirVersion  = "0.20.2"
 
     Seq(
       // HTTP
