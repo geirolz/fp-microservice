@@ -25,10 +25,6 @@ lazy val global = (project in file("."))
     buildInfoPackage := appPackage,
     Compile / mainClass := Some(s"$appPackage.App")
   )
-  .dependsOn(common)
-
-lazy val common = (project in file("common"))
-  .settings(commonSettings: _*)
 
 //------------------------------------------------------------------------------
 lazy val commonSettings = Seq(
