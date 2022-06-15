@@ -1,7 +1,7 @@
 version: "3"
 services:
   app:
-    image: "fp-microservice:0.1.0-SNAPSHOT"
+    image: "fp-microservice:latest"
     container_name: "fp-ms"
     ports:
       - "9000:8080"

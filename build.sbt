@@ -1,3 +1,4 @@
+import com.typesafe.sbt.SbtNativePackager.autoImport.packageName
 import sbt.addCompilerPlugin
 
 lazy val appName: String = "fp-microservice"
@@ -8,10 +9,11 @@ lazy val appPackage: String = s"$appOrg.$appName"
 
 lazy val global = (project in file("."))
   .enablePlugins(BuildInfoPlugin, JavaAppPackaging, DockerPlugin)
-  .settings(commonSettings: _*)
   .settings(
-    dockerExposedPorts ++= Seq(8080)
+    addCommandAlias("validate", ";scalafmtSbtCheck;scalafmtCheckAll;compile;test;"),
+    addCommandAlias("deployLocal", ";validate;docker:publishLocal")
   )
+  .settings(commonSettings: _*)
   .settings(
     name := appName,
     description := "Basic template for microservices.",
@@ -25,9 +27,15 @@ lazy val global = (project in file("."))
     buildInfoPackage := appPackage,
     Compile / mainClass := Some(s"$appPackage.App")
   )
+  .settings(dockerSettings: _*)
 
 //------------------------------------------------------------------------------
-lazy val commonSettings = Seq(
+lazy val dockerSettings: Seq[Setting[_]] = Seq(
+  dockerUpdateLatest := true,
+  dockerExposedPorts := Seq(8080)
+)
+
+lazy val commonSettings: Seq[Setting[_]] = Seq(
   // scala
   scalaVersion := "2.13.8",
   scalacOptions ++= scalacSettings,

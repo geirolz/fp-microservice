@@ -11,8 +11,13 @@ Simple POC for dockerized HTTP microservice using Scala in a functional programm
 
 ### Usage
 
-Run docker compose in the project folder to startup the postgress instance and app instance
+Deploy the docker image locally
+```shell
+sbt docker:publishLocal
+```
 
+
+Run docker compose in the project folder to startup the postgress instance and app instance
 ```shell
 docker-compose up
 ```
@@ -42,30 +47,30 @@ To customize this project please read the [guide](doc/guide.md)
 --- 
 
 ### Application stack
-| SCOPE                               | TECH                                                                    |
-|-------------------------------------|-------------------------------------------------------------------------|
-| ✅ Effects                           | [cats-effect](https://github.com/typelevel/cats-effect)                 |
-| ✅ Logging                           | [log4cats](https://github.com/typelevel/log4cats)                       |
-| ✅ Jdbc (plain, transactions, etc..) | [doobie](https://github.com/tpolecat/doobie)                            |
-| ✅ Db migration                      | [fly4s](https://github.com/geirolz/fly4s)                               |
-| ✅ Http client and server            | [http4s](https://github.com/http4s/http4s)                              |
-| ✅ Http route definitions            | [tapir](https://github.com/softwaremill/tapir)                          |
-| ✅ Config                            | [pureconfig](https://github.com/pureconfig/pureconfig)                  |
-| ✅ Json                              | [circe](https://github.com/circe/circe)                                 |
-| ⬜ Rabbit Client                     | [fs2-rabbit](https://github.com/profunktor/fs2-rabbit)                  |
-| ⬜ Kafka Client                      | [fs2-kafka](https://github.com/fd4s/fs2-kafka)                          |
-| ⬜ Unit tests                        | [munit](https://github.com/scalameta/munit)                             |
-| ⬜ IT tests                          | [testcontainers](https://github.com/testcontainers/testcontainers-scala)|
+| SCOPE                               | TECH                                                                     |
+|-------------------------------------|--------------------------------------------------------------------------|
+| ✅ Effects                           | [cats-effect](https://github.com/typelevel/cats-effect)                  |
+| ✅ Logging                           | [log4cats](https://github.com/typelevel/log4cats)                        |
+| ✅ Jdbc (plain, transactions, etc..) | [doobie](https://github.com/tpolecat/doobie)                             |
+| ✅ Db migration                      | [fly4s](https://github.com/geirolz/fly4s)                                |
+| ✅ Http client and server            | [http4s](https://github.com/http4s/http4s)                               |
+| ✅ Http route definitions            | [tapir](https://github.com/softwaremill/tapir)                           |
+| ✅ Config                            | [pureconfig](https://github.com/pureconfig/pureconfig)                   |
+| ✅ Json                              | [circe](https://github.com/circe/circe)                                  |
+| ⬜ Rabbit Client                     | [fs2-rabbit](https://github.com/profunktor/fs2-rabbit)                   |
+| ⬜ Kafka Client                      | [fs2-kafka](https://github.com/fd4s/fs2-kafka)                           |
+| ⬜ Unit tests                        | [munit](https://github.com/scalameta/munit)                              |
+| ⬜ IT tests                          | [testcontainers](https://github.com/testcontainers/testcontainers-scala) |
 
 
 
 ### Infrastructure stack
-| SCOPE                     | TECH                                       |
-|---------------------------|--------------------------------------------|
-| ⬜ Project as template     | [g8](http://www.foundweekends.org/giter8/) |
-| ✅ Containerized app       | [Docker](https://www.docker.com/)          |
-| ⬜ Containers orchestrator | [K8s](https://kubernetes.io/)              |
-| ⬜ Service mesh            | [Istio](https://istio.io/)                 |
+| SCOPE                     | TECH                                                                                 |
+|---------------------------|--------------------------------------------------------------------------------------|
+| ⬜ Project as template     | [g8](http://www.foundweekends.org/giter8/)                                           |
+| ✅ Containerized app       | [Docker](https://www.docker.com/) via [DockerSbt](https://github.com/sbt/docker-sbt) |
+| ⬜ Containers orchestrator | [K8s](https://kubernetes.io/)                                                        |
+| ⬜ Service mesh            | [Istio](https://istio.io/)                                                           |
 
 
 #### Nice to have
