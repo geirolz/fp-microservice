@@ -36,7 +36,7 @@ object ProjectDependencies {
 
   private val http = {
     val http4sVersion = "0.23.12"
-    val tapirVersion  = "0.20.2"
+    val tapirVersion  = "1.0.0-RC3"
 
     Seq(
       // HTTP
@@ -48,15 +48,17 @@ object ProjectDependencies {
       "com.softwaremill.sttp.tapir" %% "tapir-http4s-server" % tapirVersion,
       "com.softwaremill.sttp.tapir" %% "tapir-json-circe" % tapirVersion,
       "com.softwaremill.sttp.tapir" %% "tapir-openapi-docs" % tapirVersion,
-      "com.softwaremill.sttp.tapir" %% "tapir-openapi-circe-yaml" % tapirVersion,
       "com.softwaremill.sttp.tapir" %% "tapir-swagger-ui" % tapirVersion,
-      "com.softwaremill.sttp.tapir" %% "tapir-cats" % tapirVersion
+      "com.softwaremill.sttp.tapir" %% "tapir-cats" % tapirVersion,
+
+      // Open Api YAML
+      "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % "0.2.1"
     )
   }
 
   private val json = Seq(
     "io.circe" %% "circe-core" % "0.14.2",
-    "io.circe" %% "circe-generic-extras" % "0.14.1"
+    "io.circe" %% "circe-generic-extras" % "0.14.2"
   )
 
   private val logging = Seq(
@@ -75,7 +77,7 @@ object ProjectDependencies {
     val doobieVersion = "1.0.0-RC2"
 
     Seq(
-      "com.github.geirolz" %% "fly4s-core" % "0.0.12",
+      "com.github.geirolz" %% "fly4s-core" % "0.0.13",
       "org.tpolecat" %% "doobie-core" % doobieVersion,
       "org.tpolecat" %% "doobie-hikari" % doobieVersion,
       "org.tpolecat" %% "doobie-postgres" % doobieVersion,

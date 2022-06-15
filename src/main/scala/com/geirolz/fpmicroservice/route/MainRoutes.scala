@@ -10,8 +10,8 @@ import com.geirolz.fpmicroservice.route.endpoint.infra.contract.{
 }
 import org.http4s.HttpRoutes
 import scope.{InScope, Scope}
+import sttp.apispec.openapi.OpenAPI
 import sttp.tapir.docs.openapi.{OpenAPIDocsInterpreter, OpenAPIDocsOptions}
-import sttp.tapir.openapi.OpenAPI
 import sttp.tapir.server.http4s.Http4sServerInterpreter
 import sttp.tapir.swagger.{SwaggerUI, SwaggerUIOptions}
 
@@ -20,8 +20,8 @@ class MainRoutes private extends InScope[Scope.Endpoint] {
   import cats.implicits.*
   import io.circe.syntax.*
   import scope.syntax.*
-  import sttp.tapir.openapi.circe.*
-  import sttp.tapir.openapi.circe.yaml.*
+  import sttp.apispec.openapi.circe.*
+  import sttp.apispec.openapi.circe.yaml.*
 
   private val interpreter: Http4sServerInterpreter[IO] =
     Http4sServerInterpreter[IO](ServerConfiguration.options)

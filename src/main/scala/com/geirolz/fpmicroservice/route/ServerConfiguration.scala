@@ -8,11 +8,12 @@ import sttp.tapir.server.interceptor.reject.DefaultRejectHandler
 
 object ServerConfiguration {
 
-  val options: Http4sServerOptions[IO, IO] = Http4sServerOptions
-    .customInterceptors[IO, IO]
-    .rejectHandler(DefaultRejectHandler.default)
-    .decodeFailureHandler(DefaultDecodeFailureHandler.default)
-    .exceptionHandler(DefaultExceptionHandler.handler)
-    .serverLog(Http4sServerOptions.Log.defaultServerLog[IO])
-    .options
+  val options: Http4sServerOptions[IO] =
+    Http4sServerOptions
+      .customiseInterceptors[IO]
+      .rejectHandler(DefaultRejectHandler[IO])
+      .decodeFailureHandler(DefaultDecodeFailureHandler.default)
+      .exceptionHandler(DefaultExceptionHandler[IO])
+      .serverLog(Http4sServerOptions.defaultServerLog[IO])
+      .options
 }

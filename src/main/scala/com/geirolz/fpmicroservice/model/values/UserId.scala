@@ -6,6 +6,6 @@ import sttp.tapir.CodecFormat.TextPlain
 
 case class UserId(value: Long) extends AnyVal
 object UserId {
-  implicit val tapirCodecForUserId: PlainCodec[UserId] =
+  implicit val userIdTapirCodec: PlainCodec[UserId] =
     Codec.long.map(UserId(_))(_.value)
 }
