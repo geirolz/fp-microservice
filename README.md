@@ -31,7 +31,7 @@ docker exec -it fp-ms-db /bin/bash -c "createdb -U postgres fp_ms_dev"
 
 You can reach the app via browser, run
 ```shell
-open http://localhost:9000/info
+open http://localhost:9000/docs
 ```
 
 N.B. You should use `http` and not `https` beware that Chrome by default use `https`
