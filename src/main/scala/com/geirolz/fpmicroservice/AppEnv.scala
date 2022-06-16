@@ -20,7 +20,7 @@ object AppEnv {
   private val logger: SelfAwareStructuredLogger[IO] =
     Slf4jLogger.getLogger[IO]
 
-  def make(config: Config): Resource[IO, AppEnv] =
+  def make(config: AppConfig): Resource[IO, AppEnv] =
     for {
 
       // -------------------- DB --------------------

@@ -5,6 +5,7 @@ import com.geirolz.fpmicroservice.model.values.UserId
 import com.geirolz.fpmicroservice.route.UserRoutes
 import com.geirolz.fpmicroservice.testing.FakeUserService
 import com.geirolz.fpmicroservice.testing.Samples.*
+import com.geirolz.fpmicroservice.AppRoutes
 import org.http4s.{HttpRoutes, Method as Http4Method, Request, Response, Status}
 
 class UserRoutesSuite extends munit.CatsEffectSuite {

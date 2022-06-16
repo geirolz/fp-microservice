@@ -4,8 +4,9 @@ import cats.effect.IO
 import com.geirolz.fpmicroservice.route.endpoint.user.UserEndpointApi
 import com.geirolz.fpmicroservice.route.endpoint.user.contract.{UserContract, UserEndpointError}
 import com.geirolz.fpmicroservice.service.UserService
+import com.geirolz.fpmicroservice.AppRoutes
 import org.http4s.HttpRoutes
-import scope.{InScope, Scope, ScopeContext, TypedScopeContext}
+import scope.{InScope, Scope}
 import sttp.tapir.server.http4s.Http4sServerInterpreter
 
 class UserRoutes private (userService: UserService) extends InScope[Scope.Endpoint] {
@@ -13,7 +14,7 @@ class UserRoutes private (userService: UserService) extends InScope[Scope.Endpoi
   import scope.syntax.*
 
   private val interpreter: Http4sServerInterpreter[IO] =
-    Http4sServerInterpreter[IO](ServerConfiguration.options)
+    Http4sServerInterpreter[IO](AppRoutes.defaultServerOptions)
 
   private val getById: HttpRoutes[IO] =
     interpreter.toRoutes(
@@ -30,6 +31,8 @@ class UserRoutes private (userService: UserService) extends InScope[Scope.Endpoi
   val routes: HttpRoutes[IO] = getById
 }
 object UserRoutes {
-  def make(userService: UserService): UserRoutes =
+  def make(
+    userService: UserService
+  ): UserRoutes =
     new UserRoutes(userService)
 }

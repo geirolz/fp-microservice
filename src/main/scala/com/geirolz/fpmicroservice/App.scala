@@ -36,15 +36,15 @@ object App extends IOApp.Simple {
       logger.info("Starting application...") >> server.useForever
     }
 
-  private def loadConfiguration: ResourceIO[Config] =
+  private def loadConfiguration: ResourceIO[AppConfig] =
     Resource.eval {
-      ConfigSource.default.load[Config] match {
+      ConfigSource.default.load[AppConfig] match {
         case Left(failures) => IO.raiseError(new RuntimeException(failures.prettyPrint()))
         case Right(config)  => IO.pure(config)
       }
     }
 
-  private def buildServer(config: Config, env: AppEnv): ResourceIO[Server] =
+  private def buildServer(config: AppConfig, env: AppEnv): ResourceIO[Server] =
     EmberServerBuilder
       .default[IO]
       .withHost(config.http.server.host)

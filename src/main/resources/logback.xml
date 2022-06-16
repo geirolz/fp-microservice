@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.out</target>
+        <withJansi>true</withJansi>
+        <encoder>
+            <pattern>%date{MM/dd HH:mm:ss.SSS} %highlight(%-5level) [%thread] %cyan(%logger{15}) - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+    <logger name="org.eclipse.jetty.util.log" level="WARN"/>
+    <logger name="org.http4s.blaze.channel.nio1.NIO1SocketServerGroup" level="WARN"/>
+    <logger name="org.http4s.blaze.channel.ServerChannelGroup" level="WARN"/>
+
+</configuration>

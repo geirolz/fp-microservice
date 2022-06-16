@@ -32,8 +32,8 @@ object Secret {
     _ => placeHolder
 }
 
-case class Config(http: HttpConfig, db: DbConfigs)
-object Config {
+case class AppConfig(http: HttpConfig, db: DbConfigs)
+object AppConfig {
 
   import io.circe.generic.auto.*
   import io.circe.syntax.*
@@ -42,7 +42,7 @@ object Config {
   import pureconfig.module.ip4s.*
   import pureconfig.module.http4s.*
 
-  implicit val configReader: ConfigReader[Config]              = deriveReader[Config]
+  implicit val configReader: ConfigReader[AppConfig]           = deriveReader[AppConfig]
   implicit val dbConfigReader: ConfigReader[DatabaseConfig]    = deriveReader[DatabaseConfig]
   implicit val serverConfiggReader: ConfigReader[ServerConfig] = deriveReader[ServerConfig]
 
@@ -56,7 +56,7 @@ object Config {
   implicit val uriCirceEncoder: Encoder[Uri] =
     Encoder.encodeString.contramap(_.renderString)
 
-  implicit val showInstanceForConfig: Show[Config] = _.asJson.toString()
+  implicit val showInstanceForConfig: Show[AppConfig] = _.asJson.toString()
 }
 
 //db
@@ -78,11 +78,5 @@ case class DatabaseConfig(
 case class HttpConfig(server: ServerConfig)
 case class ServerConfig(
   host: Hostname,
-  port: Port,
-  logging: ServerLoggingConfig
+  port: Port
 )
-case class ServerLoggingConfig(
-  request: HttpLoggingConfig,
-  response: HttpLoggingConfig
-)
-case class HttpLoggingConfig(logHeaders: Boolean, logBody: Boolean)

@@ -2,37 +2,40 @@ package com.geirolz.fpmicroservice
 
 import cats.effect.IO
 import cats.implicits.toSemigroupKOps
-import com.geirolz.fpmicroservice.route.{MainRoutes, UserRoutes}
+import com.geirolz.fpmicroservice.route.{DocsRoutes, InfraRoutes, UserRoutes}
 import org.http4s.{HttpApp, HttpRoutes}
-import org.http4s.server.middleware.{RequestLogger, ResponseLogger}
+import sttp.tapir.server.http4s.Http4sServerOptions
+import sttp.tapir.server.interceptor.decodefailure.DefaultDecodeFailureHandler
+import sttp.tapir.server.interceptor.exception.DefaultExceptionHandler
+import sttp.tapir.server.interceptor.reject.DefaultRejectHandler
 
 import scala.annotation.unused
 
-class AppRoutes private (@unused config: Config, env: AppEnv) {
+class AppRoutes private (
+  @unused config: AppConfig,
+  env: AppEnv
+) {
+
   val routes: HttpRoutes[IO] =
-    MainRoutes.make.routes <+>
+    List(
+      InfraRoutes.make.routes,
+      DocsRoutes.make.routes,
       UserRoutes.make(env.userService).routes
+    ).reduce(_ <+> _)
 }
 object AppRoutes {
 
   import org.http4s.implicits.*
 
-  def makeApp(config: Config, env: AppEnv): HttpApp[IO] = {
-    val loggingConfig = config.http.server.logging
-    val loggers: HttpApp[IO] => HttpApp[IO] = {
-      { http: HttpApp[IO] =>
-        RequestLogger.httpApp(
-          logHeaders = loggingConfig.request.logHeaders,
-          logBody    = loggingConfig.request.logBody
-        )(http)
-      } andThen { http: HttpApp[IO] =>
-        ResponseLogger.httpApp(
-          logHeaders = loggingConfig.response.logHeaders,
-          logBody    = loggingConfig.response.logBody
-        )(http)
-      }
-    }
+  val defaultServerOptions: Http4sServerOptions[IO] =
+    Http4sServerOptions
+      .customiseInterceptors[IO]
+      .rejectHandler(DefaultRejectHandler[IO])
+      .decodeFailureHandler(DefaultDecodeFailureHandler.default)
+      .exceptionHandler(DefaultExceptionHandler[IO])
+      .serverLog(Http4sServerOptions.defaultServerLog[IO])
+      .options
 
-    loggers(new AppRoutes(config, env).routes.orNotFound)
-  }
+  def makeApp(config: AppConfig, env: AppEnv): HttpApp[IO] =
+    new AppRoutes(config, env).routes.orNotFound
 }
