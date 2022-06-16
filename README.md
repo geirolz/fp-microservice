@@ -36,13 +36,13 @@ open http://localhost:9000/docs
 
 N.B. You should use `http` and not `https` beware that Chrome by default use `https`
 
+You can also run directly 
+```shell
+./run.sh
+```
 --- 
 
-This is a normal sbt project, you can compile code with `sbt compile` and run it
-with `sbt run`.
-
 To customize this project please read the [guide](doc/guide.md)
-
 
 --- 
 
