@@ -57,24 +57,22 @@ object AppEnv {
     Fly4s
       .makeFor[IO](
         IO.pure(datasource),
-        config = Fly4sConfig(
-          table     = dbConfig.migrationsTable,
-          locations = Location.of(dbConfig.migrationsLocations*)
-        )
+        config = Fly4sConfig.default
+          .withTable(dbConfig.migrationsTable)
+          .withLocations(Location.of(dbConfig.migrationsLocations*))
       )
       .evalMap(fl4s =>
-        logger.debug(s"Applying migration for ${dbConfig.name}") >>
-          fl4s.migrate.attempt
-            .flatMap {
-              case Left(ex) =>
-                logger.error(ex)(
-                  s"Unable to apply database ${dbConfig.name} migrations."
-                )
-              case Right(result) =>
-                logger.info(
-                  s"Applied ${result.migrationsExecuted} " +
-                    s"migrations to ${dbConfig.name} database"
-                )
-            }
+        for {
+          _ <- logger.debug(s"Applying migration for ${dbConfig.name}")
+          result <- fl4s.migrate.onError { ex =>
+            logger.error(ex)(
+              s"Unable to apply database ${dbConfig.name} migrations."
+            )
+          }
+          _ <- logger.info(
+            s"Applied ${result.migrationsExecuted} " +
+              s"migrations to ${dbConfig.name} database"
+          )
+        } yield ()
       )
 }

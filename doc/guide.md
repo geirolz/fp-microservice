@@ -15,7 +15,7 @@
 │   └── route
 │       └── endpoint
 ├── model
-│   └── datatype
+│   └── values
 └── service
 ```
 
@@ -31,3 +31,5 @@
 2. [Logging*](WIP.md)
 
 _* = Work in progress_
+
+
