@@ -42,8 +42,8 @@ object AppEnv {
     for {
       nonBlockingOpsECForDoobie <- ExecutionContexts.fixedThreadPool[IO](32)
       transactor <- HikariTransactor.newHikariTransactor[IO](
-        driverClassName = dbConfig.driver,
-        url             = dbConfig.url,
+        driverClassName = dbConfig.driver.value,
+        url             = dbConfig.url.value,
         user            = dbConfig.username.getOrElse(""),
         pass            = dbConfig.password.map(_.stringValue).getOrElse(""),
         nonBlockingOpsECForDoobie
@@ -58,7 +58,7 @@ object AppEnv {
       .makeFor[IO](
         IO.pure(datasource),
         config = Fly4sConfig.default
-          .withTable(dbConfig.migrationsTable)
+          .withTable(dbConfig.migrationsTable.value)
           .withLocations(Location.of(dbConfig.migrationsLocations*))
       )
       .evalMap(fl4s =>

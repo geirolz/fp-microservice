@@ -16,7 +16,10 @@ object ProjectDependencies {
   ).flatten
 
   private val general = Seq(
-    "com.github.geirolz" %% "scope-core" % "0.0.5"
+    "com.github.geirolz" %% "scope-core" % "0.0.5",
+    "eu.timepit" %% "refined" % "0.9.29",
+    "eu.timepit" %% "refined-cats" % "0.9.29",
+    "eu.timepit" %% "refined-pureconfig" % "0.9.29"
   )
 
   private val effects =
@@ -58,7 +61,8 @@ object ProjectDependencies {
 
   private val json = Seq(
     "io.circe" %% "circe-core" % "0.14.2",
-    "io.circe" %% "circe-generic-extras" % "0.14.2"
+    "io.circe" %% "circe-generic-extras" % "0.14.2",
+    "io.circe" %% "circe-refined" % "0.14.2"
   )
 
   private val logging = Seq(

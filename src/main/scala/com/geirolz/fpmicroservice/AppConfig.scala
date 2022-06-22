@@ -2,6 +2,7 @@ package com.geirolz.fpmicroservice
 
 import cats.Show
 import com.comcast.ip4s.{Hostname, Port}
+import eu.timepit.refined.types.string.NonEmptyString
 import io.circe.Encoder
 import org.http4s.Uri
 import pureconfig.ConfigReader
@@ -37,6 +38,8 @@ object AppConfig {
 
   import io.circe.generic.auto.*
   import io.circe.syntax.*
+  import io.circe.refined.*
+  import eu.timepit.refined.pureconfig.*
   import pureconfig.generic.auto.*
   import pureconfig.generic.semiauto.*
   import pureconfig.module.ip4s.*
@@ -65,12 +68,12 @@ case class DbConfigs(
 )
 
 case class DatabaseConfig(
-  name: String,
-  driver: String,
-  url: String,
+  name: NonEmptyString,
+  driver: NonEmptyString,
+  url: NonEmptyString,
   username: Option[String],
   password: Option[Secret],
-  migrationsTable: String,
+  migrationsTable: NonEmptyString,
   migrationsLocations: List[String]
 )
 
