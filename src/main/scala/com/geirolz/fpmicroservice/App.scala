@@ -1,6 +1,7 @@
 package com.geirolz.fpmicroservice
 
 import cats.effect.{IO, IOApp, Resource, ResourceIO}
+import com.geirolz.fpmicroservice.App.logger
 import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.server.Server
 import org.typelevel.log4cats.slf4j.Slf4jLogger
@@ -16,24 +17,28 @@ object App extends IOApp.Simple {
   override def run: IO[Unit] =
     (
       for {
-        // --------------- CONFIGURATION -----------------
+        // ----------------- CONFIGURATION -------------------
         _      <- logger.info("Loading configuration...").to[ResourceIO]
         config <- loadConfiguration
         _      <- logger.info(config.show).to[ResourceIO]
         _      <- logger.info("Configuration successfully loaded.").to[ResourceIO]
 
-        // -------------------- ENV ----------------------
-        _   <- logger.info("Building environment...").to[ResourceIO]
-        env <- AppEnv.make(config)
-        _   <- logger.info("Environment successfully built.").to[ResourceIO]
+        // -------------------- SERVICES ----------------------
+        _        <- logger.info("Building services environment...").to[ResourceIO]
+        services <- AppServices.make(config)
+        _        <- logger.info("Services environment successfully built.").to[ResourceIO]
 
-        // ------------------- SERVER --------------------
-        _ <- logger.info("Building server...").to[ResourceIO]
-        server = buildServer(config, env)
-        _ <- logger.info("Server successfully built.").to[ResourceIO]
-      } yield server
-    ).use { server =>
-      logger.info("Starting application...") >> server.useForever
+        // ---------------------- APP -------------------------
+        _ <- logger.info("Building app...").to[ResourceIO]
+        resources = AppResources.make(config, services)
+        _ <- logger.info("App successfully built.").to[ResourceIO]
+      } yield resources
+    ).use { resources =>
+      for {
+        _ <- logger.info("Starting application...")
+        _ <- resources.use_
+        _ <- logger.info("Starting application...")
+      } yield ()
     }
 
   private def loadConfiguration: ResourceIO[AppConfig] =
@@ -43,12 +48,4 @@ object App extends IOApp.Simple {
         case Right(config)  => IO.pure(config)
       }
     }
-
-  private def buildServer(config: AppConfig, env: AppEnv): ResourceIO[Server] =
-    EmberServerBuilder
-      .default[IO]
-      .withHost(config.http.server.host)
-      .withPort(config.http.server.port)
-      .withHttpApp(AppRoutes.makeApp(config, env))
-      .build
 }

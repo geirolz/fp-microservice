@@ -13,7 +13,7 @@ import scala.annotation.unused
 
 class AppRoutes private (
   @unused config: AppConfig,
-  env: AppEnv
+  env: AppServices
 ) {
 
   val routes: HttpRoutes[IO] =
@@ -36,6 +36,6 @@ object AppRoutes {
       .serverLog(Http4sServerOptions.defaultServerLog[IO])
       .options
 
-  def makeApp(config: AppConfig, env: AppEnv): HttpApp[IO] =
+  def makeApp(config: AppConfig, env: AppServices): HttpApp[IO] =
     new AppRoutes(config, env).routes.orNotFound
 }
