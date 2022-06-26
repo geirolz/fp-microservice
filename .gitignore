@@ -24,6 +24,9 @@ atlassian-ide-plugin.xml
 
 private.sbt
 
+# INFRA
+.terraform
+
 # MODULES TARGETS
 target/
 modules/core/target/

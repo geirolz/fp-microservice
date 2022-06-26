@@ -13,39 +13,31 @@ object App extends IOApp.Simple {
   import pureconfig.*
 
   private val logger: SelfAwareStructuredLogger[IO] = Slf4jLogger.getLogger[IO]
+  private val appName: String                       = BuildInfo.name
 
   override def run: IO[Unit] =
-    (
-      for {
-        // ----------------- CONFIGURATION -------------------
-        _      <- logger.info("Loading configuration...").to[ResourceIO]
-        config <- loadConfiguration
-        _      <- logger.info(config.show).to[ResourceIO]
-        _      <- logger.info("Configuration successfully loaded.").to[ResourceIO]
+    app
+      .use(appResources => logger.info(s"Starting $appName...") >> appResources.use_)
+      .onCancel(logger.info(s"Shutting down $appName..."))
+      .onError(_ => logger.info(s"Shutting down $appName due an error..."))
 
-        // -------------------- SERVICES ----------------------
-        _        <- logger.info("Building services environment...").to[ResourceIO]
-        services <- AppServices.make(config)
-        _        <- logger.info("Services environment successfully built.").to[ResourceIO]
+  private val app: Resource[IO, ResourceIO[Nothing]] =
+    for {
+      // ----------------- CONFIGURATION -------------------
+      _      <- logger.info("Loading configuration...").to[ResourceIO]
+      config <- IO(ConfigSource.default.loadOrThrow[AppConfig]).to[ResourceIO]
+      _      <- logger.info(config.show).to[ResourceIO]
+      _      <- logger.info("Configuration successfully loaded.").to[ResourceIO]
 
-        // ---------------------- APP -------------------------
-        _ <- logger.info("Building app...").to[ResourceIO]
-        resources = AppResources.make(config, services)
-        _ <- logger.info("App successfully built.").to[ResourceIO]
-      } yield resources
-    ).use { resources =>
-      for {
-        _ <- logger.info("Starting application...")
-        _ <- resources.use_
-        _ <- logger.info("Starting application...")
-      } yield ()
-    }
+      // -------------------- SERVICES ----------------------
+      _        <- logger.info("Building services environment...").to[ResourceIO]
+      services <- AppServices.make(config)
+      _        <- logger.info("Services environment successfully built.").to[ResourceIO]
 
-  private def loadConfiguration: ResourceIO[AppConfig] =
-    Resource.eval {
-      ConfigSource.default.load[AppConfig] match {
-        case Left(failures) => IO.raiseError(new RuntimeException(failures.prettyPrint()))
-        case Right(config)  => IO.pure(config)
-      }
-    }
+      // ---------------------- APP -------------------------
+      _ <- logger.info("Building resources...").to[ResourceIO]
+      resources = AppResources.make(config, services)
+      _ <- logger.info("Resources successfully built.").to[ResourceIO]
+    } yield resources
+
 }

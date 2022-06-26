@@ -38,7 +38,7 @@ object AppServices {
 
   private def createDatabaseTransactor(
     dbConfig: DatabaseConfig
-  ): Resource[IO, HikariTransactor[IO]] =
+  ): ResourceIO[HikariTransactor[IO]] =
     for {
       nonBlockingOpsECForDoobie <- ExecutionContexts.fixedThreadPool[IO](32)
       transactor <- HikariTransactor.newHikariTransactor[IO](

@@ -81,13 +81,19 @@ object ProjectDependencies {
     val doobieVersion = "1.0.0-RC2"
 
     Seq(
+      // migrations
       "com.github.geirolz" %% "fly4s-core" % "0.0.13",
+
+      // management
       "org.tpolecat" %% "doobie-core" % doobieVersion,
       "org.tpolecat" %% "doobie-hikari" % doobieVersion,
       "org.tpolecat" %% "doobie-postgres" % doobieVersion,
       "org.tpolecat" %% "doobie-postgres-circe" % doobieVersion,
       "org.tpolecat" %% "doobie-h2" % doobieVersion,
-      "org.tpolecat" %% "doobie-scalatest" % doobieVersion % Test
+      "org.tpolecat" %% "doobie-scalatest" % doobieVersion % Test,
+
+      // connection
+      "org.postgresql" % "postgresql" % "42.3.6"
     )
   }
 

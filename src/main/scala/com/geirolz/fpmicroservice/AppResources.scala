@@ -13,7 +13,7 @@ object AppResources {
     Resource.eval(
       List(
         buildServer(config, env).useForever
-      ).parSequence.void
+      ).parSequence >> IO.never
     )
   }
 
