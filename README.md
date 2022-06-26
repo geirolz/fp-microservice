@@ -4,49 +4,23 @@
 [![Mergify Status](https://img.shields.io/endpoint.svg?url=https://gh.mergify.io/badges/geirolz/fp-microservice&style=flat)](https://mergify.io)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5c46a629cc5d447ca3d1e36ad776ba19)](https://www.codacy.com/gh/geirolz/fp-microservice/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=geirolz/fp-microservice&amp;utm_campaign=Badge_Grade)
 
----
-
 Simple POC for dockerized HTTP microservice using Scala in a functional programming way.
 
-
-### Usage
-
-Deploy the docker image locally
-```shell
-sbt docker:publishLocal
-```
+1. [Prerequisites](#Prerequisites)
+2. [Stack](#Stack)
+3. [Usage](#Usage)
+4. [Customize](#Customize)
+5. [Roadmap](#Roadmap)
 
 
-Run docker compose in the project folder to startup the postgress instance and app instance
-```shell
-docker-compose up
-```
+## Prerequisites
+- JDK 17 (jenv can help)
+- SBT
+- Docker
+- Minikube
+- Terraform
 
-And then create the database if not present
-
-```shell
-docker exec -it fp-ms-db /bin/bash -c "createdb -U postgres fp_ms_dev"
-```
-
-
-You can reach the app via browser, run
-```shell
-open http://localhost:9000/docs
-```
-
-> ⚠️ **You should use `http`** and not `https` beware that Chrome by default use `https`
-
-You can also run directly 
-
-```shell
-./run.sh
-```
---- 
-
-To customize this project please read the [guide](doc/guide.md)
-
---- 
-
+## Stack
 ### Application stack
 | SCOPE                               | TECH                                                                     |
 |-------------------------------------|--------------------------------------------------------------------------|
@@ -75,6 +49,39 @@ To customize this project please read the [guide](doc/guide.md)
 | ⬜ Service mesh            | [Istio](https://istio.io/)                                                           |
 
 
-#### Nice to have
+## Usage
+You can either run the app directly using 
+```shell
+./run.sh
+```
+
+Or following these steps:
+
+1. Deploy the docker image locally
+```shell
+sbt docker:publishLocal
+```
+
+2. Run docker compose in the project folder to startup the postgress instance and app instance
+```shell
+docker-compose up
+```
+
+3. And then create the database if not present
+```shell
+docker exec -it fp-ms-db /bin/bash -c "createdb -U postgres fp_ms_dev"
+```
+
+4. You can reach the app via browser, run
+```shell
+open http://localhost:9000/docs
+```
+
+> ⚠️ **You should use `http`** and not `https` beware that Chrome by default use `https`
+
+## Customize
+To customize this project please read the [guide](doc/guide.md)
+
+## Roadmap
 - Redis
 - MongoDB
