@@ -34,9 +34,10 @@ You can reach the app via browser, run
 open http://localhost:9000/docs
 ```
 
-N.B. You should use `http` and not `https` beware that Chrome by default use `https`
+> ⚠️ **You should use `http`** and not `https` beware that Chrome by default use `https`
 
 You can also run directly 
+
 ```shell
 ./run.sh
 ```
