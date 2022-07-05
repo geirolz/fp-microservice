@@ -93,7 +93,7 @@ object ProjectDependencies {
       "org.tpolecat" %% "doobie-scalatest" % doobieVersion % Test,
 
       // connection
-      "org.postgresql" % "postgresql" % "42.3.6"
+      "org.postgresql" % "postgresql" % "42.4.0"
     )
   }
 
