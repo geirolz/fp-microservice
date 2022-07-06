@@ -17,15 +17,15 @@ object ProjectDependencies {
 
   private val general = Seq(
     "com.github.geirolz" %% "scope-core" % "0.0.5",
-    "eu.timepit" %% "refined" % "0.9.29",
-    "eu.timepit" %% "refined-cats" % "0.9.29",
-    "eu.timepit" %% "refined-pureconfig" % "0.9.29"
+    "eu.timepit" %% "refined" % "0.10.0",
+    "eu.timepit" %% "refined-cats" % "0.10.0",
+    "eu.timepit" %% "refined-pureconfig" % "0.10.0"
   )
 
   private val effects =
     Seq(
       "org.typelevel" %% "cats-core" % "2.7.0",
-      "org.typelevel" %% "cats-effect" % "3.3.12"
+      "org.typelevel" %% "cats-effect" % "3.3.13"
     )
 
   private val config = {
@@ -39,7 +39,7 @@ object ProjectDependencies {
 
   private val http = {
     val http4sVersion = "0.23.12"
-    val tapirVersion  = "1.0.0-RC3"
+    val tapirVersion  = "1.0.1"
 
     Seq(
       // HTTP
@@ -66,7 +66,7 @@ object ProjectDependencies {
   )
 
   private val logging = Seq(
-    "org.typelevel" %% "log4cats-slf4j" % "2.3.1",
+    "org.typelevel" %% "log4cats-slf4j" % "2.3.2",
     "org.slf4j" % "slf4j-api" % "1.7.36",
     "org.slf4j" % "slf4j-simple" % "1.7.36"
   )
@@ -93,7 +93,7 @@ object ProjectDependencies {
       "org.tpolecat" %% "doobie-scalatest" % doobieVersion % Test,
 
       // connection
-      "org.postgresql" % "postgresql" % "42.3.6"
+      "org.postgresql" % "postgresql" % "42.4.0"
     )
   }
 
