@@ -17,9 +17,9 @@ object ProjectDependencies {
 
   private val general = Seq(
     "com.github.geirolz" %% "scope-core" % "0.0.5",
-    "eu.timepit" %% "refined" % "0.10.0",
-    "eu.timepit" %% "refined-cats" % "0.10.0",
-    "eu.timepit" %% "refined-pureconfig" % "0.10.0"
+    "eu.timepit" %% "refined" % "0.10.1",
+    "eu.timepit" %% "refined-cats" % "0.10.1",
+    "eu.timepit" %% "refined-pureconfig" % "0.10.1"
   )
 
   private val effects =
