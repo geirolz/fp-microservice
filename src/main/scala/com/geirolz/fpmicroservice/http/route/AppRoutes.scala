@@ -1,8 +1,9 @@
-package com.geirolz.fpmicroservice
+package com.geirolz.fpmicroservice.http.route
 
 import cats.effect.IO
 import cats.implicits.toSemigroupKOps
-import com.geirolz.fpmicroservice.route.{DocsRoutes, InfraRoutes, UserRoutes}
+import com.geirolz.fpmicroservice.{AppConfig, AppServices}
+import com.geirolz.fpmicroservice.http.route.ServerRoutes.Http4sServerRoutes
 import org.http4s.{HttpApp, HttpRoutes}
 import sttp.tapir.server.http4s.Http4sServerOptions
 import sttp.tapir.server.interceptor.decodefailure.DefaultDecodeFailureHandler
@@ -16,16 +17,20 @@ class AppRoutes private (
   env: AppServices
 ) {
 
-  val routes: HttpRoutes[IO] =
-    List(
+  val routes: HttpRoutes[IO] = {
+
+    val allRoutes: Http4sServerRoutes[IO] = List(
       InfraRoutes.make.routes,
-      DocsRoutes.make.routes,
       UserRoutes.make(env.userService).routes
     ).reduce(_ <+> _)
+
+    val docRoutes: DocsRoutes = DocsRoutes
+      .fromServerEndpoints(allRoutes.endpoints)
+
+    docRoutes.routes <+> allRoutes.interpretedRoutes
+  }
 }
 object AppRoutes {
-
-  import org.http4s.implicits.*
 
   val defaultServerOptions: Http4sServerOptions[IO] =
     Http4sServerOptions

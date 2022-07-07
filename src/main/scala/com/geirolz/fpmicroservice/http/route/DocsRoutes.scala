@@ -1,16 +1,17 @@
-package com.geirolz.fpmicroservice.route
+package com.geirolz.fpmicroservice.http.route
 
 import cats.effect.IO
+import com.geirolz.fpmicroservice.http.route.endpoint.DocsEndpoints
 import com.geirolz.fpmicroservice.model.AppInfo
-import com.geirolz.fpmicroservice.route.endpoint.{DocsEndpointsApi, EndpointsApi}
-import com.geirolz.fpmicroservice.AppRoutes
 import org.http4s.HttpRoutes
 import sttp.apispec.openapi.OpenAPI
 import sttp.tapir.docs.openapi.{OpenAPIDocsInterpreter, OpenAPIDocsOptions}
 import sttp.tapir.server.http4s.Http4sServerInterpreter
 import sttp.tapir.swagger.{SwaggerUI, SwaggerUIOptions}
+import sttp.tapir.AnyEndpoint
+import sttp.tapir.server.ServerEndpoint
 
-class DocsRoutes private {
+class DocsRoutes private (endpoints: List[AnyEndpoint]) {
 
   import cats.implicits.*
   import io.circe.syntax.*
@@ -23,7 +24,7 @@ class DocsRoutes private {
   val openApi: OpenAPI =
     OpenAPIDocsInterpreter(OpenAPIDocsOptions.default)
       .toOpenAPI(
-        EndpointsApi.all,
+        es      = endpoints,
         title   = AppInfo.value.name,
         version = AppInfo.value.version
       )
@@ -32,11 +33,11 @@ class DocsRoutes private {
   val jsonDocs: String = openApi.asJson.deepDropNullValues.toString
 
   private val yamlDocsRoute: HttpRoutes[IO] = interpreter.toRoutes(
-    DocsEndpointsApi.getYamlDocs.serverLogic(_ => yamlDocs.asRight[Unit].pure[IO])
+    DocsEndpoints.getYamlDocs.serverLogic(_ => yamlDocs.asRight[Unit].pure[IO])
   )
 
   private val jsonDocsRoute: HttpRoutes[IO] = interpreter.toRoutes(
-    DocsEndpointsApi.getJsonDocs
+    DocsEndpoints.getJsonDocs
       .serverLogic(_ => jsonDocs.asRight[Unit].pure[IO])
   )
 
@@ -51,5 +52,6 @@ class DocsRoutes private {
     yamlDocsRoute <+> jsonDocsRoute <+> swaggerUIRoute
 }
 object DocsRoutes {
-  def make: DocsRoutes = new DocsRoutes
+  def fromServerEndpoints[R](serverEndpoints: List[ServerEndpoint[R, IO]]): DocsRoutes =
+    new DocsRoutes(serverEndpoints.map(_.endpoint.asInstanceOf[AnyEndpoint]))
 }

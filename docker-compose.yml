@@ -1,19 +1,5 @@
-version: "3"
+version: "3.9"
 services:
-  app:
-    image: "fp-microservice:latest"
-    container_name: fp-ms
-    ports:
-      - "9000:8080"
-    environment:
-      - MAIN_DB_HOST=fp-ms-db:5432
-      - MAIN_DB_NAME=fp_ms_dev
-      - MAIN_DB_USERNAME=postgres
-      - MAIN_DB_PASSWORD=postgres
-    depends_on:
-      - main-db
-    links:
-      - main-db
   main-db:
     image: "postgres:14"
     container_name: fp-ms-db
@@ -25,3 +11,27 @@ services:
       - POSTGRES_DB=fp_ms_dev
     volumes:
       - /var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD", "pg_isready", "--username=postgres", "--quiet" ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+  app:
+    image: "fp-microservice:latest"
+    container_name: fp-ms
+    ports:
+      - "9000:8080"
+    environment:
+      - MAIN_DB_HOST=fp-ms-db:5432
+      - MAIN_DB_NAME=fp_ms_dev
+      - MAIN_DB_USERNAME=postgres
+      - MAIN_DB_PASSWORD=postgres
+    depends_on:
+      main-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/healthcheck"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+

@@ -1,4 +1,4 @@
-package com.geirolz.fpmicroservice.route.endpoint.infra.contract
+package com.geirolz.fpmicroservice.http.route.endpoint.infra.contract
 
 import com.geirolz.fpmicroservice.model.AppInfo
 import scope.{ModelMapper, Scope}

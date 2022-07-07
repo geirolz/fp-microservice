@@ -1,11 +1,10 @@
 package com.geirolz.fpmicroservice.route.endpoint.user
 
 import cats.effect.IO
+import com.geirolz.fpmicroservice.http.route.UserRoutes
 import com.geirolz.fpmicroservice.model.values.UserId
-import com.geirolz.fpmicroservice.route.UserRoutes
 import com.geirolz.fpmicroservice.testing.FakeUserService
 import com.geirolz.fpmicroservice.testing.Samples.*
-import com.geirolz.fpmicroservice.AppRoutes
 import org.http4s.{HttpRoutes, Method as Http4Method, Request, Response, Status}
 
 class UserRoutesSuite extends munit.CatsEffectSuite {
@@ -23,6 +22,7 @@ class UserRoutesSuite extends munit.CatsEffectSuite {
         )
       )
       .routes
+      .interpretedRoutes
 
     val result: IO[Response[IO]] = routes.orNotFound(
       Request(
@@ -46,6 +46,7 @@ class UserRoutesSuite extends munit.CatsEffectSuite {
       )
     )
     .routes
+    .interpretedRoutes
 
 //  testEndpoint(routes)(UserEndpointApi.getById)(
 //    UserId(1),

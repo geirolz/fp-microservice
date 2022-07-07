@@ -1,4 +1,3 @@
-import com.typesafe.sbt.SbtNativePackager.autoImport.packageName
 import sbt.addCompilerPlugin
 
 lazy val appName: String = "fp-microservice"

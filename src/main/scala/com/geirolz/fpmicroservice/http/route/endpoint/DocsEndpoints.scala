@@ -1,6 +1,6 @@
-package com.geirolz.fpmicroservice.route.endpoint
+package com.geirolz.fpmicroservice.http.route.endpoint
 
-object DocsEndpointsApi {
+object DocsEndpoints {
 
   import io.circe.generic.auto.*
   import sttp.tapir.*

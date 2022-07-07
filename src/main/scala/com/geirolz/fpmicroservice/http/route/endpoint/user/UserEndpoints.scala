@@ -1,15 +1,18 @@
-package com.geirolz.fpmicroservice.route.endpoint.user
+package com.geirolz.fpmicroservice.http.route.endpoint.user
 
-import com.geirolz.fpmicroservice.model.values.UserId
-import com.geirolz.fpmicroservice.route.endpoint.user.contract.{UserContract, UserEndpointError}
-import com.geirolz.fpmicroservice.route.endpoint.user.contract.UserEndpointError.{
+import com.geirolz.fpmicroservice.http.route.endpoint.user.contract.{
+  UserContract,
+  UserEndpointError
+}
+import com.geirolz.fpmicroservice.http.route.endpoint.user.contract.UserEndpointError.{
   Unknown,
   UserNotFound
 }
-import com.geirolz.fpmicroservice.route.endpoint.EndpointsApi
+import com.geirolz.fpmicroservice.http.route.endpoint.Endpoints
+import com.geirolz.fpmicroservice.model.values.UserId
 import sttp.model.StatusCode
 
-object UserEndpointApi {
+object UserEndpoints {
 
   import io.circe.generic.auto.*
   import sttp.tapir.*
@@ -17,7 +20,7 @@ object UserEndpointApi {
   import sttp.tapir.json.circe.*
 
   private val user: PublicEndpoint[Unit, Unit, Unit, Any] =
-    EndpointsApi.Versions.v0.in("user")
+    Endpoints.Versions.v0.in("user")
 
   val getById: PublicEndpoint[UserId, UserEndpointError, UserContract, Any] =
     user.get

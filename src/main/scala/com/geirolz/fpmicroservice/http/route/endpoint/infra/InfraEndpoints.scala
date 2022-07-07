@@ -1,16 +1,19 @@
-package com.geirolz.fpmicroservice.route.endpoint.infra
+package com.geirolz.fpmicroservice.http.route.endpoint.infra
 
-import com.geirolz.fpmicroservice.route.endpoint.infra.contract.{
+import com.geirolz.fpmicroservice.http.route.endpoint.infra.contract.{
   AppInfoContract,
   AppMetricsReportContract
 }
 
-private[route] object InfraEndpointsApi {
+private[route] object InfraEndpoints {
 
   import io.circe.generic.auto.*
   import sttp.tapir.*
   import sttp.tapir.generic.auto.*
   import sttp.tapir.json.circe.*
+
+  val healthcheck: PublicEndpoint[Unit, Unit, Unit, Any] =
+    endpoint.get.in("healthcheck")
 
   val getAppMetrics: PublicEndpoint[Unit, Unit, AppMetricsReportContract, Any] =
     endpoint.get
