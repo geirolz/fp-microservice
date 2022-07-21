@@ -1,6 +1,6 @@
-package com.geirolz.fpmicroservice.http.route.endpoint
+package com.geirolz.fpmicroservice.http.endpoint.api
 
-object Endpoints {
+private[endpoint] object Endpoints {
 
   import sttp.tapir.*
 

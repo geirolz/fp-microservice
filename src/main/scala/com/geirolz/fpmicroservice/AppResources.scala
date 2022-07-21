@@ -1,7 +1,7 @@
 package com.geirolz.fpmicroservice
 
 import cats.effect.{IO, ResourceIO}
-import com.geirolz.fpmicroservice.http.route.AppRoutes
+import com.geirolz.fpmicroservice.http.HttpServerApp
 import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.server.Server
 
@@ -14,11 +14,12 @@ object AppResources {
       buildServer(config, env)
     ).map(_.void).pure[IO]
 
-  private def buildServer(config: AppConfig, env: AppServices): ResourceIO[Server] =
+  private def buildServer(config: AppConfig, env: AppServices): ResourceIO[Server] = {
     EmberServerBuilder
       .default[IO]
       .withHost(config.http.server.host)
       .withPort(config.http.server.port)
-      .withHttpApp(AppRoutes.makeApp(config, env))
+      .withHttpApp(HttpServerApp.make(config, env))
       .build
+  }
 }

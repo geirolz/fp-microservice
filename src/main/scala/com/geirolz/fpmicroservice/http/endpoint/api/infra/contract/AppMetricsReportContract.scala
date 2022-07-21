@@ -1,16 +1,16 @@
-package com.geirolz.fpmicroservice.http.route.endpoint.infra.contract
+package com.geirolz.fpmicroservice.http.endpoint.api.infra.contract
 
 import com.geirolz.fpmicroservice.model.AppMetricsReport
 import scope.{ModelMapper, Scope}
 
-private[route] case class AppMetricsReportContract(
+private[endpoint] case class AppMetricsReportContract(
   usedMemory: Long,
   freeMemory: Long,
   totalMemory: Long,
   maxMemory: Long
 )
 
-private[route] object AppMetricsReportContract {
+private[endpoint] object AppMetricsReportContract {
 
   implicit val scopeEndpointMapper
     : ModelMapper[Scope.Endpoint, AppMetricsReport, AppMetricsReportContract] =

@@ -1,9 +1,9 @@
-package com.geirolz.fpmicroservice.http.route.endpoint.user.contract
+package com.geirolz.fpmicroservice.http.endpoint.api.user.contract
 
 import com.geirolz.fpmicroservice.model.values.UserId
 
-private[route] sealed trait UserEndpointError
-private[route] object UserEndpointError {
+private[endpoint] sealed trait UserEndpointError
+private[endpoint] object UserEndpointError {
   case class UserNotFound(userId: UserId) extends UserEndpointError
   case class Unknown(code: Int, msg: String) extends UserEndpointError
 }

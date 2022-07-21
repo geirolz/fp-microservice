@@ -1,18 +1,15 @@
-package com.geirolz.fpmicroservice.http.route.endpoint.user
+package com.geirolz.fpmicroservice.http.endpoint.api.user
 
-import com.geirolz.fpmicroservice.http.route.endpoint.user.contract.{
-  UserContract,
-  UserEndpointError
-}
-import com.geirolz.fpmicroservice.http.route.endpoint.user.contract.UserEndpointError.{
+import com.geirolz.fpmicroservice.http.endpoint.api.user.contract.{UserContract, UserEndpointError}
+import com.geirolz.fpmicroservice.http.endpoint.api.user.contract.UserEndpointError.{
   Unknown,
   UserNotFound
 }
-import com.geirolz.fpmicroservice.http.route.endpoint.Endpoints
+import com.geirolz.fpmicroservice.http.endpoint.api.Endpoints
 import com.geirolz.fpmicroservice.model.values.UserId
 import sttp.model.StatusCode
 
-object UserEndpoints {
+private[endpoint] object UserEndpoints {
 
   import io.circe.generic.auto.*
   import sttp.tapir.*

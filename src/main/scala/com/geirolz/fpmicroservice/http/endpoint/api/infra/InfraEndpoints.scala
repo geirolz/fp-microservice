@@ -1,11 +1,11 @@
-package com.geirolz.fpmicroservice.http.route.endpoint.infra
+package com.geirolz.fpmicroservice.http.endpoint.api.infra
 
-import com.geirolz.fpmicroservice.http.route.endpoint.infra.contract.{
+import com.geirolz.fpmicroservice.http.endpoint.api.infra.contract.{
   AppInfoContract,
   AppMetricsReportContract
 }
 
-private[route] object InfraEndpoints {
+private[endpoint] object InfraEndpoints {
 
   import io.circe.generic.auto.*
   import sttp.tapir.*

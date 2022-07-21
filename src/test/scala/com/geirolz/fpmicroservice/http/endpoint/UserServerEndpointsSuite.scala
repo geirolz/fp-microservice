@@ -1,28 +1,32 @@
-package com.geirolz.fpmicroservice.route.endpoint.user
+package com.geirolz.fpmicroservice.http.endpoint
 
 import cats.effect.IO
-import com.geirolz.fpmicroservice.http.route.UserRoutes
 import com.geirolz.fpmicroservice.model.values.UserId
 import com.geirolz.fpmicroservice.testing.FakeUserService
 import com.geirolz.fpmicroservice.testing.Samples.*
 import org.http4s.{HttpRoutes, Method as Http4Method, Request, Response, Status}
+import sttp.tapir.server.http4s.Http4sServerInterpreter
 
-class UserRoutesSuite extends munit.CatsEffectSuite {
+class UserServerEndpointsSuite extends munit.CatsEffectSuite {
 
   import org.http4s.implicits.*
 
+  private val interpreter = Http4sServerInterpreter[IO]()
+
   test("Get user by Id route return the user info") {
 
-    val routes: HttpRoutes[IO] = UserRoutes
-      .make(
-        FakeUserService.fromSeq(
-          Seq(
-            aUser(UserId(1))
+    val routes: HttpRoutes[IO] =
+      interpreter.toRoutes(
+        UserServerEndpoints
+          .make(
+            FakeUserService.fromSeq(
+              Seq(
+                aUser(UserId(1))
+              )
+            )
           )
-        )
+          .serverEndpoints
       )
-      .routes
-      .interpretedRoutes
 
     val result: IO[Response[IO]] = routes.orNotFound(
       Request(
@@ -36,17 +40,6 @@ class UserRoutesSuite extends munit.CatsEffectSuite {
       returns  = Status.Ok
     )
   }
-
-  val routes: HttpRoutes[IO] = UserRoutes
-    .make(
-      FakeUserService.fromSeq(
-        Seq(
-          aUser(UserId(1))
-        )
-      )
-    )
-    .routes
-    .interpretedRoutes
 
 //  testEndpoint(routes)(UserEndpointApi.getById)(
 //    UserId(1),

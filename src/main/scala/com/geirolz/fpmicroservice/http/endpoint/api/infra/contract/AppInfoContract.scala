@@ -1,9 +1,9 @@
-package com.geirolz.fpmicroservice.http.route.endpoint.infra.contract
+package com.geirolz.fpmicroservice.http.endpoint.api.infra.contract
 
 import com.geirolz.fpmicroservice.model.AppInfo
 import scope.{ModelMapper, Scope}
 
-private[route] case class AppInfoContract(
+private[endpoint] case class AppInfoContract(
   name: String,
   version: String,
   scalaVersion: String,
@@ -11,7 +11,7 @@ private[route] case class AppInfoContract(
   javaVersion: Option[String]
 )
 
-private[route] object AppInfoContract {
+private[endpoint] object AppInfoContract {
 
   implicit val scopeEndpointMapper: ModelMapper[Scope.Endpoint, AppInfo, AppInfoContract] =
     ModelMapper.scoped[Scope.Endpoint] { c =>
