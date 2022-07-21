@@ -11,10 +11,10 @@ object App extends IOApp.Simple {
 
   override def run: IO[Unit] =
     AppBuilder.build(BuildInfo.name)(
-      logger              = Slf4jLogger.getLogger[IO],
-      configLoader        = IO(ConfigSource.default.loadOrThrow[AppConfig]),
-      servicesBuilder     = config => AppServices.make(config),
-      appResourcesBuilder = (config, services) => AppResources.make(config, services)
+      logger                    = Slf4jLogger.getLogger[IO],
+      configLoader              = IO(ConfigSource.default.loadOrThrow[AppConfig]),
+      dependencyServicesBuilder = config => AppDependencyServices.make(config),
+      providedServicesBuilder   = (config, services) => AppProvidedServices.make(config, services)
     )
 
 }

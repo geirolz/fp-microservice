@@ -11,8 +11,8 @@ object AppBuilder {
   def build[CONFIG: Show, SERVICES](appName: String)(
     logger: StructuredLogger[IO],
     configLoader: IO[CONFIG],
-    servicesBuilder: CONFIG => ResourceIO[SERVICES],
-    appResourcesBuilder: (CONFIG, SERVICES) => IO[List[ResourceIO[Unit]]]
+    dependencyServicesBuilder: CONFIG => ResourceIO[SERVICES],
+    providedServicesBuilder: (CONFIG, SERVICES) => IO[List[ResourceIO[Unit]]]
   ): IO[Unit] = {
 
     val appResources: ResourceIO[List[ResourceIO[Unit]]] =
@@ -25,12 +25,12 @@ object AppBuilder {
 
         // ------------------ --- SERVICES --------------------
         _        <- logger.info("Building services environment...").to[ResourceIO]
-        services <- servicesBuilder(config)
+        services <- dependencyServicesBuilder(config)
         _        <- logger.info("Services environment successfully built.").to[ResourceIO]
 
         // --------------------- RESOURCES --------------------
         _   <- logger.info("Building App...").to[ResourceIO]
-        app <- appResourcesBuilder(config, services).to[ResourceIO]
+        app <- providedServicesBuilder(config, services).to[ResourceIO]
         _   <- logger.info("App successfully built.").to[ResourceIO]
       } yield app
 

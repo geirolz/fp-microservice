@@ -1,7 +1,7 @@
 package com.geirolz.fpmicroservice.http
 
 import cats.effect.IO
-import com.geirolz.fpmicroservice.{AppConfig, AppServices}
+import com.geirolz.fpmicroservice.{AppConfig, AppDependencyServices}
 import com.geirolz.fpmicroservice.http.endpoint.{
   DocsServerEndpoints,
   InfraServerEndpoints,
@@ -30,7 +30,7 @@ object HttpServerApp {
   private def make(
     interpreter: Http4sServerInterpreter[IO],
     @unused config: AppConfig,
-    env: AppServices
+    env: AppDependencyServices
   ): HttpApp[IO] = {
 
     val allServerEndpoints: List[ServerEndpoint[Any, IO]] = List(
@@ -53,7 +53,7 @@ object HttpServerApp {
   def make(
     serverOptions: Http4sServerOptions[IO],
     config: AppConfig,
-    env: AppServices
+    env: AppDependencyServices
   ): HttpApp[IO] =
     make(
       interpreter = Http4sServerInterpreter[IO](serverOptions),
@@ -63,7 +63,7 @@ object HttpServerApp {
 
   def make(
     config: AppConfig,
-    env: AppServices
+    env: AppDependencyServices
   ): HttpApp[IO] =
     make(
       serverOptions = HttpServerApp.defaultServerOptions,
