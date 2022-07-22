@@ -13,10 +13,14 @@ import sttp.tapir.server.interceptor.decodefailure.DefaultDecodeFailureHandler
 import sttp.tapir.server.interceptor.exception.DefaultExceptionHandler
 import sttp.tapir.server.interceptor.reject.DefaultRejectHandler
 import sttp.tapir.server.ServerEndpoint
+import sttp.tapir.server.metrics.prometheus.PrometheusMetrics
 
 import scala.annotation.unused
 
 object HttpServerApp {
+
+  val metrics: PrometheusMetrics[IO] =
+    PrometheusMetrics.default[IO]()
 
   val defaultServerOptions: Http4sServerOptions[IO] =
     Http4sServerOptions
@@ -24,6 +28,7 @@ object HttpServerApp {
       .rejectHandler(DefaultRejectHandler[IO])
       .decodeFailureHandler(DefaultDecodeFailureHandler.default)
       .exceptionHandler(DefaultExceptionHandler[IO])
+      .metricsInterceptor(metrics.metricsInterceptor())
       .serverLog(Http4sServerOptions.defaultServerLog[IO])
       .options
 
@@ -34,7 +39,7 @@ object HttpServerApp {
   ): HttpApp[IO] = {
 
     val allServerEndpoints: List[ServerEndpoint[Any, IO]] = List(
-      InfraServerEndpoints.make.serverEndpoints,
+      InfraServerEndpoints.make(metrics).serverEndpoints,
       UserServerEndpoints.make(env.userService).serverEndpoints
     ).flatten
 
@@ -45,7 +50,7 @@ object HttpServerApp {
 
     interpreter
       .toRoutes(
-        docServerEndpoints ++ allServerEndpoints
+        allServerEndpoints ++ docServerEndpoints
       )
       .orNotFound
   }

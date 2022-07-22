@@ -2,12 +2,17 @@ import sbt._
 
 object ProjectDependencies {
 
+  val http4sVersion     = "0.23.13"
+  val tapirVersion      = "1.0.2"
+  val pureConfigVersion = "0.17.1"
+
   lazy val common: Seq[ModuleID] = Seq(
     general,
     effects,
     config,
     http,
     json,
+    metrics,
     logging,
     tests,
     // externals services
@@ -29,7 +34,6 @@ object ProjectDependencies {
     )
 
   private val config = {
-    val pureConfigVersion = "0.17.1"
     Seq(
       "com.github.pureconfig" %% "pureconfig-core" % pureConfigVersion,
       "com.github.pureconfig" %% "pureconfig-generic" % pureConfigVersion,
@@ -37,10 +41,7 @@ object ProjectDependencies {
     )
   }
 
-  private val http = {
-    val http4sVersion = "0.23.13"
-    val tapirVersion  = "1.0.2"
-
+  private val http =
     Seq(
       // HTTP
       "org.http4s" %% "http4s-dsl" % http4sVersion,
@@ -57,13 +58,17 @@ object ProjectDependencies {
       // Open Api YAML
       "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % "0.2.1"
     )
-  }
 
   private val json = Seq(
     "io.circe" %% "circe-core" % "0.14.2",
     "io.circe" %% "circe-generic-extras" % "0.14.2",
     "io.circe" %% "circe-refined" % "0.14.2"
   )
+
+  private val metrics =
+    Seq(
+      "com.softwaremill.sttp.tapir" %% "tapir-prometheus-metrics" % tapirVersion
+    )
 
   private val logging = Seq(
     "org.typelevel" %% "log4cats-slf4j" % "2.4.0",
