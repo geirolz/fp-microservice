@@ -17,7 +17,7 @@ import sttp.tapir.server.metrics.prometheus.PrometheusMetrics
 
 import scala.annotation.unused
 
-object HttpServerApp {
+object AppHttpServer {
 
   val metrics: PrometheusMetrics[IO] =
     PrometheusMetrics.default[IO]()
@@ -71,7 +71,7 @@ object HttpServerApp {
     env: AppDependencyServices
   ): HttpApp[IO] =
     make(
-      serverOptions = HttpServerApp.defaultServerOptions,
+      serverOptions = AppHttpServer.defaultServerOptions,
       config        = config,
       env           = env
     )

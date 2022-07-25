@@ -1,7 +1,7 @@
 package com.geirolz.fpmicroservice
 
 import cats.effect.{IO, ResourceIO}
-import com.geirolz.fpmicroservice.http.HttpServerApp
+import com.geirolz.fpmicroservice.http.AppHttpServer
 import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.server.Server
 
@@ -19,7 +19,7 @@ object AppProvidedServices {
       .default[IO]
       .withHost(config.http.server.host)
       .withPort(config.http.server.port)
-      .withHttpApp(HttpServerApp.make(config, env))
+      .withHttpApp(AppHttpServer.make(config, env))
       .build
   }
 }
