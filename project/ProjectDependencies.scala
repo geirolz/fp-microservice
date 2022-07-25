@@ -5,6 +5,8 @@ object ProjectDependencies {
   val http4sVersion     = "0.23.13"
   val tapirVersion      = "1.0.2"
   val pureConfigVersion = "0.17.1"
+  val doobieVersion     = "1.0.0-RC2"
+  val fs2RabbitVersion  = "5.0.0"
 
   lazy val common: Seq[ModuleID] = Seq(
     general,
@@ -82,9 +84,7 @@ object ProjectDependencies {
   )
 
   // externals services
-  private val db = {
-    val doobieVersion = "1.0.0-RC2"
-
+  private val db =
     Seq(
       // migrations
       "com.github.geirolz" %% "fly4s-core" % "0.0.13",
@@ -100,13 +100,9 @@ object ProjectDependencies {
       // connection
       "org.postgresql" % "postgresql" % "42.4.0"
     )
-  }
 
-  private val rabbitMq = {
-    val fs2RabbitVersion = "5.0.0"
-    Seq(
-      "dev.profunktor" %% "fs2-rabbit" % fs2RabbitVersion,
-      "dev.profunktor" %% "fs2-rabbit-circe" % fs2RabbitVersion
-    )
-  }
+  private val rabbitMq = Seq(
+    "dev.profunktor" %% "fs2-rabbit" % fs2RabbitVersion,
+    "dev.profunktor" %% "fs2-rabbit-circe" % fs2RabbitVersion
+  )
 }
