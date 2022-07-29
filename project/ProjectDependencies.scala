@@ -3,7 +3,7 @@ import sbt._
 object ProjectDependencies {
 
   val http4sVersion     = "0.23.14"
-  val tapirVersion      = "1.0.2"
+  val tapirVersion      = "1.0.3"
   val pureConfigVersion = "0.17.1"
   val doobieVersion     = "1.0.0-RC2"
   val fs2RabbitVersion  = "5.0.0"
