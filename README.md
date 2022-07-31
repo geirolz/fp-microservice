@@ -52,7 +52,7 @@ Simple POC for dockerized HTTP microservice using Scala in a functional programm
 ## Usage
 You can either run the app directly using 
 ```shell
-./run.sh
+./apply.sh
 ```
 
 Or following these steps:

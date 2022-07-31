@@ -10,7 +10,7 @@ lazy val global = (project in file("."))
   .enablePlugins(BuildInfoPlugin, JavaAppPackaging, DockerPlugin)
   .settings(
     addCommandAlias("validate", ";scalafmtSbtCheck;scalafmtCheckAll;compile;test;"),
-    addCommandAlias("deployLocal", ";validate;docker:publishLocal")
+    addCommandAlias("publishValidLocal", ";validate;docker:publishLocal")
   )
   .settings(commonSettings: _*)
   .settings(

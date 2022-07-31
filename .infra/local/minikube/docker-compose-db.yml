@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  main-db:
+    image: "postgres:14"
+    container_name: minikube-fp-ms-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=fp_ms_dev
+    volumes:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD", "pg_isready", "--username=postgres", "--quiet" ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
