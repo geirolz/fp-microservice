@@ -17,10 +17,10 @@ services:
       timeout: 10s
       retries: 5
   app:
-    image: "fp-microservice:latest"
-    container_name: fp-ms
+    image: ${APP_DOCKER_IMAGE_NAME}:${APP_DOCKER_IMAGE_VERSION}
+    container_name: $APP_NAME
     ports:
-      - "9000:8080"
+      - "${APP_PORT}:${APP_PORT}"
     environment:
       - MAIN_DB_HOST=fp-ms-db:5432
       - MAIN_DB_NAME=fp_ms_dev
@@ -30,7 +30,7 @@ services:
       main-db:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/healthcheck"]
+      test: ["CMD", "curl", "-f", $APP_HEALTHCHECK_ENDPOINT]
       interval: 5s
       timeout: 10s
       retries: 5
