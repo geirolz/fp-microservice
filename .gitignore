@@ -26,9 +26,12 @@ private.sbt
 
 # INFRA
 .terraform
+*.resolved.*
 
 # MODULES TARGETS
 target/
 modules/core/target/
 modules/generic/target/
 /.bsp/sbt.json
+
+
