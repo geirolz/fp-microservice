@@ -7,7 +7,7 @@ pull_request_rules:
       - label!=work-in-progress
     actions:
       merge:
-        method: merge
+        method: rebase
         priority: high
   - name: automatic merge for main when CI passes and author is steward
     conditions:
@@ -16,4 +16,12 @@ pull_request_rules:
       - base=main
     actions:
       merge:
-        method: merge
+        method: rebase
+  - name: automatic merge for main when CI passes and author is dependabot
+    conditions:
+      - author=dependabot
+      - check-success=build (2.13.6)
+      - base=main
+    actions:
+      merge:
+        method: rebase
