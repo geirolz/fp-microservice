@@ -103,7 +103,7 @@ object ProjectDependencies {
       "org.tpolecat" %% "doobie-scalatest" % doobieVersion % Test,
 
       // connection
-      "org.postgresql" % "postgresql" % "42.4.1"
+      "org.postgresql" % "postgresql" % "42.4.2"
     )
 
   private val rabbitMq = Seq(
