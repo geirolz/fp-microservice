@@ -45,7 +45,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: $APP_NAME
+  name: $APP_NAME-service
 spec:
   selector:
     app.kubernetes.io/name: $APP_NAME
@@ -62,7 +62,8 @@ metadata:
   name: $CONFIGMAP_NAME
 data:
   MAIN_DB_NAME: "fp_ms_dev"
-  MAIN_DB_HOST: ${DB_SERVICE_NAME}:${DB_SERVICE_TARGET_PORT}
+  MAIN_DB_HOST: "10.101.196.171:${DB_SERVICE_TARGET_PORT}"
+  MAIN_DB_PORT: "${DB_SERVICE_TARGET_PORT}"
 
 ---
 apiVersion: v1
@@ -76,30 +77,74 @@ data:
 
 ###################### DB ######################
 ---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: $DB_SERVICE_NAME
+  labels:
+    name: $DB_SERVICE_NAME
+spec:
+  selector:
+    matchLabels:
+      app: $DB_SERVICE_NAME
+  serviceName: $DB_SERVICE_NAME
+  replicas: 1 # by default is 1
+  minReadySeconds: 0 # by default is 0
+  template:
+    metadata:
+      labels:
+        app: $DB_SERVICE_NAME
+    spec:
+      containers:
+        - name: $DB_SERVICE_NAME
+          image: postgres:latest
+          ports:
+            - containerPort: $DB_SERVICE_TARGET_PORT
+          volumeMounts:
+          - name: $DB_SERVICE_VOLUME_NAME
+            mountPath: /data
+          env:
+            - name: POSTGRES_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: $SECRET_NAME
+                  key: MAIN_DB_USERNAME
+                  optional: false
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: $SECRET_NAME
+                  key: MAIN_DB_PASSWORD
+                  optional: false
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: $CONFIGMAP_NAME
+                  key: MAIN_DB_NAME
+                  optional: false
+            - name: PGPORT
+              valueFrom:
+                configMapKeyRef:
+                  name: $CONFIGMAP_NAME
+                  key: MAIN_DB_PORT
+                  optional: false
+  volumeClaimTemplates:
+  - metadata:
+      name: $DB_SERVICE_VOLUME_NAME
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 5Gi
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: $DB_SERVICE_NAME
+  name: $DB_SERVICE_NAME-service
 spec:
-  type: NodePort
   selector:
-    app.kubernetes.io/name: $APP_NAME
+    app.kubernetes.io/name: $DB_SERVICE_NAME
   ports:
-    - name: http
-      protocol: TCP
+    - protocol: TCP
       port: $DB_SERVICE_TARGET_PORT
       targetPort: $DB_SERVICE_TARGET_PORT
-  externalIPs:
-    - $DB_SERVICE_TARGET_ADDRESS
-
-#---
-#apiVersion: v1
-#kind: Endpoints
-#metadata:
-#  name: $DB_SERVICE_NAME
-#subsets:
-#  - addresses:
-#      - ip: $DB_SERVICE_TARGET_ADDRESS
-#    ports:
-#      - port: $DB_SERVICE_TARGET_PORT
-#        name: $DB_SERVICE_NAME

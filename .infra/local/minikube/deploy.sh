@@ -8,10 +8,10 @@ export DEPLOYMENT_ENVIRONMENT='local'
 export DEPLOYMENT_NAMESPACE='local'
 export DEPLOYMENT_NAME=$APP_NAME-$DEPLOYMENT_ENVIRONMENT
 # ---
-export DB_SERVICE_NAME=$DEPLOYMENT_NAME-db-service
+export DB_SERVICE_NAME=$DEPLOYMENT_NAME-db
 export DB_SERVICE_INT_PORT=1443
-export DB_SERVICE_TARGET_ADDRESS="10.0.2.2"
 export DB_SERVICE_TARGET_PORT=5432
+export DB_SERVICE_VOLUME_NAME=$DB_SERVICE_NAME-volume
 # ---
 export CONFIGMAP_NAME=$DEPLOYMENT_NAME-config
 export SECRET_NAME=$DEPLOYMENT_NAME-secret
@@ -23,7 +23,7 @@ RESOURCES_FILE="$(envresolve "resources.yml")"
 ALREADY_ON="$(minikube status | grep "kubelet: Running")"
 if [[ -z $ALREADY_ON ]]; then
   ### Start minikube
-  minikube start
+  minikube start --cpus 4 --memory 5g
 
   ### Set docker env
   eval "$(minikube docker-env)"             # unix shells
