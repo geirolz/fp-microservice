@@ -47,7 +47,7 @@ object AppConfig {
 
   implicit val configReader: ConfigReader[AppConfig]           = deriveReader[AppConfig]
   implicit val dbConfigReader: ConfigReader[DatabaseConfig]    = deriveReader[DatabaseConfig]
-  implicit val serverConfiggReader: ConfigReader[ServerConfig] = deriveReader[ServerConfig]
+  implicit val serverConfigReader: ConfigReader[ServerConfig] = deriveReader[ServerConfig]
 
   // ------------------- CIRCE -------------------
   implicit val hostnameCirceEncoder: Encoder[Hostname] =
