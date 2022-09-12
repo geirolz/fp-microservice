@@ -5,21 +5,21 @@ source "../../vars.sh"
 # ---
 export DEPLOYMENT_CONTEXT='minikube'
 export DEPLOYMENT_ENVIRONMENT='local'
-export DEPLOYMENT_NAMESPACE='default'
-export DEPLOYMENT_NAME=$APP_NAME-$DEPLOYMENT_ENVIRONMENT
+export DEPLOYMENT_NAMESPACE='local'
+export DEPLOYMENT_NAME=$APP_NAME
 
 # --- APP ---
-export APP_DEPLOYMENT_NAME=$DEPLOYMENT_NAME
-export APP_DEPLOYMENT_PORT=$APP_PORT
+export APP_DEPLOY_NAME=$DEPLOYMENT_NAME
+export APP_DEPLOY_PORT=$APP_PORT
 
 export APP_SERVICE_NAME=$APP_NAME-service
 export APP_SERVICE_PORT=8080
 # --- DB ---
-export DB_APP_NAME=$DEPLOYMENT_NAME-db
-export DB_APP_TARGET_PORT=5432
-export DB_APP_VOLUME_NAME=$DB_APP_NAME-volume
+export DB_DEPLOY_NAME=$DEPLOYMENT_NAME-db
+export DB_DEPLOY_TARGET_PORT=5432
+export DB_DEPLOY_VOLUME_NAME=$DB_DEPLOY_NAME-volume
 
-export DB_SERVICE_NAME=$DB_APP_NAME-service
+export DB_SERVICE_NAME=$DB_DEPLOY_NAME-service
 export DB_SERVICE_PORT=5432
 
 # --- CONFIG ---
@@ -29,9 +29,14 @@ export SECRET_NAME=$DEPLOYMENT_NAME-secret
 # Generated resolved resource file to use
 RESOURCES_FILE="$(envresolve "resources.yml")"
 
+
 ############################ DEPLOY ###################################
 ALREADY_ON="$(minikube status | grep "kubelet: Running")"
 if [[ -z $ALREADY_ON ]]; then
+
+  ### Deploy APP Docker image
+  (cd "$PROJECT_DIR" || exit; chmod 777 deployImage.sh; ./deployImage.sh) &&
+
   ### Start minikube
   minikube start --cpus 4 --memory 5g
 
@@ -56,7 +61,7 @@ echo -e "$NOCOLOR" &&
 
 #### Check that it's running
 echo -e "$GREEN" &&
-kubectl get pods --namespace=$DEPLOYMENT_NAMESPACE &&
+kubectl get service --namespace=$DEPLOYMENT_NAMESPACE &&
 echo -e "$NOCOLOR" &&
 printf "\n\n" &&
 kubectl logs deployment.apps/"${APP_NAME}" --namespace=$DEPLOYMENT_NAMESPACE
