@@ -3,13 +3,18 @@
 ### load generic infra vars
 source "../../vars.sh"
 
-# Generated resolved docker-compose file to use
+export DB_DEPLOY_NAME=$APP_NAME-db
+
+## Generated resolved docker-compose file to use
 DOCKER_COMPOSE_FILE="$(envresolve "docker-compose.yml")"
 
-### Stop and run
-docker-compose stop -f "$DOCKER_COMPOSE_FILE" &&
-open http://localhost:"$APP_PORT"/docs &&
-docker-compose up -f "$DOCKER_COMPOSE_FILE"
+### Deploy APP Docker image
+(cd "$PROJECT_DIR" || exit; chmod 777 deployImage.sh; ./deployImage.sh) &&
 
-### Init DB
-docker exec -it fp-ms-db /bin/bash -c "createdb -U postgres fp_ms_dev" || true
+### Stop and run
+docker compose -f "$DOCKER_COMPOSE_FILE" stop
+open http://localhost:"$APP_PORT"/docs &&
+docker compose -f "$DOCKER_COMPOSE_FILE" up &&
+
+# Init db
+(docker exec -it "$DB_DEPLOY_NAME" /bin/bash -c "createdb -U postgres $DB_NAME" || true)

@@ -2,13 +2,13 @@ version: "3.9"
 services:
   main-db:
     image: "postgres:14"
-    container_name: fp-ms-db
+    container_name: $DB_DEPLOY_NAME
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=fp_ms_dev
+      - POSTGRES_DB=$DB_NAME
     volumes:
       - /var/lib/postgresql/data
     healthcheck:
@@ -22,8 +22,8 @@ services:
     ports:
       - "${APP_PORT}:${APP_PORT}"
     environment:
-      - MAIN_DB_HOST=fp-ms-db:5432
-      - MAIN_DB_NAME=fp_ms_dev
+      - MAIN_DB_HOST=$DB_DEPLOY_NAME:5432
+      - MAIN_DB_NAME=$DB_NAME
       - MAIN_DB_USERNAME=postgres
       - MAIN_DB_PASSWORD=postgres
     depends_on:

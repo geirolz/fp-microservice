@@ -14,6 +14,9 @@ export APP_DOCKER_IMAGE_VERSION="latest"
 export APP_HEALTHCHECK_PATH="/healthcheck"
 export APP_HEALTHCHECK_ENDPOINT="http://localhost:"${APP_PORT}${APP_HEALTHCHECK_PATH}
 
+# app db
+export DB_NAME="main"
+
 # utils
 PROJECT_DIR_RESULT="$( cd ../../../ && pwd)"
 export PROJECT_DIR=$PROJECT_DIR_RESULT
