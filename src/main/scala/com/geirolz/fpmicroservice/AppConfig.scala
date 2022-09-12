@@ -45,8 +45,8 @@ object AppConfig {
   import pureconfig.module.ip4s.*
   import pureconfig.module.http4s.*
 
-  implicit val configReader: ConfigReader[AppConfig]           = deriveReader[AppConfig]
-  implicit val dbConfigReader: ConfigReader[DatabaseConfig]    = deriveReader[DatabaseConfig]
+  implicit val configReader: ConfigReader[AppConfig]          = deriveReader[AppConfig]
+  implicit val dbConfigReader: ConfigReader[DatabaseConfig]   = deriveReader[DatabaseConfig]
   implicit val serverConfigReader: ConfigReader[ServerConfig] = deriveReader[ServerConfig]
 
   // ------------------- CIRCE -------------------
