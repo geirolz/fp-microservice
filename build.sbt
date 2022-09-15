@@ -1,4 +1,5 @@
 import sbt.addCompilerPlugin
+import ProjectTags.Keys._
 
 lazy val appName: String = "fp-microservice"
 lazy val appOrg: String  = "com.geirolz"
@@ -16,9 +17,15 @@ lazy val global = (project in file("."))
   .settings(
     name := appName,
     description := "Basic template for microservices.",
+    projectInfoTags := List(
+      ProjectTags.scala,
+      ProjectTags.microservice
+    ),
     organization := appOrg,
     buildInfoKeys := List(
       name,
+      description,
+      projectInfoTags,
       version,
       scalaVersion,
       sbtVersion

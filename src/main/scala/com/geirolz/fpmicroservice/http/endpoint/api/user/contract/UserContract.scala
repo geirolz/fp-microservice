@@ -2,7 +2,7 @@ package com.geirolz.fpmicroservice.http.endpoint.api.user.contract
 
 import com.geirolz.fpmicroservice.model.User
 import com.geirolz.fpmicroservice.model.values.*
-import io.circe.{Decoder, Encoder}
+import io.circe.{Codec, Decoder, Encoder}
 import scope.{ModelMapper, Scope}
 
 private[endpoint] case class UserContract(
@@ -17,9 +17,9 @@ private[endpoint] object UserContract {
   import io.circe.generic.auto.*
   import io.circe.generic.semiauto.*
 
-  // circe
-  implicit val circeUserContractEncoder: Encoder[UserContract] = deriveEncoder[UserContract]
-  implicit val circeUserContractDecoder: Decoder[UserContract] = deriveDecoder[UserContract]
+  // json
+  implicit val jsonCodec: Codec[UserContract] =
+    deriveCodec[UserContract]
 
   // scope
   implicit val scopeEndpointMapper: ModelMapper[Scope.Endpoint, User, UserContract] =

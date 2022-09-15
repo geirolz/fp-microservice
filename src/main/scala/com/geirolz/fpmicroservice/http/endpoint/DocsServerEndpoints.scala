@@ -20,8 +20,8 @@ private[http] class DocsServerEndpoints private (endpoints: List[AnyEndpoint]) {
     OpenAPIDocsInterpreter(OpenAPIDocsOptions.default)
       .toOpenAPI(
         es      = endpoints,
-        title   = AppInfo.value.name,
-        version = AppInfo.value.version
+        title   = AppInfo.value.name.value,
+        version = AppInfo.value.version.value
       )
 
   val yamlDocs: String = openApi.toYaml
