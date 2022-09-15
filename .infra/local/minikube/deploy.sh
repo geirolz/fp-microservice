@@ -34,9 +34,6 @@ RESOURCES_FILE="$(envresolve "resources.yml")"
 ALREADY_ON="$(minikube status | grep "kubelet: Running")"
 if [[ -z $ALREADY_ON ]]; then
 
-  ### Deploy APP Docker image
-  (cd "$PROJECT_DIR" || exit; chmod 777 deployImage.sh; ./deployImage.sh) &&
-
   ### Start minikube
   minikube start --cpus 4 --memory 5g
 
@@ -54,6 +51,8 @@ fi
 ### Apply app
 echo -e "$RED"
 echo
+### Deploy APP Docker image
+(cd "$PROJECT_DIR" || exit; chmod 777 deployImage.sh; ./deployImage.sh) &&
 kubectl config use-context minikube &&
 kubectl create namespace $DEPLOYMENT_NAMESPACE || true &&
 kubectl apply -f "$RESOURCES_FILE" --context=$DEPLOYMENT_CONTEXT --namespace=$DEPLOYMENT_NAMESPACE &&
