@@ -2,16 +2,17 @@ import sbt._
 
 object ProjectDependencies {
 
-  val catsVersion       = "2.8.0"
-  val catsEffectVersion = "3.3.14"
-  val http4sVersion     = "0.23.15"
-  val tapirVersion      = "1.1.0"
-  val pureConfigVersion = "0.17.1"
-  val doobieVersion     = "1.0.0-RC2"
-  val fs2RabbitVersion  = "5.0.0"
-  val refinedVersion    = "0.10.1"
-  val circeVersion      = "0.14.2"
-  val slf4Version       = "1.7.36"
+  private val catsVersion       = "2.8.0"
+  private val catsEffectVersion = "3.3.14"
+  private val http4sVersion     = "0.23.15"
+  private val tapirVersion      = "1.1.0"
+  private val pureConfigVersion = "0.17.1"
+  private val doobieVersion     = "1.0.0-RC2"
+  private val fs2RabbitVersion  = "5.0.0"
+  private val refinedVersion    = "0.10.1"
+  private val circeVersion      = "0.14.2"
+  private val slf4Version       = "2.0.0"
+  private val log4catsVersion   = "2.4.0"
 
   lazy val common: Seq[ModuleID] = Seq(
     general,
@@ -78,7 +79,7 @@ object ProjectDependencies {
     )
 
   private val logging = Seq(
-    "org.typelevel" %% "log4cats-slf4j" % "2.4.0",
+    "org.typelevel" %% "log4cats-slf4j" % log4catsVersion,
     "org.slf4j" % "slf4j-api" % slf4Version,
     "org.slf4j" % "slf4j-simple" % slf4Version
   )

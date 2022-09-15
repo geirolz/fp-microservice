@@ -2,13 +2,14 @@ package com.geirolz.fpmicroservice
 
 import cats.Show
 import cats.effect.{IO, ResourceIO}
+import com.geirolz.fpmicroservice.model.AppInfo
 import org.typelevel.log4cats.StructuredLogger
 
 object AppBuilder {
 
   import cats.implicits.*
 
-  def build[CONFIG: Show, SERVICES](appName: String)(
+  def build[CONFIG: Show, SERVICES](appInfo: AppInfo)(
     logger: StructuredLogger[IO],
     configLoader: IO[CONFIG],
     dependencyServicesBuilder: CONFIG => ResourceIO[SERVICES],
@@ -34,12 +35,12 @@ object AppBuilder {
         _   <- logger.info("App successfully built.").to[ResourceIO]
       } yield app
 
-    logger.info(s"Starting $appName...") >>
+    logger.info(s"Starting ${appInfo.buildRefName}...") >>
     appResources
-      .onFinalize(logger.info(s"Shutting down $appName..."))
+      .onFinalize(logger.info(s"Shutting down ${appInfo.name}..."))
       .use(_.parTraverse(_.useForever))
-      .onCancel(logger.info(s"$appName was stopped."))
-      .onError(_ => logger.info(s"$appName was stopped due an error."))
+      .onCancel(logger.info(s"${appInfo.name} was stopped."))
+      .onError(_ => logger.info(s"${appInfo.name} was stopped due an error."))
       .void
   }
 }

@@ -9,6 +9,7 @@ export PROJECT_INFRA_DIR="$PROJECT_DIR_RESULT/.infra"
 # colors
 export RED="\033[1;31m"
 export GREEN="\033[1;32m"
+export BLUE="\033[0;34m"
 export NOCOLOR="\033[0m"
 
 # app
