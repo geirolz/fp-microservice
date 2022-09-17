@@ -12,7 +12,7 @@ object ProjectDependencies {
   private val refinedVersion    = "0.10.1"
   private val circeVersion      = "0.14.2"
   private val slf4Version       = "2.0.0"
-  private val log4catsVersion   = "2.4.0"
+  private val log4catsVersion   = "2.5.0"
 
   lazy val common: Seq[ModuleID] = Seq(
     general,
