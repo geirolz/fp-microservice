@@ -4,7 +4,7 @@ object ProjectDependencies {
 
   private val catsVersion       = "2.8.0"
   private val catsEffectVersion = "3.3.14"
-  private val http4sVersion     = "0.23.15"
+  private val http4sVersion     = "0.23.16"
   private val tapirVersion      = "1.1.0"
   private val pureConfigVersion = "0.17.1"
   private val doobieVersion     = "1.0.0-RC2"
