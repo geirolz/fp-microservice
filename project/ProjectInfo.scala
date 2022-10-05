@@ -1,13 +1,13 @@
-import sbt.{settingKey, ModuleID, SettingKey}
+import sbt.{settingKey, KeyRanks, ModuleID, SettingKey}
 
 object ProjectInfo {
   object Keys {
     val infoTags: SettingKey[Seq[String]] =
-      settingKey[Seq[String]]("Projects info tags")
+      settingKey[Seq[String]]("Projects info tags").withRank(KeyRanks.Invisible)
     val boundedContext: SettingKey[String] =
-      settingKey[String]("Projects bounded context")
+      settingKey[String]("Projects bounded context").withRank(KeyRanks.Invisible)
     val processingPurpose: SettingKey[ProcessingPurpose] =
-      settingKey[ProcessingPurpose]("Projects processing purpose")
+      settingKey[ProcessingPurpose]("Projects processing purpose").withRank(KeyRanks.Invisible)
   }
 
   sealed trait ProcessingPurpose

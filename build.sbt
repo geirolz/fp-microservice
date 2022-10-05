@@ -27,6 +27,7 @@ lazy val global = (project in file("."))
       ProjectInfo.Tags.fromScalaVersion(scalaVersion.value)
     ) ++ ProjectInfo.Tags.fromDependencies(libraryDependencies.value),
     organization := appOrg,
+    // build info
     buildInfoKeys := List(
       name,
       description,
@@ -35,9 +36,12 @@ lazy val global = (project in file("."))
       version,
       scalaVersion,
       sbtVersion,
-      BuildInfoKey.action("builtOn") {
-        System.currentTimeMillis
-      }
+      buildInfoBuildNumber
+    ),
+    buildInfoOptions ++= List(
+      BuildInfoOption.BuildTime,
+      BuildInfoOption.PackagePrivate,
+      BuildInfoOption.ConstantValue
     ),
     buildInfoPackage := appPackage,
     Compile / mainClass := Some(s"$appPackage.App")

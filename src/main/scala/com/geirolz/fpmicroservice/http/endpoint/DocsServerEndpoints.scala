@@ -2,7 +2,7 @@ package com.geirolz.fpmicroservice.http.endpoint
 
 import cats.effect.IO
 import com.geirolz.fpmicroservice.http.endpoint.api.DocsEndpoints
-import com.geirolz.fpmicroservice.model.AppInfo
+import com.geirolz.fpmicroservice.App
 import sttp.apispec.openapi.OpenAPI
 import sttp.tapir.docs.openapi.{OpenAPIDocsInterpreter, OpenAPIDocsOptions}
 import sttp.tapir.swagger.{SwaggerUI, SwaggerUIOptions}
@@ -20,8 +20,8 @@ private[http] class DocsServerEndpoints private (endpoints: List[AnyEndpoint]) {
     OpenAPIDocsInterpreter(OpenAPIDocsOptions.default)
       .toOpenAPI(
         es      = endpoints,
-        title   = AppInfo.value.name.value,
-        version = AppInfo.value.version.value
+        title   = App.info.name.value,
+        version = App.info.version.value
       )
 
   val yamlDocs: String = openApi.toYaml

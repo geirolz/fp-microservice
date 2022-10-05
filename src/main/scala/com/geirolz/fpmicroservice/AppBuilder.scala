@@ -1,44 +1,45 @@
 package com.geirolz.fpmicroservice
 
-import cats.Show
-import cats.effect.{IO, ResourceIO}
-import com.geirolz.fpmicroservice.model.AppInfo
+import cats.{Parallel, Show}
+import cats.effect.{Async, MonadCancel, Resource}
 import org.typelevel.log4cats.StructuredLogger
 
 object AppBuilder {
 
+  import cats.effect.syntax.all.*
   import cats.implicits.*
 
-  def build[CONFIG: Show, SERVICES](appInfo: AppInfo)(
-    logger: StructuredLogger[IO],
-    configLoader: IO[CONFIG],
-    dependencyServicesBuilder: CONFIG => ResourceIO[SERVICES],
-    providedServicesBuilder: (CONFIG, SERVICES) => IO[List[ResourceIO[Unit]]]
-  ): IO[Unit] = {
+  def build[F[_]: Async: Parallel, CONFIG: Show, SERVICES](appInfo: AppInfo)(
+    logger: StructuredLogger[F],
+    configLoader: F[CONFIG],
+    dependencyServicesBuilder: CONFIG => Resource[F, SERVICES],
+    providedServicesBuilder: (CONFIG, SERVICES) => F[List[Resource[F, Unit]]]
+  )(implicit c: MonadCancel[F, ?]): F[Unit] = {
 
-    val appResources: ResourceIO[List[ResourceIO[Unit]]] =
+    val resLogger = logger.mapK(Resource.liftK[F])
+    val appResources: Resource[F, List[Resource[F, Unit]]] =
       for {
         // ------------------- CONFIGURATION ------------------
-        _      <- logger.info("Loading configuration...").to[ResourceIO]
-        config <- configLoader.to[ResourceIO]
-        _      <- logger.info("Configuration successfully loaded.").to[ResourceIO]
-        _      <- logger.info(config.show).to[ResourceIO]
+        _      <- resLogger.info("Loading configuration...")
+        config <- Resource.eval(configLoader)
+        _      <- resLogger.info("Configuration successfully loaded.")
+        _      <- resLogger.info(config.show)
 
-        // ------------------ --- SERVICES --------------------
-        _        <- logger.info("Building services environment...").to[ResourceIO]
+        // ---------------------- SERVICES --------------------
+        _        <- resLogger.info("Building services environment...")
         services <- dependencyServicesBuilder(config)
-        _        <- logger.info("Services environment successfully built.").to[ResourceIO]
+        _        <- resLogger.info("Services environment successfully built.")
 
         // --------------------- RESOURCES --------------------
-        _   <- logger.info("Building App...").to[ResourceIO]
-        app <- providedServicesBuilder(config, services).to[ResourceIO]
-        _   <- logger.info("App successfully built.").to[ResourceIO]
+        _   <- resLogger.info("Building App...")
+        app <- Resource.eval(providedServicesBuilder(config, services))
+        _   <- resLogger.info("App successfully built.")
       } yield app
 
     logger.info(s"Starting ${appInfo.buildRefName}...") >>
     appResources
       .onFinalize(logger.info(s"Shutting down ${appInfo.name}..."))
-      .use(_.parTraverse(_.useForever))
+      .use(_.parTraverse[F, Nothing](_.useForever))
       .onCancel(logger.info(s"${appInfo.name} was stopped."))
       .onError(_ => logger.info(s"${appInfo.name} was stopped due an error."))
       .void
