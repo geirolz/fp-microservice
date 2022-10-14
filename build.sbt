@@ -56,7 +56,7 @@ lazy val dockerSettings: Seq[Setting[_]] = Seq(
 
 lazy val commonSettings: Seq[Setting[_]] = Seq(
   // scala
-  scalaVersion := "2.13.8",
+  scalaVersion := "2.13.10",
   scalacOptions ++= scalacSettings,
   // dependencies
   resolvers ++= ProjectResolvers.all,
