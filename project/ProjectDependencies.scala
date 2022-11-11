@@ -93,7 +93,7 @@ object ProjectDependencies {
   private val db =
     Seq(
       // migrations
-      "com.github.geirolz" %% "fly4s-core" % "0.0.13",
+      "com.github.geirolz" %% "fly4s-core" % "0.0.14",
 
       // management
       "org.tpolecat" %% "doobie-core" % doobieVersion,
