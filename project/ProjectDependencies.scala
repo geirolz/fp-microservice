@@ -6,11 +6,11 @@ object ProjectDependencies {
   private val catsEffectVersion = "3.3.14"
   private val http4sVersion     = "0.23.16"
   private val tapirVersion      = "1.1.0"
-  private val pureConfigVersion = "0.17.1"
+  private val pureConfigVersion = "0.17.2"
   private val doobieVersion     = "1.0.0-RC2"
   private val fs2RabbitVersion  = "5.0.0"
   private val refinedVersion    = "0.10.1"
-  private val circeVersion      = "0.14.2"
+  private val circeVersion      = "0.14.3"
   private val slf4Version       = "2.0.0"
   private val log4catsVersion   = "2.5.0"
 
@@ -93,7 +93,7 @@ object ProjectDependencies {
   private val db =
     Seq(
       // migrations
-      "com.github.geirolz" %% "fly4s-core" % "0.0.13",
+      "com.github.geirolz" %% "fly4s-core" % "0.0.14",
 
       // management
       "org.tpolecat" %% "doobie-core" % doobieVersion,
@@ -104,7 +104,7 @@ object ProjectDependencies {
       "org.tpolecat" %% "doobie-scalatest" % doobieVersion % Test,
 
       // connection
-      "org.postgresql" % "postgresql" % "42.4.2"
+      "org.postgresql" % "postgresql" % "42.5.0"
     )
 
   private val rabbitMq = Seq(
