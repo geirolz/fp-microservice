@@ -3,24 +3,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: $APP_NAME
+  name: $APP_DEPLOY_NAME
   labels:
-    name: $APP_NAME
+    name: $APP_DEPLOY_NAME
 spec:
   selector:
     matchLabels:
-      name: $APP_NAME
+      app: $APP_DEPLOY_NAME
   template:
     metadata:
       labels:
-        name: $APP_NAME
+        app: $APP_DEPLOY_NAME
     spec:
       containers:
-        - name: $APP_NAME
+        - name: $APP_DEPLOY_NAME
           image: $APP_DOCKER_IMAGE_NAME
           imagePullPolicy: Never
           ports:
-            - containerPort: $APP_PORT
+            - containerPort: $APP_DEPLOY_PORT
           envFrom:
             - secretRef:
                 name: $SECRET_NAME
@@ -45,14 +45,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: $APP_NAME
+  name: $APP_SERVICE_NAME
 spec:
   selector:
-    app.kubernetes.io/name: $APP_NAME
+    app: $APP_DEPLOY_NAME
   ports:
     - protocol: TCP
-      port: $APP_PORT
-      targetPort: $APP_PORT
+      port: $APP_SERVICE_PORT
+      targetPort: $APP_DEPLOY_PORT
 
 ###################### CONFIG ######################
 ---
@@ -61,8 +61,9 @@ kind: ConfigMap
 metadata:
   name: $CONFIGMAP_NAME
 data:
-  MAIN_DB_NAME: "fp_ms_dev"
-  MAIN_DB_HOST: ${DB_SERVICE_NAME}:${DB_SERVICE_TARGET_PORT}
+  MAIN_DB_NAME: "$DB_NAME"
+  MAIN_DB_HOST: "$DB_SERVICE_NAME:$DB_SERVICE_PORT"
+  MAIN_DB_PORT: "$DB_SERVICE_PORT"
 
 ---
 apiVersion: v1
@@ -71,35 +72,79 @@ metadata:
   name: $SECRET_NAME
 type: Opaque
 data:
-  MAIN_DB_USERNAME: postgres
-  MAIN_DB_PASSWORD: postgres
+  MAIN_DB_USERNAME: "cG9zdGdyZXM="
+  MAIN_DB_PASSWORD: "cG9zdGdyZXM="
 
 ###################### DB ######################
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: $DB_DEPLOY_NAME
+  labels:
+    name: $DB_DEPLOY_NAME
+spec:
+  selector:
+    matchLabels:
+      app: $DB_DEPLOY_NAME
+  serviceName: $DB_DEPLOY_NAME
+  replicas: 1 # by default is 1
+  minReadySeconds: 0 # by default is 0
+  template:
+    metadata:
+      labels:
+        app: $DB_DEPLOY_NAME
+    spec:
+      containers:
+        - name: $DB_DEPLOY_NAME
+          image: postgres:latest
+          ports:
+            - containerPort: $DB_DEPLOY_TARGET_PORT
+          volumeMounts:
+          - name: $DB_DEPLOY_VOLUME_NAME
+            mountPath: /data
+          env:
+            - name: POSTGRES_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: $SECRET_NAME
+                  key: MAIN_DB_USERNAME
+                  optional: false
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: $SECRET_NAME
+                  key: MAIN_DB_PASSWORD
+                  optional: false
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: $CONFIGMAP_NAME
+                  key: MAIN_DB_NAME
+                  optional: false
+            - name: PGPORT
+              valueFrom:
+                configMapKeyRef:
+                  name: $CONFIGMAP_NAME
+                  key: MAIN_DB_PORT
+                  optional: false
+  volumeClaimTemplates:
+  - metadata:
+      name: $DB_DEPLOY_VOLUME_NAME
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 5Gi
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: $DB_SERVICE_NAME
 spec:
-  type: NodePort
   selector:
-    app.kubernetes.io/name: $APP_NAME
+    app: $DB_DEPLOY_NAME
   ports:
-    - name: http
-      protocol: TCP
-      port: $DB_SERVICE_TARGET_PORT
-      targetPort: $DB_SERVICE_TARGET_PORT
-  externalIPs:
-    - $DB_SERVICE_TARGET_ADDRESS
-
-#---
-#apiVersion: v1
-#kind: Endpoints
-#metadata:
-#  name: $DB_SERVICE_NAME
-#subsets:
-#  - addresses:
-#      - ip: $DB_SERVICE_TARGET_ADDRESS
-#    ports:
-#      - port: $DB_SERVICE_TARGET_PORT
-#        name: $DB_SERVICE_NAME
+    - protocol: TCP
+      port: $DB_SERVICE_PORT
+      targetPort: $DB_DEPLOY_TARGET_PORT

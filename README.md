@@ -49,35 +49,30 @@ Simple POC for dockerized HTTP microservice using Scala in a functional programm
 | ⬜ Service mesh            | [Istio](https://istio.io/)                                                           |
 
 
-## Usage
-You can either run the app directly using 
+## Local Usage
+
+First of all you have to publish the docker image of the app into your local repository with 
 ```shell
-./apply.sh
+./deployImage.sh
 ```
 
-Or following these steps:
+Then you can choose to either run the app with `docker-compose` or `minikube`.
 
-1. Deploy the docker image locally
+### Docker
+Run the deploy script to run the app and the database with docker-compose
 ```shell
-sbt docker:publishLocal
+.infra/local/docker-compose/deploy.sh
 ```
-
-2. Run docker compose in the project folder to startup the postgress instance and app instance
-```shell
-docker-compose up
-```
-
-3. And then create the database if not present
-```shell
-docker exec -it fp-ms-db /bin/bash -c "createdb -U postgres fp_ms_dev"
-```
-
-4. You can reach the app via browser, run
-```shell
-open http://localhost:8080/docs
-```
-
 > ⚠️ **You should use `http`** and not `https` beware that Chrome by default use `https`
+
+
+### Minikube
+Run the deploy script to run the app and the database with minikube.
+Services are not port forwarded by default.
+
+```shell
+.infra/local/minikube/deploy.sh
+```
 
 ## Customize
 To customize this project please read the [guide](doc/guide.md)

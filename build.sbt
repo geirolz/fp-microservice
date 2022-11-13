@@ -1,4 +1,6 @@
 import sbt.addCompilerPlugin
+import ProjectInfo._
+import ProjectInfo.Keys._
 
 lazy val appName: String = "fp-microservice"
 lazy val appOrg: String  = "com.geirolz"
@@ -16,12 +18,30 @@ lazy val global = (project in file("."))
   .settings(
     name := appName,
     description := "Basic template for microservices.",
+    boundedContext := "template",
+    processingPurpose := ProcessingPurpose.OLTP,
+    infoTags := List(
+      ProjectInfo.Tags.scala,
+      ProjectInfo.Tags.microservice,
+      ProjectInfo.Tags.fromProcessingPurpose(processingPurpose.value),
+      ProjectInfo.Tags.fromScalaVersion(scalaVersion.value)
+    ) ++ ProjectInfo.Tags.fromDependencies(libraryDependencies.value),
     organization := appOrg,
+    // build info
     buildInfoKeys := List(
       name,
+      description,
+      boundedContext,
+      infoTags,
       version,
       scalaVersion,
-      sbtVersion
+      sbtVersion,
+      buildInfoBuildNumber
+    ),
+    buildInfoOptions ++= List(
+      BuildInfoOption.BuildTime,
+      BuildInfoOption.PackagePrivate,
+      BuildInfoOption.ConstantValue
     ),
     buildInfoPackage := appPackage,
     Compile / mainClass := Some(s"$appPackage.App")
@@ -36,7 +56,7 @@ lazy val dockerSettings: Seq[Setting[_]] = Seq(
 
 lazy val commonSettings: Seq[Setting[_]] = Seq(
   // scala
-  scalaVersion := "2.13.8",
+  scalaVersion := "2.13.10",
   scalacOptions ++= scalacSettings,
   // dependencies
   resolvers ++= ProjectResolvers.all,

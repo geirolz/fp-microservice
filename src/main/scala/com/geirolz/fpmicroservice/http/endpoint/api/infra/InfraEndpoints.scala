@@ -4,7 +4,6 @@ import com.geirolz.fpmicroservice.http.endpoint.api.infra.contract.AppInfoContra
 
 private[endpoint] object InfraEndpoints {
 
-  import io.circe.generic.auto.*
   import sttp.tapir.*
   import sttp.tapir.generic.auto.*
   import sttp.tapir.json.circe.*
