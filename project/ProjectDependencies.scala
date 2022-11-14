@@ -2,7 +2,7 @@ import sbt._
 
 object ProjectDependencies {
 
-  private val catsVersion       = "2.8.0"
+  private val catsVersion       = "2.9.0"
   private val catsEffectVersion = "3.3.14"
   private val http4sVersion     = "0.23.16"
   private val tapirVersion      = "1.2.0"
