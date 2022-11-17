@@ -2,16 +2,16 @@ import sbt._
 
 object ProjectDependencies {
 
-  private val catsVersion       = "2.8.0"
-  private val catsEffectVersion = "3.3.14"
+  private val catsVersion       = "2.9.0"
+  private val catsEffectVersion = "3.4.0"
   private val http4sVersion     = "0.23.16"
-  private val tapirVersion      = "1.2.0"
+  private val tapirVersion      = "1.2.1"
   private val pureConfigVersion = "0.17.2"
   private val doobieVersion     = "1.0.0-RC2"
   private val fs2RabbitVersion  = "5.0.0"
   private val refinedVersion    = "0.10.1"
   private val circeVersion      = "0.14.3"
-  private val slf4Version       = "2.0.0"
+  private val slf4Version       = "2.0.3"
   private val log4catsVersion   = "2.5.0"
 
   lazy val common: Seq[ModuleID] = Seq(

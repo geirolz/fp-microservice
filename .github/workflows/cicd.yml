@@ -23,7 +23,7 @@ jobs:
       matrix:
         # supported scala versions
         scala:
-          - 2.13.8
+          - 2.13.10
 
     steps:
       - uses: actions/checkout@v3

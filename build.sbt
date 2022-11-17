@@ -8,6 +8,8 @@ lazy val appPackage: String = s"$appOrg.$appName"
   .replace(" ", "")
   .replace("-", "")
 
+lazy val appScalaVersion = "2.13.10"
+
 lazy val global = (project in file("."))
   .enablePlugins(BuildInfoPlugin, JavaAppPackaging, DockerPlugin)
   .settings(
@@ -56,7 +58,7 @@ lazy val dockerSettings: Seq[Setting[_]] = Seq(
 
 lazy val commonSettings: Seq[Setting[_]] = Seq(
   // scala
-  scalaVersion := "2.13.10",
+  scalaVersion := appScalaVersion,
   scalacOptions ++= scalacSettings,
   // dependencies
   resolvers ++= ProjectResolvers.all,
