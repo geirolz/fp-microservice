@@ -11,6 +11,7 @@ private[endpoint] case class AppInfoContract(
   name: NonEmptyString,
   description: NonEmptyString,
   boundedContext: NonEmptyString,
+  processingPurpose: NonEmptyString,
   tags: Seq[NonEmptyString],
   version: NonEmptyString,
   scalaVersion: NonEmptyString,
@@ -34,17 +35,18 @@ private[endpoint] object AppInfoContract {
   implicit val scopeEndpointMapper: ModelMapper[Scope.Endpoint, AppInfo, AppInfoContract] =
     ModelMapper.scoped[Scope.Endpoint] { c =>
       AppInfoContract(
-        name           = c.name,
-        description    = c.description,
-        boundedContext = c.boundedContext,
-        tags           = c.tags,
-        version        = c.version,
-        scalaVersion   = c.scalaVersion,
-        sbtVersion     = c.sbtVersion,
-        javaVersion    = c.javaVersion,
-        builtAt        = c.builtAt,
-        buildNumber    = c.buildNumber,
-        buildRefName   = c.buildRefName
+        name              = c.name,
+        description       = c.description,
+        boundedContext    = c.boundedContext,
+        processingPurpose = c.processingPurpose,
+        tags              = c.tags,
+        version           = c.version,
+        scalaVersion      = c.scalaVersion,
+        sbtVersion        = c.sbtVersion,
+        javaVersion       = c.javaVersion,
+        builtAt           = c.builtAt,
+        buildNumber       = c.buildNumber,
+        buildRefName      = c.buildRefName
       )
     }
 }

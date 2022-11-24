@@ -12,14 +12,15 @@ object App extends IOApp.Simple {
   import pureconfig.*
 
   val info: AppInfo = AppInfo(
-    name           = refine.unsafeFrom(BuildInfo.name),
-    description    = refine.unsafeFrom(BuildInfo.description),
-    boundedContext = refine.unsafeFrom(BuildInfo.boundedContext),
-    tags           = BuildInfo.infoTags.flatMap(NonEmptyString.from(_).toOption),
-    version        = refine.unsafeFrom(BuildInfo.version),
-    scalaVersion   = refine.unsafeFrom(BuildInfo.scalaVersion),
-    sbtVersion     = refine.unsafeFrom(BuildInfo.sbtVersion),
-    javaVersion    = NonEmptyString.from(System.getProperty("java.version")).toOption,
+    name              = refine.unsafeFrom(BuildInfo.name),
+    description       = refine.unsafeFrom(BuildInfo.description),
+    boundedContext    = refine.unsafeFrom(BuildInfo.boundedContext),
+    processingPurpose = refine.unsafeFrom(BuildInfo.processingPurpose),
+    tags              = BuildInfo.tags.flatMap(NonEmptyString.from(_).toOption),
+    version           = refine.unsafeFrom(BuildInfo.version),
+    scalaVersion      = refine.unsafeFrom(BuildInfo.scalaVersion),
+    sbtVersion        = refine.unsafeFrom(BuildInfo.sbtVersion),
+    javaVersion       = NonEmptyString.from(System.getProperty("java.version")).toOption,
     builtAt = LocalDateTime.ofInstant(
       Instant.ofEpochMilli(BuildInfo.builtAtMillis),
       ZoneOffset.UTC

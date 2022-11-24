@@ -23,7 +23,6 @@
 1. [Repository*](WIP.md)
 2. [Service*](WIP.md)
 3. [HTTP client](WIP.md)
-4. [RabbitMQ client*](WIP.md)
 
 #### INFRA
 1. [App configuration*](WIP.md)

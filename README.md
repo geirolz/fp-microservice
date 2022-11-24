@@ -32,9 +32,7 @@ Simple POC for dockerized HTTP microservice using Scala in a functional programm
 | ✅ Http route definitions            | [tapir](https://github.com/softwaremill/tapir)                           |
 | ✅ Config                            | [pureconfig](https://github.com/pureconfig/pureconfig)                   |
 | ✅ Json                              | [circe](https://github.com/circe/circe)                                  |
-| ✅ Refinement types                  | [refined](https://github.com/fthomas/refined)                            |
-| ⬜ Rabbit Client                     | [fs2-rabbit](https://github.com/profunktor/fs2-rabbit)                   |
-| ⬜ Kafka Client                      | [fs2-kafka](https://github.com/fd4s/fs2-kafka)                           |
+| ✅ Refinement types                  | [refined](https://github.com/fthomas/refined)                            |                        |
 | ⬜ Unit tests                        | [munit](https://github.com/scalameta/munit)                              |
 | ⬜ IT tests                          | [testcontainers](https://github.com/testcontainers/testcontainers-scala) |
 
@@ -76,7 +74,3 @@ Services are not port forwarded by default.
 
 ## Customize
 To customize this project please read the [guide](doc/guide.md)
-
-## Roadmap
-- Redis
-- MongoDB

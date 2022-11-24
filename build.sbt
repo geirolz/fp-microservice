@@ -1,15 +1,14 @@
 import sbt.addCompilerPlugin
-import ProjectInfo._
-import ProjectInfo.Keys._
+import ServiceInfoPlugin.Keys._
 
-lazy val appName: String = "fp-microservice"
-lazy val appOrg: String  = "com.geirolz"
-lazy val appPackage: String = s"$appOrg.$appName"
-  .replace(" ", "")
-  .replace("-", "")
+lazy val appName               = "fp-microservice"
+lazy val appDescription        = "Basic template for microservices."
+lazy val appOrg                = "com.geirolz"
+lazy val appPackage            = s"$appOrg.$appName".replace(" ", "").replace("-", "")
+lazy val appScalaVersion       = "2.13.10"
+lazy val appDockerExposedPorts = Seq(8080)
 
-lazy val appScalaVersion = "2.13.10"
-
+//------------------------------------------------------------------------------
 lazy val global = (project in file("."))
   .enablePlugins(BuildInfoPlugin, JavaAppPackaging, DockerPlugin)
   .settings(
@@ -19,22 +18,21 @@ lazy val global = (project in file("."))
   .settings(commonSettings: _*)
   .settings(
     name := appName,
-    description := "Basic template for microservices.",
-    boundedContext := "template",
-    processingPurpose := ProcessingPurpose.OLTP,
-    infoTags := List(
-      ProjectInfo.Tags.scala,
-      ProjectInfo.Tags.microservice,
-      ProjectInfo.Tags.fromProcessingPurpose(processingPurpose.value),
-      ProjectInfo.Tags.fromScalaVersion(scalaVersion.value)
-    ) ++ ProjectInfo.Tags.fromDependencies(libraryDependencies.value),
+    description := appDescription,
+    serviceInfo := ServiceInfo.of(
+      boundedContext    = BoundedContext("template"),
+      processingPurpose = ProcessingPurpose.OLTP,
+      Set(
+        Tag.Languages.scala,
+        Tag.microservice,
+        Tag.fromScalaVersion(scalaVersion.value)
+      ) ++ Tag.fromDependencies(libraryDependencies.value)
+    ),
     organization := appOrg,
     // build info
-    buildInfoKeys := List(
+    buildInfoKeys := ServiceInfo.deriveBuildInfoKeys(serviceInfo.value) ++ List[BuildInfoKey](
       name,
       description,
-      boundedContext,
-      infoTags,
       version,
       scalaVersion,
       sbtVersion,
@@ -53,7 +51,7 @@ lazy val global = (project in file("."))
 //------------------------------------------------------------------------------
 lazy val dockerSettings: Seq[Setting[_]] = Seq(
   dockerUpdateLatest := true,
-  dockerExposedPorts := Seq(8080)
+  dockerExposedPorts := appDockerExposedPorts
 )
 
 lazy val commonSettings: Seq[Setting[_]] = Seq(

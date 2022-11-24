@@ -8,6 +8,7 @@ trait AppInfo {
   val name: NonEmptyString
   val description: NonEmptyString
   val boundedContext: NonEmptyString
+  val processingPurpose: NonEmptyString
   val tags: Seq[NonEmptyString]
   val version: NonEmptyString
   val scalaVersion: NonEmptyString
@@ -24,6 +25,7 @@ object AppInfo {
     name: NonEmptyString,
     description: NonEmptyString,
     boundedContext: NonEmptyString,
+    processingPurpose: NonEmptyString,
     tags: Seq[NonEmptyString],
     version: NonEmptyString,
     scalaVersion: NonEmptyString,
@@ -33,22 +35,24 @@ object AppInfo {
     buildNumber: NonEmptyString
   ): AppInfo =
     new Basic(
-      name           = name,
-      description    = description,
-      boundedContext = boundedContext,
-      tags           = tags,
-      version        = version,
-      scalaVersion   = scalaVersion,
-      sbtVersion     = sbtVersion,
-      javaVersion    = javaVersion,
-      builtAt        = builtAt,
-      buildNumber    = buildNumber
+      name              = name,
+      description       = description,
+      boundedContext    = boundedContext,
+      processingPurpose = processingPurpose,
+      tags              = tags,
+      version           = version,
+      scalaVersion      = scalaVersion,
+      sbtVersion        = sbtVersion,
+      javaVersion       = javaVersion,
+      builtAt           = builtAt,
+      buildNumber       = buildNumber
     )
 
   class Basic(
     val name: NonEmptyString,
     val description: NonEmptyString,
     val boundedContext: NonEmptyString,
+    val processingPurpose: NonEmptyString,
     val tags: Seq[NonEmptyString],
     val version: NonEmptyString,
     val scalaVersion: NonEmptyString,
