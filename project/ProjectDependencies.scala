@@ -29,7 +29,7 @@ object ProjectDependencies {
   ).flatten
 
   private val general = Seq(
-    "com.github.geirolz" %% "scope-core" % "0.0.6",
+    "com.github.geirolz" %% "scope-core" % "0.0.7",
     "eu.timepit" %% "refined" % refinedVersion,
     "eu.timepit" %% "refined-cats" % refinedVersion,
     "eu.timepit" %% "refined-pureconfig" % refinedVersion
