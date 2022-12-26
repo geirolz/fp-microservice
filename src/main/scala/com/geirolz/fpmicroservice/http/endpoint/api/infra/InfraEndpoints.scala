@@ -1,6 +1,6 @@
 package com.geirolz.fpmicroservice.http.endpoint.api.infra
 
-import com.geirolz.fpmicroservice.http.endpoint.api.infra.contract.AppInfoContract
+import com.geirolz.fpmicroservice.http.endpoint.api.infra.contract.AppInfoResponse
 
 private[endpoint] object InfraEndpoints {
 
@@ -11,8 +11,8 @@ private[endpoint] object InfraEndpoints {
   val healthcheck: PublicEndpoint[Unit, Unit, Unit, Any] =
     endpoint.get.in("healthcheck")
 
-  val getAppInfo: PublicEndpoint[Unit, Unit, AppInfoContract, Any] =
+  val getAppInfo: PublicEndpoint[Unit, Unit, AppInfoResponse, Any] =
     endpoint.get
       .in("info")
-      .out(jsonBody[AppInfoContract])
+      .out(jsonBody[AppInfoResponse])
 }

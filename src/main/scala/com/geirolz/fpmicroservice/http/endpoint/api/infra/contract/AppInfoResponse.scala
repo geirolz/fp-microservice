@@ -7,7 +7,7 @@ import scope.{ModelMapper, Scope}
 
 import java.time.LocalDateTime
 
-private[endpoint] case class AppInfoContract(
+private[endpoint] case class AppInfoResponse(
   name: NonEmptyString,
   description: NonEmptyString,
   boundedContext: NonEmptyString,
@@ -22,19 +22,19 @@ private[endpoint] case class AppInfoContract(
   buildRefName: NonEmptyString
 )
 
-private[endpoint] object AppInfoContract {
+private[endpoint] object AppInfoResponse {
 
   import io.circe.generic.semiauto.*
   import io.circe.refined.*
 
   // json
-  implicit val jsonCodec: Codec[AppInfoContract] =
-    deriveCodec[AppInfoContract]
+  implicit val jsonCodec: Codec[AppInfoResponse] =
+    deriveCodec[AppInfoResponse]
 
   // scope
-  implicit val scopeEndpointMapper: ModelMapper[Scope.Endpoint, AppInfo, AppInfoContract] =
+  implicit val scopeEndpointMapper: ModelMapper[Scope.Endpoint, AppInfo, AppInfoResponse] =
     ModelMapper.scoped[Scope.Endpoint] { c =>
-      AppInfoContract(
+      AppInfoResponse(
         name              = c.name,
         description       = c.description,
         boundedContext    = c.boundedContext,

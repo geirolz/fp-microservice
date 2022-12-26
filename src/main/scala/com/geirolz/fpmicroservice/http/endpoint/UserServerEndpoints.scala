@@ -2,7 +2,7 @@ package com.geirolz.fpmicroservice.http.endpoint
 
 import cats.effect.IO
 import com.geirolz.fpmicroservice.http.endpoint.api.user.UserEndpoints
-import com.geirolz.fpmicroservice.http.endpoint.api.user.contract.{UserContract, UserEndpointError}
+import com.geirolz.fpmicroservice.http.endpoint.api.user.contract.{UserDetailsResponse, UserEndpointError}
 import com.geirolz.fpmicroservice.service.UserService
 import scope.{InScope, Scope}
 import sttp.tapir.server.ServerEndpoint
@@ -18,7 +18,7 @@ private[http] class UserServerEndpoints private (userService: UserService)
         userService
           .getById(userId)
           .map {
-            case Some(user) => Right(user.scoped.as[UserContract])
+            case Some(user) => Right(user.scoped.as[UserDetailsResponse])
             case None       => Left(UserEndpointError.UserNotFound(userId))
           }
       })

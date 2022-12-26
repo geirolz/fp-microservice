@@ -1,6 +1,6 @@
 package com.geirolz.fpmicroservice.http.endpoint.api.user
 
-import com.geirolz.fpmicroservice.http.endpoint.api.user.contract.{UserContract, UserEndpointError}
+import com.geirolz.fpmicroservice.http.endpoint.api.user.contract.{UserDetailsResponse, UserEndpointError}
 import com.geirolz.fpmicroservice.http.endpoint.api.user.contract.UserEndpointError.{
   Unknown,
   UserNotFound
@@ -19,14 +19,14 @@ private[endpoint] object UserEndpoints {
   private val user: PublicEndpoint[Unit, Unit, Unit, Any] =
     Endpoints.Versions.v0.in("user")
 
-  val getById: PublicEndpoint[UserId, UserEndpointError, UserContract, Any] =
+  val getById: PublicEndpoint[UserId, UserEndpointError, UserDetailsResponse, Any] =
     user.get
       .in(
         path[UserId]("id")
           .description("User unique identifier")
           .validate(Validator.Min(0L, exclusive = true).contramap(_.value))
       )
-      .out(jsonBody[UserContract])
+      .out(jsonBody[UserDetailsResponse])
       .errorOut(
         oneOf[UserEndpointError](
           oneOfVariant(

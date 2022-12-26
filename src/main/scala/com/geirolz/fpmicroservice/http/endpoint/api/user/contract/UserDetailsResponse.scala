@@ -5,26 +5,26 @@ import com.geirolz.fpmicroservice.model.values.*
 import io.circe.{Codec, Decoder, Encoder}
 import scope.{ModelMapper, Scope}
 
-private[endpoint] case class UserContract(
+private[endpoint] case class UserDetailsResponse(
   id: UserId,
   email: Email,
   firstName: FirstName,
   middleName: Option[MiddleName],
   lastName: LastName
 )
-private[endpoint] object UserContract {
+private[endpoint] object UserDetailsResponse {
 
   import io.circe.generic.auto.*
   import io.circe.generic.semiauto.*
 
   // json
-  implicit val jsonCodec: Codec[UserContract] =
-    deriveCodec[UserContract]
+  implicit val jsonCodec: Codec[UserDetailsResponse] =
+    deriveCodec[UserDetailsResponse]
 
   // scope
-  implicit val scopeEndpointMapper: ModelMapper[Scope.Endpoint, User, UserContract] =
+  implicit val scopeEndpointMapper: ModelMapper[Scope.Endpoint, User, UserDetailsResponse] =
     ModelMapper.scoped { user =>
-      UserContract(
+      UserDetailsResponse(
         id         = user.id,
         email      = user.email,
         firstName  = user.firstName,
