@@ -2,7 +2,10 @@ package com.geirolz.fpmicroservice.http.endpoint
 
 import cats.effect.IO
 import com.geirolz.fpmicroservice.http.endpoint.api.user.UserEndpoints
-import com.geirolz.fpmicroservice.http.endpoint.api.user.contract.{UserDetailsResponse, UserEndpointError}
+import com.geirolz.fpmicroservice.http.endpoint.api.user.contract.{
+  UserDetailsResponse,
+  UserEndpointError
+}
 import com.geirolz.fpmicroservice.service.UserService
 import scope.{InScope, Scope}
 import sttp.tapir.server.ServerEndpoint

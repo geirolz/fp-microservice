@@ -1,6 +1,9 @@
 package com.geirolz.fpmicroservice.http.endpoint.api.user
 
-import com.geirolz.fpmicroservice.http.endpoint.api.user.contract.{UserDetailsResponse, UserEndpointError}
+import com.geirolz.fpmicroservice.http.endpoint.api.user.contract.{
+  UserDetailsResponse,
+  UserEndpointError
+}
 import com.geirolz.fpmicroservice.http.endpoint.api.user.contract.UserEndpointError.{
   Unknown,
   UserNotFound
