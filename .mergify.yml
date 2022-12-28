@@ -2,7 +2,7 @@ pull_request_rules:
   - name: automatic merge for main when CI passes and 1 reviews and not WIP
     conditions:
       - "#approved-reviews-by>=1"
-      - check-success=build
+      - check-success=build (2.13.10)
       - base=main
       - label!=work-in-progress
     actions:
@@ -12,7 +12,7 @@ pull_request_rules:
   - name: automatic merge for main when CI passes and author is steward
     conditions:
       - author=scala-steward
-      - check-success=build
+      - check-success=build (2.13.10)
       - base=main
     actions:
       merge:
@@ -20,7 +20,7 @@ pull_request_rules:
   - name: automatic merge for main when CI passes and author is dependabot
     conditions:
       - author=dependabot
-      - check-success=build
+      - check-success=build (2.13.10)
       - base=main
     actions:
       merge:
