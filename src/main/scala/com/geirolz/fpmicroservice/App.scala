@@ -14,9 +14,9 @@ object App extends IOApp.Simple {
   val info: AppInfo = AppInfo(
     name              = refine.unsafeFrom(BuildInfo.name),
     description       = refine.unsafeFrom(BuildInfo.description),
-    boundedContext    = refine.unsafeFrom(BuildInfo.boundedContext),
-    processingPurpose = refine.unsafeFrom(BuildInfo.processingPurpose),
-    tags              = BuildInfo.tags.flatMap(NonEmptyString.from(_).toOption),
+    boundedContext    = refine.unsafeFrom(BuildInfo.serviceBoundedContext),
+    processingPurpose = refine.unsafeFrom(BuildInfo.serviceProcessingPurpose),
+    tags              = BuildInfo.serviceTags.flatMap(NonEmptyString.from(_).toOption),
     version           = refine.unsafeFrom(BuildInfo.version),
     scalaVersion      = refine.unsafeFrom(BuildInfo.scalaVersion),
     sbtVersion        = refine.unsafeFrom(BuildInfo.sbtVersion),

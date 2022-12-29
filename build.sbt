@@ -1,5 +1,5 @@
 import sbt.addCompilerPlugin
-import ServiceInfoPlugin.Keys._
+import com.geirolz.sbt.serviceinfo._
 
 lazy val appName               = "fp-microservice"
 lazy val appDescription        = "Basic template for microservices."
@@ -10,7 +10,7 @@ lazy val appDockerExposedPorts = Seq(8080)
 
 //------------------------------------------------------------------------------
 lazy val global = (project in file("."))
-  .enablePlugins(BuildInfoPlugin, JavaAppPackaging, DockerPlugin)
+  .enablePlugins(BuildInfoPlugin, ServiceInfoPlugin, JavaAppPackaging, DockerPlugin)
   .settings(
     addCommandAlias("validate", ";scalafmtSbtCheck;scalafmtCheckAll;compile;test;"),
     addCommandAlias("publishValidLocal", ";validate;docker:publishLocal")
@@ -19,18 +19,12 @@ lazy val global = (project in file("."))
   .settings(
     name := appName,
     description := appDescription,
-    serviceInfo := ServiceInfo.of(
-      boundedContext    = BoundedContext("template"),
-      processingPurpose = ProcessingPurpose.OLTP,
-      Set(
-        Tag.Languages.scala,
-        Tag.microservice,
-        Tag.fromScalaVersion(scalaVersion.value)
-      ) ++ Tag.fromDependencies(libraryDependencies.value)
-    ),
     organization := appOrg,
     // build info
-    buildInfoKeys := ServiceInfo.deriveBuildInfoKeys(serviceInfo.value) ++ List[BuildInfoKey](
+    // info
+    serviceBoundedContext := BoundedContext("template"),
+    serviceProcessingPurpose := ProcessingPurpose.OLTP,
+    buildInfoKeys ++= List[BuildInfoKey](
       name,
       description,
       version,
