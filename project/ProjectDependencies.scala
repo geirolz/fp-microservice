@@ -11,7 +11,7 @@ object ProjectDependencies {
   private val fs2RabbitVersion  = "5.0.0"
   private val refinedVersion    = "0.10.1"
   private val circeVersion      = "0.14.3"
-  private val slf4Version       = "2.0.3"
+  private val slf4Version       = "2.0.6"
   private val log4catsVersion   = "2.5.0"
 
   lazy val common: Seq[ModuleID] = Seq(
