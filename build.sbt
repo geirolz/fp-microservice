@@ -38,7 +38,7 @@ lazy val global = (project in file("."))
       BuildInfoOption.ConstantValue
     ),
     buildInfoPackage := appPackage,
-    Compile / mainClass := Some(s"$appPackage.App")
+    Compile / mainClass := Some(s"$appPackage.AppMain")
   )
   .settings(dockerSettings: _*)
 

@@ -2,6 +2,8 @@ import sbt._
 
 object ProjectDependencies {
 
+  private val appToolkitVersion = "0.0.2"
+  private val scopeVersion      = "0.0.7"
   private val catsVersion       = "2.9.0"
   private val catsEffectVersion = "3.4.5"
   private val http4sVersion     = "0.23.18"
@@ -24,54 +26,56 @@ object ProjectDependencies {
     logging,
     tests,
     // externals services
-    db,
-    rabbitMq
+    db
   ).flatten
 
   private val general = Seq(
-    "com.github.geirolz" %% "scope-core" % "0.0.7",
-    "eu.timepit" %% "refined" % refinedVersion,
-    "eu.timepit" %% "refined-cats" % refinedVersion,
-    "eu.timepit" %% "refined-pureconfig" % refinedVersion
+    "com.github.geirolz" %% "scope-core"           % scopeVersion,
+    "com.github.geirolz" %% "app-toolkit-core"     % appToolkitVersion,
+    "com.github.geirolz" %% "app-toolkit-config"   % appToolkitVersion,
+    "com.github.geirolz" %% "app-toolkit-log4cats" % appToolkitVersion,
+    "eu.timepit"         %% "refined"              % refinedVersion,
+    "eu.timepit"         %% "refined-cats"         % refinedVersion,
+    "eu.timepit"         %% "refined-pureconfig"   % refinedVersion
   )
 
   private val effects =
     Seq(
-      "org.typelevel" %% "cats-core" % catsVersion,
+      "org.typelevel" %% "cats-core"   % catsVersion,
       "org.typelevel" %% "cats-effect" % catsEffectVersion
     )
 
   private val config = {
     Seq(
-      "com.github.pureconfig" %% "pureconfig-core" % pureConfigVersion,
+      "com.github.pureconfig" %% "pureconfig-core"    % pureConfigVersion,
       "com.github.pureconfig" %% "pureconfig-generic" % pureConfigVersion,
-      "com.github.pureconfig" %% "pureconfig-http4s" % pureConfigVersion
+      "com.github.pureconfig" %% "pureconfig-http4s"  % pureConfigVersion
     )
   }
 
   private val http =
     Seq(
       // HTTP
-      "org.http4s" %% "http4s-dsl" % http4sVersion,
-      "org.http4s" %% "http4s-circe" % http4sVersion,
+      "org.http4s" %% "http4s-dsl"          % http4sVersion,
+      "org.http4s" %% "http4s-circe"        % http4sVersion,
       "org.http4s" %% "http4s-ember-server" % http4sVersion,
       // TAPIR
-      "com.softwaremill.sttp.tapir" %% "tapir-core" % tapirVersion,
+      "com.softwaremill.sttp.tapir" %% "tapir-core"          % tapirVersion,
       "com.softwaremill.sttp.tapir" %% "tapir-http4s-server" % tapirVersion,
-      "com.softwaremill.sttp.tapir" %% "tapir-json-circe" % tapirVersion,
-      "com.softwaremill.sttp.tapir" %% "tapir-openapi-docs" % tapirVersion,
-      "com.softwaremill.sttp.tapir" %% "tapir-swagger-ui" % tapirVersion,
-      "com.softwaremill.sttp.tapir" %% "tapir-cats" % tapirVersion,
-      "com.softwaremill.sttp.tapir" %% "tapir-refined" % tapirVersion,
+      "com.softwaremill.sttp.tapir" %% "tapir-json-circe"    % tapirVersion,
+      "com.softwaremill.sttp.tapir" %% "tapir-openapi-docs"  % tapirVersion,
+      "com.softwaremill.sttp.tapir" %% "tapir-swagger-ui"    % tapirVersion,
+      "com.softwaremill.sttp.tapir" %% "tapir-cats"          % tapirVersion,
+      "com.softwaremill.sttp.tapir" %% "tapir-refined"       % tapirVersion,
 
       // Open Api YAML
       "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % "0.3.2"
     )
 
   private val json = Seq(
-    "io.circe" %% "circe-core" % circeVersion,
+    "io.circe" %% "circe-core"           % circeVersion,
     "io.circe" %% "circe-generic-extras" % circeVersion,
-    "io.circe" %% "circe-refined" % circeVersion
+    "io.circe" %% "circe-refined"        % circeVersion
   )
 
   private val metrics =
@@ -81,13 +85,13 @@ object ProjectDependencies {
 
   private val logging = Seq(
     "org.typelevel" %% "log4cats-slf4j" % log4catsVersion,
-    "org.slf4j" % "slf4j-api" % slf4Version,
-    "org.slf4j" % "slf4j-simple" % slf4Version
+    "org.slf4j"      % "slf4j-api"      % slf4Version,
+    "org.slf4j"      % "slf4j-simple"   % slf4Version
   )
 
   private val tests = Seq(
-    "org.scalameta" %% "munit" % "0.7.29" % Test,
-    "org.typelevel" %% "munit-cats-effect-3" % "1.0.7" % Test
+    "org.scalameta" %% "munit"               % "0.7.29" % Test,
+    "org.typelevel" %% "munit-cats-effect-3" % "1.0.7"  % Test
   )
 
   // externals services
@@ -97,19 +101,14 @@ object ProjectDependencies {
       "com.github.geirolz" %% "fly4s-core" % "0.0.16",
 
       // management
-      "org.tpolecat" %% "doobie-core" % doobieVersion,
-      "org.tpolecat" %% "doobie-hikari" % doobieVersion,
-      "org.tpolecat" %% "doobie-postgres" % doobieVersion,
+      "org.tpolecat" %% "doobie-core"           % doobieVersion,
+      "org.tpolecat" %% "doobie-hikari"         % doobieVersion,
+      "org.tpolecat" %% "doobie-postgres"       % doobieVersion,
       "org.tpolecat" %% "doobie-postgres-circe" % doobieVersion,
-      "org.tpolecat" %% "doobie-h2" % doobieVersion,
-      "org.tpolecat" %% "doobie-scalatest" % doobieVersion % Test,
+      "org.tpolecat" %% "doobie-h2"             % doobieVersion,
+      "org.tpolecat" %% "doobie-scalatest"      % doobieVersion % Test,
 
       // connection
       "org.postgresql" % "postgresql" % "42.5.1"
     )
-
-  private val rabbitMq = Seq(
-    "dev.profunktor" %% "fs2-rabbit" % fs2RabbitVersion,
-    "dev.profunktor" %% "fs2-rabbit-circe" % fs2RabbitVersion
-  )
 }

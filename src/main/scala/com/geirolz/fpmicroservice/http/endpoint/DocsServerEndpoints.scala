@@ -2,14 +2,14 @@ package com.geirolz.fpmicroservice.http.endpoint
 
 import cats.effect.IO
 import com.geirolz.fpmicroservice.http.endpoint.api.DocsEndpoints
-import com.geirolz.fpmicroservice.App
+import com.geirolz.fpmicroservice.{AppInfo, AppMain}
 import sttp.apispec.openapi.OpenAPI
 import sttp.tapir.docs.openapi.{OpenAPIDocsInterpreter, OpenAPIDocsOptions}
 import sttp.tapir.swagger.{SwaggerUI, SwaggerUIOptions}
 import sttp.tapir.AnyEndpoint
 import sttp.tapir.server.ServerEndpoint
 
-private[http] class DocsServerEndpoints private (endpoints: List[AnyEndpoint]) {
+private[http] class DocsServerEndpoints private (appInfo: AppInfo, endpoints: List[AnyEndpoint]) {
 
   import cats.implicits.*
   import io.circe.syntax.*
@@ -20,12 +20,12 @@ private[http] class DocsServerEndpoints private (endpoints: List[AnyEndpoint]) {
     OpenAPIDocsInterpreter(OpenAPIDocsOptions.default)
       .toOpenAPI(
         es      = endpoints,
-        title   = App.info.name.value,
-        version = App.info.version.value
+        title   = appInfo.name.value,
+        version = appInfo.version.value
       )
 
-  val yamlDocs: String = openApi.toYaml
-  val jsonDocs: String = openApi.asJson.deepDropNullValues.toString
+  private val yamlDocs: String = openApi.toYaml
+  private val jsonDocs: String = openApi.asJson.deepDropNullValues.toString
 
   private val yamlDocsRoute: ServerEndpoint[Any, IO] =
     DocsEndpoints.getYamlDocs.serverLogic(_ => yamlDocs.asRight[Unit].pure[IO])
@@ -47,6 +47,9 @@ private[http] class DocsServerEndpoints private (endpoints: List[AnyEndpoint]) {
     ) ++ swaggerUIRoute
 }
 private[http] object DocsServerEndpoints {
-  def fromServerEndpoints[R](serverEndpoints: List[ServerEndpoint[R, IO]]): DocsServerEndpoints =
-    new DocsServerEndpoints(serverEndpoints.map(_.endpoint.asInstanceOf[AnyEndpoint]))
+  def fromServerEndpoints[R](
+    appInfo: AppInfo,
+    serverEndpoints: List[ServerEndpoint[R, IO]]
+  ): DocsServerEndpoints =
+    new DocsServerEndpoints(appInfo, serverEndpoints.map(_.endpoint.asInstanceOf[AnyEndpoint]))
 }
