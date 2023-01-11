@@ -65,7 +65,7 @@ object ProjectDependencies {
       "com.softwaremill.sttp.tapir" %% "tapir-refined" % tapirVersion,
 
       // Open Api YAML
-      "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % "0.3.1"
+      "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % "0.3.2"
     )
 
   private val json = Seq(
