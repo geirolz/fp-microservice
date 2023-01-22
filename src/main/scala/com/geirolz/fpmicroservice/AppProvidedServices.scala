@@ -9,17 +9,25 @@ object AppProvidedServices {
 
   import cats.implicits.*
 
-  def make(config: AppConfig, env: AppDependencyServices): IO[List[ResourceIO[Unit]]] =
+  def build(
+    info: AppInfo,
+    config: AppConfig,
+    dependencies: AppDependencyServices
+  ): IO[List[IO[Any]]] =
     List(
-      buildServer(config, env)
+      buildServer(info, config, dependencies).useForever
     ).map(_.void).pure[IO]
 
-  private def buildServer(config: AppConfig, env: AppDependencyServices): ResourceIO[Server] = {
+  private def buildServer(
+    info: AppInfo,
+    config: AppConfig,
+    dependencies: AppDependencyServices
+  ): ResourceIO[Server] = {
     EmberServerBuilder
       .default[IO]
       .withHost(config.http.server.host)
       .withPort(config.http.server.port)
-      .withHttpApp(AppHttpServer.make(config, env))
+      .withHttpApp(AppHttpServer.make(info, config, dependencies))
       .build
   }
 }

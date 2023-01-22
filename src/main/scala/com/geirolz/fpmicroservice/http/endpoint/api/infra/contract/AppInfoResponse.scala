@@ -17,7 +17,7 @@ private[endpoint] case class AppInfoResponse(
   scalaVersion: NonEmptyString,
   sbtVersion: NonEmptyString,
   javaVersion: Option[NonEmptyString],
-  builtAt: LocalDateTime,
+  builtOn: LocalDateTime,
   buildNumber: NonEmptyString,
   buildRefName: NonEmptyString
 )
@@ -44,7 +44,7 @@ private[endpoint] object AppInfoResponse {
         scalaVersion      = c.scalaVersion,
         sbtVersion        = c.sbtVersion,
         javaVersion       = c.javaVersion,
-        builtAt           = c.builtAt,
+        builtOn           = c.builtOn,
         buildNumber       = c.buildNumber,
         buildRefName      = c.buildRefName
       )

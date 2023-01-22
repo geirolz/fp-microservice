@@ -1,64 +1,48 @@
 package com.geirolz.fpmicroservice
 
+import cats.Show
+import com.geirolz.app.toolkit.BasicAppInfo
+import eu.timepit.refined.api.RefType.refinedRefType.refine
 import eu.timepit.refined.types.all.NonEmptyString
 
-import java.time.LocalDateTime
+import java.time.{Instant, LocalDateTime, ZoneOffset}
 
-trait AppInfo {
-  val name: NonEmptyString
-  val description: NonEmptyString
-  val boundedContext: NonEmptyString
-  val processingPurpose: NonEmptyString
-  val tags: Seq[NonEmptyString]
-  val version: NonEmptyString
-  val scalaVersion: NonEmptyString
-  val sbtVersion: NonEmptyString
-  val javaVersion: Option[NonEmptyString]
-  val builtAt: LocalDateTime
+class AppInfo private (
+  val name: NonEmptyString,
+  val description: NonEmptyString,
+  val boundedContext: NonEmptyString,
+  val processingPurpose: NonEmptyString,
+  val tags: Seq[NonEmptyString],
+  val version: NonEmptyString,
+  val scalaVersion: NonEmptyString,
+  val sbtVersion: NonEmptyString,
+  val javaVersion: Option[NonEmptyString],
+  val builtOn: LocalDateTime,
   val buildNumber: NonEmptyString
-  val buildRefName: NonEmptyString =
-    NonEmptyString.unsafeFrom(s"$name:$version-$buildNumber $builtAt")
+) extends BasicAppInfo[NonEmptyString] {
+  override val buildRefName: NonEmptyString =
+    NonEmptyString.unsafeFrom(
+      BasicAppInfo.genBuildRefName[String](name.value, version.value, builtOn)
+    )
 }
 object AppInfo {
 
-  def apply(
-    name: NonEmptyString,
-    description: NonEmptyString,
-    boundedContext: NonEmptyString,
-    processingPurpose: NonEmptyString,
-    tags: Seq[NonEmptyString],
-    version: NonEmptyString,
-    scalaVersion: NonEmptyString,
-    sbtVersion: NonEmptyString,
-    javaVersion: Option[NonEmptyString],
-    builtAt: LocalDateTime,
-    buildNumber: NonEmptyString
-  ): AppInfo =
-    new Basic(
-      name              = name,
-      description       = description,
-      boundedContext    = boundedContext,
-      processingPurpose = processingPurpose,
-      tags              = tags,
-      version           = version,
-      scalaVersion      = scalaVersion,
-      sbtVersion        = sbtVersion,
-      javaVersion       = javaVersion,
-      builtAt           = builtAt,
-      buildNumber       = buildNumber
-    )
+  val fromBuildInfo: AppInfo = new AppInfo(
+    name              = refine.unsafeFrom(BuildInfo.name),
+    description       = refine.unsafeFrom(BuildInfo.description),
+    boundedContext    = refine.unsafeFrom(BuildInfo.serviceBoundedContext),
+    processingPurpose = refine.unsafeFrom(BuildInfo.serviceProcessingPurpose),
+    tags              = BuildInfo.serviceTags.flatMap(NonEmptyString.from(_).toOption),
+    version           = refine.unsafeFrom(BuildInfo.version),
+    scalaVersion      = refine.unsafeFrom(BuildInfo.scalaVersion),
+    sbtVersion        = refine.unsafeFrom(BuildInfo.sbtVersion),
+    javaVersion       = NonEmptyString.from(System.getProperty("java.version")).toOption,
+    builtOn = LocalDateTime.ofInstant(
+      Instant.ofEpochMilli(BuildInfo.builtAtMillis),
+      ZoneOffset.UTC
+    ),
+    buildNumber = refine.unsafeFrom(BuildInfo.buildInfoBuildNumber.toString)
+  )
 
-  class Basic(
-    val name: NonEmptyString,
-    val description: NonEmptyString,
-    val boundedContext: NonEmptyString,
-    val processingPurpose: NonEmptyString,
-    val tags: Seq[NonEmptyString],
-    val version: NonEmptyString,
-    val scalaVersion: NonEmptyString,
-    val sbtVersion: NonEmptyString,
-    val javaVersion: Option[NonEmptyString],
-    val builtAt: LocalDateTime,
-    val buildNumber: NonEmptyString
-  ) extends AppInfo
+  implicit val show: Show[AppInfo] = Show.fromToString
 }

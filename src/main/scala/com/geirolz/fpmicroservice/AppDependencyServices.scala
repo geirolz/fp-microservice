@@ -3,11 +3,11 @@ package com.geirolz.fpmicroservice
 import cats.effect.{IO, Resource, ResourceIO}
 import com.geirolz.fpmicroservice.external.repository.UserRepository
 import com.geirolz.fpmicroservice.service.UserService
+import com.geirolz.fpmicroservice.AppMain.AppResources
 import doobie.ExecutionContexts
 import doobie.hikari.HikariTransactor
 import fly4s.core.Fly4s
 import fly4s.core.data.{Fly4sConfig, Location}
-import org.typelevel.log4cats.slf4j.Slf4jLogger
 import org.typelevel.log4cats.SelfAwareStructuredLogger
 
 import javax.sql.DataSource
@@ -17,16 +17,15 @@ case class AppDependencyServices(
 )
 object AppDependencyServices {
 
-  private val logger: SelfAwareStructuredLogger[IO] =
-    Slf4jLogger.getLogger[IO]
-
-  def make(config: AppConfig): Resource[IO, AppDependencyServices] =
+  def resource(appResources: AppResources): Resource[IO, AppDependencyServices] = {
+    val logger = appResources.logger
+    val config = appResources.config
     for {
 
       // -------------------- DB --------------------
       _                <- logger.info("Initializing databases...").to[ResourceIO]
       mainDbTransactor <- createDatabaseTransactor(config.db.main)
-      _                <- migrateDatabase(mainDbTransactor.kernel, config.db.main)
+      _                <- migrateDatabaseResource(mainDbTransactor.kernel, config.db.main, logger)
       _                <- logger.info("Databases successfully initialized.").to[ResourceIO]
 
       // ----------------- REPOSITORY ---------------
@@ -35,6 +34,7 @@ object AppDependencyServices {
     } yield AppDependencyServices(
       userService = UserService(userRepository)
     )
+  }
 
   private def createDatabaseTransactor(
     dbConfig: DatabaseConfig
@@ -50,9 +50,10 @@ object AppDependencyServices {
       )
     } yield transactor
 
-  private def migrateDatabase(
+  private def migrateDatabaseResource(
     datasource: DataSource,
-    dbConfig: DatabaseConfig
+    dbConfig: DatabaseConfig,
+    logger: SelfAwareStructuredLogger[IO]
   ): Resource[IO, Unit] =
     Fly4s
       .makeFor[IO](
