@@ -2,19 +2,8 @@ import sbt._
 
 object ProjectDependencies {
 
-  private val appToolkitVersion = "0.0.2"
-  private val scopeVersion      = "0.0.7"
-  private val catsVersion       = "2.9.0"
-  private val catsEffectVersion = "3.4.5"
-  private val http4sVersion     = "0.23.18"
-  private val tapirVersion      = "1.2.6"
-  private val pureConfigVersion = "0.17.2"
-  private val doobieVersion     = "1.0.0-RC2"
-  private val fs2RabbitVersion  = "5.0.0"
-  private val refinedVersion    = "0.10.1"
-  private val circeVersion      = "0.14.3"
-  private val slf4Version       = "2.0.6"
-  private val log4catsVersion   = "2.5.0"
+  import Organizations._
+  import Versions._
 
   lazy val common: Seq[ModuleID] = Seq(
     general,
@@ -30,85 +19,126 @@ object ProjectDependencies {
   ).flatten
 
   private val general = Seq(
-    "com.github.geirolz" %% "scope-core"           % scopeVersion,
-    "com.github.geirolz" %% "app-toolkit-core"     % appToolkitVersion,
-    "com.github.geirolz" %% "app-toolkit-config"   % appToolkitVersion,
-    "com.github.geirolz" %% "app-toolkit-log4cats" % appToolkitVersion,
-    "eu.timepit"         %% "refined"              % refinedVersion,
-    "eu.timepit"         %% "refined-cats"         % refinedVersion,
-    "eu.timepit"         %% "refined-pureconfig"   % refinedVersion
+    `com.github.geirolz` %% "scope-core"           % scopeVersion,
+    `com.github.geirolz` %% "app-toolkit-core"     % appToolkitVersion,
+    `com.github.geirolz` %% "app-toolkit-config"   % appToolkitVersion,
+    `com.github.geirolz` %% "app-toolkit-log4cats" % appToolkitVersion,
+    `eu.timepit`         %% "refined"              % refinedVersion,
+    `eu.timepit`         %% "refined-cats"         % refinedVersion,
+    `eu.timepit`         %% "refined-pureconfig"   % refinedVersion
   )
 
   private val effects =
     Seq(
-      "org.typelevel" %% "cats-core"   % catsVersion,
-      "org.typelevel" %% "cats-effect" % catsEffectVersion
+      `org.typelevel` %% "cats-core"   % catsVersion,
+      `org.typelevel` %% "cats-effect" % catsEffectVersion
     )
 
   private val config = {
     Seq(
-      "com.github.pureconfig" %% "pureconfig-core"    % pureConfigVersion,
-      "com.github.pureconfig" %% "pureconfig-generic" % pureConfigVersion,
-      "com.github.pureconfig" %% "pureconfig-http4s"  % pureConfigVersion
+      `com.github.pureconfig` %% "pureconfig-core"    % pureConfigVersion,
+      `com.github.pureconfig` %% "pureconfig-generic" % pureConfigVersion,
+      `com.github.pureconfig` %% "pureconfig-http4s"  % pureConfigVersion
     )
   }
 
   private val http =
     Seq(
       // HTTP
-      "org.http4s" %% "http4s-dsl"          % http4sVersion,
-      "org.http4s" %% "http4s-circe"        % http4sVersion,
-      "org.http4s" %% "http4s-ember-server" % http4sVersion,
+      `org.http4s` %% "http4s-dsl"          % http4sVersion,
+      `org.http4s` %% "http4s-circe"        % http4sVersion,
+      `org.http4s` %% "http4s-ember-server" % http4sVersion,
       // TAPIR
-      "com.softwaremill.sttp.tapir" %% "tapir-core"          % tapirVersion,
-      "com.softwaremill.sttp.tapir" %% "tapir-http4s-server" % tapirVersion,
-      "com.softwaremill.sttp.tapir" %% "tapir-json-circe"    % tapirVersion,
-      "com.softwaremill.sttp.tapir" %% "tapir-openapi-docs"  % tapirVersion,
-      "com.softwaremill.sttp.tapir" %% "tapir-swagger-ui"    % tapirVersion,
-      "com.softwaremill.sttp.tapir" %% "tapir-cats"          % tapirVersion,
-      "com.softwaremill.sttp.tapir" %% "tapir-refined"       % tapirVersion,
+      `com.softwaremill.sttp.tapir` %% "tapir-core"          % tapirVersion,
+      `com.softwaremill.sttp.tapir` %% "tapir-http4s-server" % tapirVersion,
+      `com.softwaremill.sttp.tapir` %% "tapir-json-circe"    % tapirVersion,
+      `com.softwaremill.sttp.tapir` %% "tapir-openapi-docs"  % tapirVersion,
+      `com.softwaremill.sttp.tapir` %% "tapir-swagger-ui"    % tapirVersion,
+      `com.softwaremill.sttp.tapir` %% "tapir-cats"          % tapirVersion,
+      `com.softwaremill.sttp.tapir` %% "tapir-refined"       % tapirVersion,
 
       // Open Api YAML
-      "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % "0.3.2"
+      `com.softwaremill.sttp.apispec` %% "openapi-circe-yaml" % apiSpecOpenapiCirce
     )
 
   private val json = Seq(
-    "io.circe" %% "circe-core"           % circeVersion,
-    "io.circe" %% "circe-generic-extras" % circeVersion,
-    "io.circe" %% "circe-refined"        % circeVersion
+    `io.circe` %% "circe-core"           % circeVersion,
+    `io.circe` %% "circe-generic-extras" % circeVersion,
+    `io.circe` %% "circe-refined"        % circeVersion
   )
 
   private val metrics =
     Seq(
-      "com.softwaremill.sttp.tapir" %% "tapir-prometheus-metrics" % tapirVersion
+      `com.softwaremill.sttp.tapir` %% "tapir-prometheus-metrics" % tapirVersion
     )
 
   private val logging = Seq(
-    "org.typelevel" %% "log4cats-slf4j" % log4catsVersion,
-    "org.slf4j"      % "slf4j-api"      % slf4Version,
-    "org.slf4j"      % "slf4j-simple"   % slf4Version
+    `org.typelevel` %% "log4cats-slf4j" % log4catsVersion,
+    `org.slf4j`      % "slf4j-api"      % slf4Version,
+    `org.slf4j`      % "slf4j-simple"   % slf4Version
   )
 
   private val tests = Seq(
-    "org.scalameta" %% "munit"               % "0.7.29" % Test,
-    "org.typelevel" %% "munit-cats-effect-3" % "1.0.7"  % Test
+    `org.scalameta` %% "munit"               % munitVersion    % Test,
+    `org.typelevel` %% "munit-cats-effect-3" % munitCE3Version % Test
   )
 
   // externals services
   private val db =
     Seq(
       // migrations
-      "com.github.geirolz" %% "fly4s-core" % "0.0.16",
+      `com.github.geirolz` %% "fly4s-core" % fly4sVersion,
 
       // management
-      "org.tpolecat" %% "doobie-core"           % doobieVersion,
-      "org.tpolecat" %% "doobie-hikari"         % doobieVersion,
-      "org.tpolecat" %% "doobie-postgres"       % doobieVersion,
-      "org.tpolecat" %% "doobie-postgres-circe" % doobieVersion,
-      "org.tpolecat" %% "doobie-h2"             % doobieVersion,
-      "org.tpolecat" %% "doobie-scalatest"      % doobieVersion % Test,
+      `org.tpolecat` %% "doobie-core"           % doobieVersion,
+      `org.tpolecat` %% "doobie-hikari"         % doobieVersion,
+      `org.tpolecat` %% "doobie-postgres"       % doobieVersion,
+      `org.tpolecat` %% "doobie-postgres-circe" % doobieVersion,
+      `org.tpolecat` %% "doobie-h2"             % doobieVersion,
+      `org.tpolecat` %% "doobie-scalatest"      % doobieVersion % Test,
 
       // connection
-      "org.postgresql" % "postgresql" % "42.5.1"
+      `org.postgresql` % "postgresql" % "42.5.1"
     )
+}
+
+object Versions {
+  type Version = String
+  val appToolkitVersion: Version   = "0.0.2"
+  val scopeVersion: Version        = "0.0.7"
+  val catsVersion: Version         = "2.9.0"
+  val catsEffectVersion: Version   = "3.4.5"
+  val http4sVersion: Version       = "0.23.18"
+  val tapirVersion: Version        = "1.2.6"
+  val apiSpecOpenapiCirce: Version = "0.3.2"
+  val pureConfigVersion: Version   = "0.17.2"
+  val doobieVersion: Version       = "1.0.0-RC2"
+  val fs2RabbitVersion: Version    = "5.0.0"
+  val refinedVersion: Version      = "0.10.1"
+  val circeVersion: Version        = "0.14.3"
+  val slf4Version: Version         = "2.0.6"
+  val log4catsVersion: Version     = "2.5.0"
+  val fly4sVersion: Version        = "0.0.16"
+  val munitVersion: Version        = "0.7.29"
+  val munitCE3Version: Version     = "1.0.7"
+}
+
+object Organizations {
+
+  type Organization = String
+  val `com.github.geirolz`: Organization            = "com.github.geirolz"
+  val `eu.timepit`: Organization                    = "eu.timepit"
+  val `io.circe`: Organization                      = "io.circe"
+  val `com.github.pureconfig`: Organization         = "com.github.pureconfig"
+  val `com.softwaremill.sttp`: Organization         = "com.softwaremill.sttp"
+  val `com.softwaremill.sttp.tapir`: Organization   = s"${`com.softwaremill.sttp`}.tapir"
+  val `com.softwaremill.sttp.apispec`: Organization = s"${`com.softwaremill.sttp`}.apispec"
+
+  // org
+  val `org.typelevel`: Organization  = "org.typelevel"
+  val `org.tpolecat`: Organization   = "org.tpolecat"
+  val `org.postgresql`: Organization = "org.postgresql"
+  val `org.scalameta`: Organization  = "org.scalameta"
+  val `org.slf4j`: Organization      = "org.slf4j"
+  val `org.http4s`: Organization     = "org.http4s"
 }
