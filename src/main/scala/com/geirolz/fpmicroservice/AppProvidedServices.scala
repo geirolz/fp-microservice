@@ -15,10 +15,10 @@ object AppProvidedServices {
     dependencies: AppDependencyServices
   ): IO[List[IO[Any]]] =
     List(
-      buildServer(info, config, dependencies).useForever
+      httpServerResource(info, config, dependencies).useForever
     ).map(_.void).pure[IO]
 
-  private def buildServer(
+  private def httpServerResource(
     info: AppInfo,
     config: AppConfig,
     dependencies: AppDependencyServices

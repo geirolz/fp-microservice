@@ -24,7 +24,7 @@ object AppDependencyServices {
 
       // -------------------- DB --------------------
       _                <- logger.info("Initializing databases...").to[ResourceIO]
-      mainDbTransactor <- createDatabaseTransactor(config.db.main)
+      mainDbTransactor <- databaseTransactorResource(config.db.main)
       _                <- migrateDatabaseResource(mainDbTransactor.kernel, config.db.main, logger)
       _                <- logger.info("Databases successfully initialized.").to[ResourceIO]
 
@@ -36,7 +36,7 @@ object AppDependencyServices {
     )
   }
 
-  private def createDatabaseTransactor(
+  private def databaseTransactorResource(
     dbConfig: DatabaseConfig
   ): ResourceIO[HikariTransactor[IO]] =
     for {
