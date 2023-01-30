@@ -1,5 +1,6 @@
 import sbt.addCompilerPlugin
 import com.geirolz.sbt.serviceinfo._
+import sbtwelcome._
 
 lazy val appName               = "fp-microservice"
 lazy val appDescription        = "Basic template for microservices."
@@ -16,6 +17,7 @@ lazy val global = (project in file("."))
     addCommandAlias("publishValidLocal", ";validate;docker:publishLocal")
   )
   .settings(commonSettings: _*)
+  .settings(logoSettings: _*)
   .settings(
     name := appName,
     description := appDescription,
@@ -48,6 +50,40 @@ lazy val dockerSettings: Seq[Setting[_]] = Seq(
   dockerExposedPorts := appDockerExposedPorts
 )
 
+lazy val logoSettings: Seq[Setting[_]] = {
+
+  def info(label: String, value: String): String =
+    s"$label: ${scala.Console.YELLOW}$value${scala.Console.RESET}"
+
+  Seq(
+    logo :=
+      // https://patorjk.com/software/taag/#p=display&f=ANSI%20Regular&t=FP%20SERVICE
+      s"""
+         |███████ ██████      ███████ ███████ ██████  ██    ██ ██  ██████ ███████
+         |██      ██   ██     ██      ██      ██   ██ ██    ██ ██ ██      ██
+         |█████   ██████      ███████ █████   ██████  ██    ██ ██ ██      █████
+         |██      ██               ██ ██      ██   ██  ██  ██  ██ ██      ██
+         |██      ██          ███████ ███████ ██   ██   ████   ██  ██████ ███████
+         |
+         |${info("Context", serviceBoundedContext.value.value)}
+         |${info("Purpose", serviceProcessingPurpose.value.toString())}
+         |${description.value}
+         |
+         |-------------------------------
+         |${info("Version", version.value)}
+         |${info("Scala", scalaVersion.value)}
+         |${info("SBT", sbtVersion.value)}
+         |""".stripMargin,
+    usefulTasks := List(
+      UsefulTask("run", "Start application"),
+      UsefulTask("test", "Run unit tests"),
+      UsefulTask("it:test", "Run integration unit tests"),
+      UsefulTask("scalafmtCheckAll;test;it:test;", "Run unit and integration unit tests"),
+      UsefulTask("~compile", "Compile with file-watch enabled"),
+      UsefulTask("scalafmtAll", "Run scalafmt on the entire project")
+    )
+  )
+}
 lazy val commonSettings: Seq[Setting[_]] = Seq(
   // scala
   scalaVersion := appScalaVersion,
@@ -58,8 +94,8 @@ lazy val commonSettings: Seq[Setting[_]] = Seq(
   // fmt
   scalafmtOnCompile := true,
   // plugins
-  addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.13.2" cross CrossVersion.full),
-  addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1")
+  addCompilerPlugin("org.typelevel" %% "kind-projector"     % "0.13.2" cross CrossVersion.full),
+  addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % "0.3.1")
 )
 
 def scalacSettings: Seq[String] =
