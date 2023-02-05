@@ -19,13 +19,14 @@ object ProjectDependencies {
   ).flatten
 
   private val general = Seq(
-    `com.github.geirolz` %% "scope-core"           % scopeVersion,
-    `com.github.geirolz` %% "app-toolkit-core"     % appToolkitVersion,
-    `com.github.geirolz` %% "app-toolkit-config"   % appToolkitVersion,
-    `com.github.geirolz` %% "app-toolkit-log4cats" % appToolkitVersion,
-    `eu.timepit`         %% "refined"              % refinedVersion,
-    `eu.timepit`         %% "refined-cats"         % refinedVersion,
-    `eu.timepit`         %% "refined-pureconfig"   % refinedVersion
+    `com.github.geirolz` %% "scope-core"                    % scopeVersion,
+    `com.github.geirolz` %% "app-toolkit-core"              % appToolkitVersion,
+    `com.github.geirolz` %% "app-toolkit-config"            % appToolkitVersion,
+    `com.github.geirolz` %% "app-toolkit-config-pureconfig" % appToolkitVersion,
+    `com.github.geirolz` %% "app-toolkit-log4cats"          % appToolkitVersion,
+    `eu.timepit`         %% "refined"                       % refinedVersion,
+    `eu.timepit`         %% "refined-cats"                  % refinedVersion,
+    `eu.timepit`         %% "refined-pureconfig"            % refinedVersion
   )
 
   private val effects =
