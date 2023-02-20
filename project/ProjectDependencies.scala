@@ -19,13 +19,14 @@ object ProjectDependencies {
   ).flatten
 
   private val general = Seq(
-    `com.github.geirolz` %% "scope-core"           % scopeVersion,
-    `com.github.geirolz` %% "app-toolkit-core"     % appToolkitVersion,
-    `com.github.geirolz` %% "app-toolkit-config"   % appToolkitVersion,
-    `com.github.geirolz` %% "app-toolkit-log4cats" % appToolkitVersion,
-    `eu.timepit`         %% "refined"              % refinedVersion,
-    `eu.timepit`         %% "refined-cats"         % refinedVersion,
-    `eu.timepit`         %% "refined-pureconfig"   % refinedVersion
+    `com.github.geirolz` %% "scope-core"                    % scopeVersion,
+    `com.github.geirolz` %% "app-toolkit-core"              % appToolkitVersion,
+    `com.github.geirolz` %% "app-toolkit-config"            % appToolkitVersion,
+    `com.github.geirolz` %% "app-toolkit-config-pureconfig" % appToolkitVersion,
+    `com.github.geirolz` %% "app-toolkit-log4cats"          % appToolkitVersion,
+    `eu.timepit`         %% "refined"                       % refinedVersion,
+    `eu.timepit`         %% "refined-cats"                  % refinedVersion,
+    `eu.timepit`         %% "refined-pureconfig"            % refinedVersion
   )
 
   private val effects =
@@ -98,7 +99,7 @@ object ProjectDependencies {
       `org.tpolecat` %% "doobie-scalatest"      % doobieVersion % Test,
 
       // connection
-      `org.postgresql` % "postgresql" % "42.5.1"
+      `org.postgresql` % "postgresql" % "42.5.3"
     )
 }
 
@@ -107,9 +108,9 @@ object Versions {
   val appToolkitVersion: Version   = "0.0.2"
   val scopeVersion: Version        = "0.0.7"
   val catsVersion: Version         = "2.9.0"
-  val catsEffectVersion: Version   = "3.4.5"
+  val catsEffectVersion: Version   = "3.4.7"
   val http4sVersion: Version       = "0.23.18"
-  val tapirVersion: Version        = "1.2.7"
+  val tapirVersion: Version        = "1.2.8"
   val apiSpecOpenapiCirce: Version = "0.3.2"
   val pureConfigVersion: Version   = "0.17.2"
   val doobieVersion: Version       = "1.0.0-RC2"
@@ -118,7 +119,7 @@ object Versions {
   val circeVersion: Version        = "0.14.3"
   val slf4Version: Version         = "2.0.6"
   val log4catsVersion: Version     = "2.5.0"
-  val fly4sVersion: Version        = "0.0.16"
+  val fly4sVersion: Version        = "0.0.17"
   val munitVersion: Version        = "0.7.29"
   val munitCE3Version: Version     = "1.0.7"
 }
