@@ -34,10 +34,11 @@ object AppConfig {
   implicit val uriCirceEncoder: Encoder[Uri] =
     Encoder.encodeString.contramap(_.renderString)
 
-  implicit val encoderInstanceForSecretString: Encoder[Secret] =
+  implicit val encoderInstanceForSecretString: Encoder[Secret[String]] =
     Encoder.encodeString.contramap(_.toString)
 
-  implicit val showInstanceForConfig: Show[AppConfig] = _.asJson.toString()
+  implicit val showInstanceForConfig: Show[AppConfig] =
+    _.asJson.toString()
 }
 
 //db
@@ -50,7 +51,7 @@ case class DatabaseConfig(
   driver: NonEmptyString,
   url: NonEmptyString,
   username: Option[String],
-  password: Option[Secret],
+  password: Option[Secret[String]],
   migrationsTable: NonEmptyString,
   migrationsLocations: List[String]
 )

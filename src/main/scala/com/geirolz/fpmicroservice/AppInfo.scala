@@ -1,7 +1,7 @@
 package com.geirolz.fpmicroservice
 
 import cats.Show
-import com.geirolz.app.toolkit.BasicAppInfo
+import com.geirolz.app.toolkit.SimpleAppInfo
 import eu.timepit.refined.api.RefType.refinedRefType.refine
 import eu.timepit.refined.types.all.NonEmptyString
 
@@ -19,10 +19,10 @@ class AppInfo private (
   val javaVersion: Option[NonEmptyString],
   val builtOn: LocalDateTime,
   val buildNumber: NonEmptyString
-) extends BasicAppInfo[NonEmptyString] {
+) extends SimpleAppInfo[NonEmptyString] {
   override val buildRefName: NonEmptyString =
     NonEmptyString.unsafeFrom(
-      BasicAppInfo.genBuildRefName[String](name.value, version.value, builtOn)
+      SimpleAppInfo.genRefNameString[String](name.value, version.value, builtOn)
     )
 }
 object AppInfo {

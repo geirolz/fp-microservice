@@ -1,9 +1,9 @@
 package com.geirolz.fpmicroservice
 
 import cats.effect.{IO, Resource, ResourceIO}
+import com.geirolz.app.toolkit.AppResources
 import com.geirolz.fpmicroservice.external.repository.UserRepository
 import com.geirolz.fpmicroservice.service.UserService
-import com.geirolz.fpmicroservice.AppMain.AppResources
 import doobie.ExecutionContexts
 import doobie.hikari.HikariTransactor
 import fly4s.core.Fly4s
@@ -17,7 +17,9 @@ case class AppDependencyServices(
 )
 object AppDependencyServices {
 
-  def resource(appResources: AppResources): Resource[IO, AppDependencyServices] = {
+  def resource(
+    appResources: AppResources[AppInfo, SelfAwareStructuredLogger[IO], AppConfig]
+  ): Resource[IO, AppDependencyServices] = {
     val logger = appResources.logger
     val config = appResources.config
     for {
@@ -45,7 +47,7 @@ object AppDependencyServices {
         driverClassName = dbConfig.driver.value,
         url             = dbConfig.url.value,
         user            = dbConfig.username.getOrElse(""),
-        pass            = dbConfig.password.map(_.stringValue).getOrElse(""),
+        pass            = dbConfig.password.map(_.unsafeUse).getOrElse(""),
         nonBlockingOpsECForDoobie
       )
     } yield transactor
