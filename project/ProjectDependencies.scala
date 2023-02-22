@@ -105,7 +105,7 @@ object ProjectDependencies {
 
 object Versions {
   type Version = String
-  val appToolkitVersion: Version   = "0.0.4"
+  val appToolkitVersion: Version   = "0.0.5"
   val scopeVersion: Version        = "0.0.7"
   val catsVersion: Version         = "2.9.0"
   val catsEffectVersion: Version   = "3.4.7"
