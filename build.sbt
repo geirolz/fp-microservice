@@ -14,7 +14,7 @@ lazy val global = (project in file("."))
   .enablePlugins(BuildInfoPlugin, ServiceInfoPlugin, JavaAppPackaging, DockerPlugin)
   .settings(
     addCommandAlias("validate", ";scalafmtSbtCheck;scalafmtCheckAll;compile;test;"),
-    addCommandAlias("publishValidLocal", ";validate;docker:publishLocal")
+    addCommandAlias("dockerPublishValidLocal", ";validate;docker:publishLocal")
   )
   .settings(commonSettings: _*)
   .settings(logoSettings: _*)
@@ -40,7 +40,7 @@ lazy val global = (project in file("."))
       BuildInfoOption.ConstantValue
     ),
     buildInfoPackage := appPackage,
-    Compile / mainClass := Some(s"$appPackage.AppMain")
+    Compile / mainClass := Some(s"$appPackage.App")
   )
   .settings(dockerSettings: _*)
 

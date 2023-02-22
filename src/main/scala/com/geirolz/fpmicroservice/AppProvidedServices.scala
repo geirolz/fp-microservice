@@ -1,27 +1,27 @@
 package com.geirolz.fpmicroservice
 
 import cats.effect.{IO, ResourceIO}
+import com.geirolz.app.toolkit.AppDependencies
 import com.geirolz.fpmicroservice.http.AppHttpServer
 import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.server.Server
+import org.typelevel.log4cats.SelfAwareStructuredLogger
 
 object AppProvidedServices {
 
   import cats.implicits.*
 
-  def build(
-    info: AppInfo,
-    config: AppConfig,
-    dependencies: AppDependencyServices
+  def fromAppDependencies(
+    deps: AppDependencies[AppInfo, SelfAwareStructuredLogger[IO], AppConfig, AppDependentServices]
   ): IO[List[IO[Any]]] =
     List(
-      httpServerResource(info, config, dependencies).useForever
+      httpServerResource(deps.info, deps.config, deps.dependencies).useForever
     ).map(_.void).pure[IO]
 
   private def httpServerResource(
     info: AppInfo,
     config: AppConfig,
-    dependencies: AppDependencyServices
+    dependencies: AppDependentServices
   ): ResourceIO[Server] = {
     EmberServerBuilder
       .default[IO]

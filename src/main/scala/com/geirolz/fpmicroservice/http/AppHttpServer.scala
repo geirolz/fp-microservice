@@ -1,7 +1,7 @@
 package com.geirolz.fpmicroservice.http
 
 import cats.effect.IO
-import com.geirolz.fpmicroservice.{AppConfig, AppDependencyServices, AppInfo}
+import com.geirolz.fpmicroservice.{AppConfig, AppDependentServices, AppInfo}
 import com.geirolz.fpmicroservice.http.endpoint.{
   DocsServerEndpoints,
   InfraServerEndpoints,
@@ -22,7 +22,7 @@ object AppHttpServer {
   val metrics: PrometheusMetrics[IO] =
     PrometheusMetrics.default[IO]()
 
-  val defaultServerOptions: Http4sServerOptions[IO] =
+  private val defaultServerOptions: Http4sServerOptions[IO] =
     Http4sServerOptions
       .customiseInterceptors[IO]
       .rejectHandler(DefaultRejectHandler[IO])
@@ -32,11 +32,36 @@ object AppHttpServer {
       .serverLog(Http4sServerOptions.defaultServerLog[IO])
       .options
 
+  def make(
+    serverOptions: Http4sServerOptions[IO],
+    info: AppInfo,
+    config: AppConfig,
+    env: AppDependentServices
+  ): HttpApp[IO] =
+    make(
+      interpreter = Http4sServerInterpreter[IO](serverOptions),
+      info        = info,
+      config      = config,
+      env         = env
+    )
+
+  def make(
+    info: AppInfo,
+    config: AppConfig,
+    env: AppDependentServices
+  ): HttpApp[IO] =
+    make(
+      serverOptions = AppHttpServer.defaultServerOptions,
+      info          = info,
+      config        = config,
+      env           = env
+    )
+
   private def make(
     interpreter: Http4sServerInterpreter[IO],
     info: AppInfo,
     @unused config: AppConfig,
-    env: AppDependencyServices
+    env: AppDependentServices
   ): HttpApp[IO] = {
 
     val allServerEndpoints: List[ServerEndpoint[Any, IO]] = List(
@@ -55,29 +80,4 @@ object AppHttpServer {
       )
       .orNotFound
   }
-
-  def make(
-    serverOptions: Http4sServerOptions[IO],
-    info: AppInfo,
-    config: AppConfig,
-    env: AppDependencyServices
-  ): HttpApp[IO] =
-    make(
-      interpreter = Http4sServerInterpreter[IO](serverOptions),
-      info        = info,
-      config      = config,
-      env         = env
-    )
-
-  def make(
-    info: AppInfo,
-    config: AppConfig,
-    env: AppDependencyServices
-  ): HttpApp[IO] =
-    make(
-      serverOptions = AppHttpServer.defaultServerOptions,
-      info          = info,
-      config        = config,
-      env           = env
-    )
 }

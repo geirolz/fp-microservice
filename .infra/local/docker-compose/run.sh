@@ -9,7 +9,7 @@ export DB_DEPLOY_NAME=$APP_NAME-db
 DOCKER_COMPOSE_FILE="$(envresolve "docker-compose.yml")"
 
 ### Deploy APP Docker image
-(cd "$PROJECT_DIR" || exit; chmod 777 deployImage.sh; ./deployImage.sh) &&
+(cd "$PROJECT_DIR" || exit; chmod 777 deployLocalDockerImage.sh; ./deployLocalDockerImage.sh) &&
 
 ### Stop and run
 docker compose -f "$DOCKER_COMPOSE_FILE" stop

@@ -12,14 +12,14 @@ import org.typelevel.log4cats.SelfAwareStructuredLogger
 
 import javax.sql.DataSource
 
-case class AppDependencyServices(
+case class AppDependentServices(
   userService: UserService
 )
-object AppDependencyServices {
+object AppDependentServices {
 
-  def resource(
+  def fromAppResources(
     appResources: AppResources[AppInfo, SelfAwareStructuredLogger[IO], AppConfig]
-  ): Resource[IO, AppDependencyServices] = {
+  ): Resource[IO, AppDependentServices] = {
     val logger = appResources.logger
     val config = appResources.config
     for {
@@ -33,7 +33,7 @@ object AppDependencyServices {
       // ----------------- REPOSITORY ---------------
       userRepository = UserRepository(mainDbTransactor)
 
-    } yield AppDependencyServices(
+    } yield AppDependentServices(
       userService = UserService(userRepository)
     )
   }

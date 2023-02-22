@@ -4,7 +4,7 @@
 jenv local 17.0
 
 ### build and publish docker image locally
-sbt publishValidLocal
+sbt dockerPublishValidLocal
 
 sbt_prj_name=$(sbt name | tail -n1 | cut -d' ' -f2)
 

@@ -51,7 +51,7 @@ Simple POC for dockerized HTTP microservice using Scala in a functional programm
 
 First of all you have to publish the docker image of the app into your local repository with 
 ```shell
-./deployImage.sh
+./deployLocalDockerImage.sh
 ```
 
 Then you can choose to either run the app with `docker-compose` or `minikube`.

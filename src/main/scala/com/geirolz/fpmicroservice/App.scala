@@ -15,13 +15,7 @@ object App extends IOApp.Simple {
           .withLogger(Slf4jLogger.getLogger[IO])
           .withPureConfigLoader[AppConfig]
       )
-      .dependsOn(AppDependencyServices.resource(_))
-      .provideF(deps =>
-        AppProvidedServices.build(
-          info         = deps.info,
-          config       = deps.config,
-          dependencies = deps.dependencies
-        )
-      )
+      .dependsOn(AppDependentServices.fromAppResources(_))
+      .provideF(AppProvidedServices.fromAppDependencies(_))
       .use(_.run)
 }

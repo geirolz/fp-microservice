@@ -38,7 +38,7 @@ fi
 
 ############################ DOCKER ###################################
 echo -e "$BLUE"
-(cd "$PROJECT_DIR" || exit; chmod 777 deployImage.sh; ./deployImage.sh) &&
+(cd "$PROJECT_DIR" || exit; chmod 777 deployLocalDockerImage.sh; ./deployLocalDockerImage.sh) &&
 echo -e "$NOCOLOR" &&
 
 ############################# K8S ####################################
