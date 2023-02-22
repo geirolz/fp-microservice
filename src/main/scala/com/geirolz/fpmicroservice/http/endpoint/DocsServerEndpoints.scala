@@ -16,7 +16,7 @@ private[http] class DocsServerEndpoints private (appInfo: AppInfo, endpoints: Li
   import sttp.apispec.openapi.circe.*
   import sttp.apispec.openapi.circe.yaml.*
 
-  val openApi: OpenAPI =
+  private val openApi: OpenAPI =
     OpenAPIDocsInterpreter(OpenAPIDocsOptions.default)
       .toOpenAPI(
         es      = endpoints,

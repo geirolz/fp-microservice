@@ -33,6 +33,18 @@ object AppHttpServer {
       .options
 
   def make(
+    info: AppInfo,
+    config: AppConfig,
+    env: AppDependentServices
+  ): HttpApp[IO] =
+    make(
+      serverOptions = AppHttpServer.defaultServerOptions,
+      info          = info,
+      config        = config,
+      env           = env
+    )
+
+  def make(
     serverOptions: Http4sServerOptions[IO],
     info: AppInfo,
     config: AppConfig,
@@ -43,18 +55,6 @@ object AppHttpServer {
       info        = info,
       config      = config,
       env         = env
-    )
-
-  def make(
-    info: AppInfo,
-    config: AppConfig,
-    env: AppDependentServices
-  ): HttpApp[IO] =
-    make(
-      serverOptions = AppHttpServer.defaultServerOptions,
-      info          = info,
-      config        = config,
-      env           = env
     )
 
   private def make(
