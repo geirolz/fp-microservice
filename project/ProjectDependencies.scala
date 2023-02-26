@@ -64,8 +64,8 @@ object ProjectDependencies {
 
   private val json = Seq(
     `io.circe` %% "circe-core"           % circeVersion,
-    `io.circe` %% "circe-generic-extras" % circeVersion,
-    `io.circe` %% "circe-refined"        % circeVersion
+    `io.circe` %% "circe-refined"        % circeVersion,
+    `io.circe` %% "circe-generic-extras" % circeGenericExVersion
   )
 
   private val metrics =
@@ -105,23 +105,24 @@ object ProjectDependencies {
 
 object Versions {
   type Version = String
-  val appToolkitVersion: Version   = "0.0.5"
-  val scopeVersion: Version        = "0.0.7"
-  val catsVersion: Version         = "2.9.0"
-  val catsEffectVersion: Version   = "3.4.8"
-  val http4sVersion: Version       = "0.23.18"
-  val tapirVersion: Version        = "1.2.9"
-  val apiSpecOpenapiCirce: Version = "0.3.2"
-  val pureConfigVersion: Version   = "0.17.2"
-  val doobieVersion: Version       = "1.0.0-RC2"
-  val fs2RabbitVersion: Version    = "5.0.0"
-  val refinedVersion: Version      = "0.10.1"
-  val circeVersion: Version        = "0.14.3"
-  val slf4Version: Version         = "2.0.6"
-  val log4catsVersion: Version     = "2.5.0"
-  val fly4sVersion: Version        = "0.0.17"
-  val munitVersion: Version        = "0.7.29"
-  val munitCE3Version: Version     = "1.0.7"
+  val appToolkitVersion: Version     = "0.0.5"
+  val scopeVersion: Version          = "0.0.7"
+  val catsVersion: Version           = "2.9.0"
+  val catsEffectVersion: Version     = "3.4.7"
+  val http4sVersion: Version         = "0.23.18"
+  val tapirVersion: Version          = "1.2.8"
+  val apiSpecOpenapiCirce: Version   = "0.3.2"
+  val pureConfigVersion: Version     = "0.17.2"
+  val doobieVersion: Version         = "1.0.0-RC2"
+  val fs2RabbitVersion: Version      = "5.0.0"
+  val refinedVersion: Version        = "0.10.1"
+  val circeVersion: Version          = "0.14.4"
+  val circeGenericExVersion: Version = "0.14.3"
+  val slf4Version: Version           = "2.0.6"
+  val log4catsVersion: Version       = "2.5.0"
+  val fly4sVersion: Version          = "0.0.17"
+  val munitVersion: Version          = "0.7.29"
+  val munitCE3Version: Version       = "1.0.7"
 }
 
 object Organizations {
