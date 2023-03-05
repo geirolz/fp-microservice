@@ -115,7 +115,7 @@ object Versions {
   val pureConfigVersion: Version     = "0.17.2"
   val doobieVersion: Version         = "1.0.0-RC2"
   val fs2RabbitVersion: Version      = "5.0.0"
-  val refinedVersion: Version        = "0.10.1"
+  val refinedVersion: Version        = "0.10.2"
   val circeVersion: Version          = "0.14.4"
   val circeGenericExVersion: Version = "0.14.3"
   val slf4Version: Version           = "2.0.6"
