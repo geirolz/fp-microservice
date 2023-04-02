@@ -99,7 +99,7 @@ object ProjectDependencies {
       `org.tpolecat` %% "doobie-scalatest"      % doobieVersion % Test,
 
       // connection
-      `org.postgresql` % "postgresql" % "42.5.4"
+      `org.postgresql` % "postgresql" % "42.6.0"
     )
 }
 
@@ -110,12 +110,12 @@ object Versions {
   val catsVersion: Version           = "2.9.0"
   val catsEffectVersion: Version     = "3.4.7"
   val http4sVersion: Version         = "0.23.18"
-  val tapirVersion: Version          = "1.2.8"
+  val tapirVersion: Version          = "1.2.11"
   val apiSpecOpenapiCirce: Version   = "0.3.2"
   val pureConfigVersion: Version     = "0.17.2"
   val doobieVersion: Version         = "1.0.0-RC2"
   val fs2RabbitVersion: Version      = "5.0.0"
-  val refinedVersion: Version        = "0.10.2"
+  val refinedVersion: Version        = "0.10.3"
   val circeVersion: Version          = "0.14.4"
   val circeGenericExVersion: Version = "0.14.3"
   val slf4Version: Version           = "2.0.6"
