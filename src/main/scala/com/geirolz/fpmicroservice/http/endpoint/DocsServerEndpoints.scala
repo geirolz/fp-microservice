@@ -2,7 +2,7 @@ package com.geirolz.fpmicroservice.http.endpoint
 
 import cats.effect.IO
 import com.geirolz.fpmicroservice.http.endpoint.api.DocsEndpoints
-import com.geirolz.fpmicroservice.{App, AppInfo}
+import com.geirolz.fpmicroservice.{AppInfo, AppMain}
 import sttp.apispec.openapi.OpenAPI
 import sttp.tapir.docs.openapi.{OpenAPIDocsInterpreter, OpenAPIDocsOptions}
 import sttp.tapir.swagger.{SwaggerUI, SwaggerUIOptions}

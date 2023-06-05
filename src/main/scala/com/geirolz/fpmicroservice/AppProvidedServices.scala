@@ -1,7 +1,8 @@
 package com.geirolz.fpmicroservice
 
 import cats.effect.{IO, ResourceIO}
-import com.geirolz.app.toolkit.AppDependencies
+import com.geirolz.app.toolkit.App
+import com.geirolz.app.toolkit.novalues.NoResources
 import com.geirolz.fpmicroservice.http.AppHttpServer
 import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.server.Server
@@ -12,7 +13,9 @@ object AppProvidedServices {
   import cats.implicits.*
 
   def fromAppDependencies(
-    deps: AppDependencies[AppInfo, SelfAwareStructuredLogger[IO], AppConfig, AppDependentServices]
+    deps: App.Dependencies[AppInfo, SelfAwareStructuredLogger[
+      IO
+    ], AppConfig, AppDependentServices, NoResources]
   ): IO[List[IO[Any]]] =
     List(
       httpServerResource(deps.info, deps.config, deps.dependencies).useForever
