@@ -105,13 +105,13 @@ object ProjectDependencies {
 
 object Versions {
   type Version = String
-  val appToolkitVersion: Version     = "0.0.5"
-  val scopeVersion: Version          = "0.0.7"
+  val appToolkitVersion: Version     = "0.0.6"
+  val scopeVersion: Version          = "0.0.8"
   val catsVersion: Version           = "2.9.0"
   val catsEffectVersion: Version     = "3.4.10"
-  val http4sVersion: Version         = "0.23.18"
-  val tapirVersion: Version          = "1.3.0"
-  val apiSpecOpenapiCirce: Version   = "0.3.2"
+  val http4sVersion: Version         = "0.23.19"
+  val tapirVersion: Version          = "1.5.0"
+  val apiSpecOpenapiCirce: Version   = "0.4.0"
   val pureConfigVersion: Version     = "0.17.4"
   val doobieVersion: Version         = "1.0.0-RC2"
   val fs2RabbitVersion: Version      = "5.0.0"
@@ -120,7 +120,7 @@ object Versions {
   val circeGenericExVersion: Version = "0.14.3"
   val slf4Version: Version           = "2.0.6"
   val log4catsVersion: Version       = "2.6.0"
-  val fly4sVersion: Version          = "0.0.17"
+  val fly4sVersion: Version          = "0.0.18"
   val munitVersion: Version          = "0.7.29"
   val munitCE3Version: Version       = "1.0.7"
 }
