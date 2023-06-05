@@ -39,6 +39,7 @@ object ProjectDependencies {
     Seq(
       `com.github.pureconfig` %% "pureconfig-core"    % pureConfigVersion,
       `com.github.pureconfig` %% "pureconfig-generic" % pureConfigVersion,
+      `com.github.pureconfig` %% "pureconfig-ip4s"    % pureConfigVersion,
       `com.github.pureconfig` %% "pureconfig-http4s"  % pureConfigVersion
     )
   }
@@ -108,7 +109,7 @@ object Versions {
   val appToolkitVersion: Version     = "0.0.6"
   val scopeVersion: Version          = "0.0.8"
   val catsVersion: Version           = "2.9.0"
-  val catsEffectVersion: Version     = "3.4.11"
+  val catsEffectVersion: Version     = "3.5.0"
   val http4sVersion: Version         = "0.23.19"
   val tapirVersion: Version          = "1.5.0"
   val apiSpecOpenapiCirce: Version   = "0.4.0"
