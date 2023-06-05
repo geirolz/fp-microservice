@@ -1,7 +1,8 @@
 package com.geirolz.fpmicroservice
 
 import cats.effect.{IO, Resource, ResourceIO}
-import com.geirolz.app.toolkit.AppResources
+import com.geirolz.app.toolkit.App
+import com.geirolz.app.toolkit.novalues.NoResources
 import com.geirolz.fpmicroservice.external.repository.UserRepository
 import com.geirolz.fpmicroservice.service.UserService
 import doobie.ExecutionContexts
@@ -18,7 +19,7 @@ case class AppDependentServices(
 object AppDependentServices {
 
   def fromAppResources(
-    appResources: AppResources[AppInfo, SelfAwareStructuredLogger[IO], AppConfig]
+    appResources: App.Resources[AppInfo, SelfAwareStructuredLogger[IO], AppConfig, NoResources]
   ): Resource[IO, AppDependentServices] = {
     val logger = appResources.logger
     val config = appResources.config
