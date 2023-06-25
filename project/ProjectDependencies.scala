@@ -112,7 +112,7 @@ object Versions {
   val catsEffectVersion: Version     = "3.5.0"
   val http4sVersion: Version         = "0.23.19"
   val tapirVersion: Version          = "1.5.5"
-  val apiSpecOpenapiCirce: Version   = "0.4.0"
+  val apiSpecOpenapiCirce: Version   = "0.5.2"
   val pureConfigVersion: Version     = "0.17.4"
   val doobieVersion: Version         = "1.0.0-RC2"
   val fs2RabbitVersion: Version      = "5.0.0"
