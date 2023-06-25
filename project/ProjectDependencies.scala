@@ -114,7 +114,7 @@ object Versions {
   val tapirVersion: Version          = "1.5.5"
   val apiSpecOpenapiCirce: Version   = "0.4.0"
   val pureConfigVersion: Version     = "0.17.4"
-  val doobieVersion: Version         = "1.0.0-RC2"
+  val doobieVersion: Version         = "1.0.0-RC4"
   val fs2RabbitVersion: Version      = "5.0.0"
   val refinedVersion: Version        = "0.11.0"
   val circeVersion: Version          = "0.14.5"
