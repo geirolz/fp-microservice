@@ -19,14 +19,15 @@ object ProjectDependencies {
   ).flatten
 
   private val general = Seq(
-    `com.github.geirolz` %% "scope-core"                    % scopeVersion,
-    `com.github.geirolz` %% "app-toolkit-core"              % appToolkitVersion,
-    `com.github.geirolz` %% "app-toolkit-config"            % appToolkitVersion,
-    `com.github.geirolz` %% "app-toolkit-config-pureconfig" % appToolkitVersion,
-    `com.github.geirolz` %% "app-toolkit-log4cats"          % appToolkitVersion,
-    `eu.timepit`         %% "refined"                       % refinedVersion,
-    `eu.timepit`         %% "refined-cats"                  % refinedVersion,
-    `eu.timepit`         %% "refined-pureconfig"            % refinedVersion
+    `com.github.geirolz` %% "scope-core"         % scopeVersion,
+    `com.github.geirolz` %% "toolkit"            % geirolzToolkitVersion,
+    `com.github.geirolz` %% "toolkit-config"     % geirolzToolkitVersion,
+    `com.github.geirolz` %% "toolkit-pureconfig" % geirolzToolkitVersion,
+    `com.github.geirolz` %% "toolkit-log4cats"   % geirolzToolkitVersion,
+    `com.github.geirolz` %% "toolkit-fly4s"      % geirolzToolkitVersion,
+    `eu.timepit`         %% "refined"            % refinedVersion,
+    `eu.timepit`         %% "refined-cats"       % refinedVersion,
+    `eu.timepit`         %% "refined-pureconfig" % refinedVersion
   )
 
   private val effects =
@@ -106,7 +107,7 @@ object ProjectDependencies {
 
 object Versions {
   type Version = String
-  val appToolkitVersion: Version     = "0.0.7"
+  val geirolzToolkitVersion: Version = "0.0.10"
   val scopeVersion: Version          = "0.0.8"
   val catsVersion: Version           = "2.9.0"
   val catsEffectVersion: Version     = "3.5.1"
@@ -114,7 +115,7 @@ object Versions {
   val tapirVersion: Version          = "1.5.5"
   val apiSpecOpenapiCirce: Version   = "0.4.0"
   val pureConfigVersion: Version     = "0.17.4"
-  val doobieVersion: Version         = "1.0.0-RC4"
+  val doobieVersion: Version         = "1.0.0-RC2"
   val fs2RabbitVersion: Version      = "5.0.0"
   val refinedVersion: Version        = "0.11.0"
   val circeVersion: Version          = "0.14.5"
