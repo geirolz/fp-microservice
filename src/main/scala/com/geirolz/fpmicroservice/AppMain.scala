@@ -23,9 +23,9 @@ object AppMain extends IOApp.Simple {
           config = config =>
             Fly4sConfig.default
               .withTable(config.db.main.migrationsTable.value)
-              .withLocations(Location.of(config.db.main.migrationsLocations*))
+              .withLocations(config.db.main.migrationsLocations.map(ns => Location(ns.value)))
         )
       )
-      .provideF(AppProvidedServices.fromAppDependencies(_))
+      .provide(AppProvidedServices.fromAppDependencies(_))
       .run_
 }

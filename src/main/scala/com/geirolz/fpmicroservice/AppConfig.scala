@@ -53,7 +53,7 @@ case class DatabaseConfig(
   username: Option[String],
   password: Option[Secret[String]],
   migrationsTable: NonEmptyString,
-  migrationsLocations: List[String]
+  migrationsLocations: List[NonEmptyString]
 )
 
 //http

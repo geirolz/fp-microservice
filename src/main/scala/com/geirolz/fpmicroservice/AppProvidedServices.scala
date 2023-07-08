@@ -10,8 +10,6 @@ import org.typelevel.log4cats.SelfAwareStructuredLogger
 
 object AppProvidedServices {
 
-  import cats.implicits.*
-
   def fromAppDependencies(
     deps: App.Dependencies[
       AppInfo,
@@ -20,10 +18,10 @@ object AppProvidedServices {
       AppDependentServices,
       NoResources
     ]
-  ): IO[List[IO[Any]]] =
+  ): List[IO[Any]] =
     List(
       httpServerResource(deps.info, deps.config, deps.dependencies).useForever
-    ).map(_.void).pure[IO]
+    )
 
   private def httpServerResource(
     info: AppInfo,
