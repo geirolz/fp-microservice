@@ -33,7 +33,7 @@ object UserRepository extends InScope[Scope.Persistence] {
   private[repository] object Queries {
 
     def findUserById(userId: UserId): doobie.Query0[UserEntity.Read] =
-      sql"SELECT * FROM user WHERE id == ${userId.value}"
+      sql"""SELECT * FROM "user" WHERE id = ${userId.value}"""
         .query[UserEntity.Read]
   }
 }

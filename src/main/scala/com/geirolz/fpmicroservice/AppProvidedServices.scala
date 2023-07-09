@@ -13,9 +13,13 @@ object AppProvidedServices {
   import cats.implicits.*
 
   def fromAppDependencies(
-    deps: App.Dependencies[AppInfo, SelfAwareStructuredLogger[
-      IO
-    ], AppConfig, AppDependentServices, NoResources]
+    deps: App.Dependencies[
+      AppInfo,
+      SelfAwareStructuredLogger[IO],
+      AppConfig,
+      AppDependentServices,
+      NoResources
+    ]
   ): IO[List[IO[Any]]] =
     List(
       httpServerResource(deps.info, deps.config, deps.dependencies).useForever
@@ -25,12 +29,11 @@ object AppProvidedServices {
     info: AppInfo,
     config: AppConfig,
     dependencies: AppDependentServices
-  ): ResourceIO[Server] = {
+  ): ResourceIO[Server] =
     EmberServerBuilder
       .default[IO]
       .withHost(config.http.server.host)
       .withPort(config.http.server.port)
       .withHttpApp(AppHttpServer.make(info, config, dependencies))
       .build
-  }
 }

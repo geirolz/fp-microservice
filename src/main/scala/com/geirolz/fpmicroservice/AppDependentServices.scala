@@ -24,11 +24,9 @@ object AppDependentServices {
     val logger = appResources.logger
     val config = appResources.config
     for {
-
       // -------------------- DB --------------------
       _                <- logger.info("Initializing databases...").to[ResourceIO]
       mainDbTransactor <- databaseTransactorResource(config.db.main)
-      _                <- migrateDatabaseResource(mainDbTransactor.kernel, config.db.main, logger)
       _                <- logger.info("Databases successfully initialized.").to[ResourceIO]
 
       // ----------------- REPOSITORY ---------------
@@ -49,34 +47,7 @@ object AppDependentServices {
         url             = dbConfig.url.value,
         user            = dbConfig.username.getOrElse(""),
         pass            = dbConfig.password.map(_.unsafeUse).getOrElse(""),
-        nonBlockingOpsECForDoobie
+        connectEC       = nonBlockingOpsECForDoobie
       )
     } yield transactor
-
-  private def migrateDatabaseResource(
-    datasource: DataSource,
-    dbConfig: DatabaseConfig,
-    logger: SelfAwareStructuredLogger[IO]
-  ): Resource[IO, Unit] =
-    Fly4s
-      .makeFor[IO](
-        IO.pure(datasource),
-        config = Fly4sConfig.default
-          .withTable(dbConfig.migrationsTable.value)
-          .withLocations(Location.of(dbConfig.migrationsLocations*))
-      )
-      .evalMap(fl4s =>
-        for {
-          _ <- logger.debug(s"Applying migration for ${dbConfig.name}")
-          result <- fl4s.migrate.onError { ex =>
-            logger.error(ex)(
-              s"Unable to apply database ${dbConfig.name} migrations."
-            )
-          }
-          _ <- logger.info(
-            s"Applied ${result.migrationsExecuted} " +
-              s"migrations to ${dbConfig.name} database"
-          )
-        } yield ()
-      )
 }
