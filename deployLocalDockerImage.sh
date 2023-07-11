@@ -9,4 +9,5 @@ sbt dockerPublishValidLocal
 sbt_prj_name=$(sbt name | tail -n1 | cut -d' ' -f2)
 
 ### log
+echo "Docker image published locally:"
 docker images | grep "$sbt_prj_name"
