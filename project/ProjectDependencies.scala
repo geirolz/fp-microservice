@@ -122,7 +122,7 @@ object Versions {
   val circeGenericExVersion: Version = "0.14.3"
   val slf4Version: Version           = "2.0.6"
   val log4catsVersion: Version       = "2.6.0"
-  val fly4sVersion: Version          = "0.0.18"
+  val fly4sVersion: Version          = "0.0.19"
   val munitVersion: Version          = "0.7.29"
   val munitCE3Version: Version       = "1.0.7"
 }
