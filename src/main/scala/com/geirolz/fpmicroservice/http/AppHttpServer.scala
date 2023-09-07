@@ -1,18 +1,16 @@
 package com.geirolz.fpmicroservice.http
 
 import cats.effect.IO
+import com.geirolz.fpmicroservice.http.endpoint.docs.DocsEndpoints
+import com.geirolz.fpmicroservice.http.endpoint.infra.InfraEndpoints
+import com.geirolz.fpmicroservice.http.endpoint.user.UserEndpoints
 import com.geirolz.fpmicroservice.{AppConfig, AppDependentServices, AppInfo}
-import com.geirolz.fpmicroservice.http.endpoint.{
-  DocsServerEndpoints,
-  InfraServerEndpoints,
-  UserServerEndpoints
-}
 import org.http4s.HttpApp
+import sttp.tapir.server.ServerEndpoint
 import sttp.tapir.server.http4s.{Http4sServerInterpreter, Http4sServerOptions}
 import sttp.tapir.server.interceptor.decodefailure.DefaultDecodeFailureHandler
 import sttp.tapir.server.interceptor.exception.DefaultExceptionHandler
 import sttp.tapir.server.interceptor.reject.DefaultRejectHandler
-import sttp.tapir.server.ServerEndpoint
 import sttp.tapir.server.metrics.prometheus.PrometheusMetrics
 
 import scala.annotation.unused
@@ -34,50 +32,23 @@ object AppHttpServer {
 
   def make(
     info: AppInfo,
-    config: AppConfig,
-    env: AppDependentServices
-  ): HttpApp[IO] =
-    make(
-      serverOptions = AppHttpServer.defaultServerOptions,
-      info          = info,
-      config        = config,
-      env           = env
-    )
-
-  def make(
-    serverOptions: Http4sServerOptions[IO],
-    info: AppInfo,
-    config: AppConfig,
-    env: AppDependentServices
-  ): HttpApp[IO] =
-    make(
-      interpreter = Http4sServerInterpreter[IO](serverOptions),
-      info        = info,
-      config      = config,
-      env         = env
-    )
-
-  private def make(
-    interpreter: Http4sServerInterpreter[IO],
-    info: AppInfo,
     @unused config: AppConfig,
-    env: AppDependentServices
+    env: AppDependentServices,
+    serverOptions: Http4sServerOptions[IO] = AppHttpServer.defaultServerOptions
   ): HttpApp[IO] = {
 
     val allServerEndpoints: List[ServerEndpoint[Any, IO]] = List(
-      InfraServerEndpoints.make(info, metrics).serverEndpoints,
-      UserServerEndpoints.make(env.userService).serverEndpoints
+      InfraEndpoints.make(info, metrics).serverEndpoints,
+      UserEndpoints.make(env.userService).serverEndpoints
     ).flatten
 
     val docServerEndpoints: List[ServerEndpoint[Any, IO]] =
-      DocsServerEndpoints
+      DocsEndpoints
         .fromServerEndpoints(info, allServerEndpoints)
         .serverEndpoints
 
-    interpreter
-      .toRoutes(
-        allServerEndpoints ++ docServerEndpoints
-      )
+    Http4sServerInterpreter[IO](serverOptions)
+      .toRoutes(allServerEndpoints ++ docServerEndpoints)
       .orNotFound
   }
 }

@@ -1,4 +1,4 @@
-package com.geirolz.fpmicroservice.http.endpoint.api
+package com.geirolz.fpmicroservice.http.endpoint
 
 private[endpoint] object Endpoints {
 

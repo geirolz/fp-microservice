@@ -1,15 +1,14 @@
-package com.geirolz.fpmicroservice.http.endpoint
+package com.geirolz.fpmicroservice.http.endpoint.docs
 
 import cats.effect.IO
-import com.geirolz.fpmicroservice.http.endpoint.api.DocsEndpoints
-import com.geirolz.fpmicroservice.{AppInfo, AppMain}
+import com.geirolz.fpmicroservice.AppInfo
 import sttp.apispec.openapi.OpenAPI
+import sttp.tapir.*
 import sttp.tapir.docs.openapi.{OpenAPIDocsInterpreter, OpenAPIDocsOptions}
-import sttp.tapir.swagger.{SwaggerUI, SwaggerUIOptions}
-import sttp.tapir.AnyEndpoint
 import sttp.tapir.server.ServerEndpoint
+import sttp.tapir.swagger.{SwaggerUI, SwaggerUIOptions}
 
-private[http] class DocsServerEndpoints private (appInfo: AppInfo, endpoints: List[AnyEndpoint]) {
+private[http] class DocsEndpoints private (appInfo: AppInfo, endpoints: List[AnyEndpoint]) {
 
   import cats.implicits.*
   import io.circe.syntax.*
@@ -28,10 +27,10 @@ private[http] class DocsServerEndpoints private (appInfo: AppInfo, endpoints: Li
   private val jsonDocs: String = openApi.asJson.deepDropNullValues.toString
 
   private val yamlDocsRoute: ServerEndpoint[Any, IO] =
-    DocsEndpoints.getYamlDocs.serverLogic(_ => yamlDocs.asRight[Unit].pure[IO])
+    DocsEndpoints.Def.getYamlDocs.serverLogic(_ => yamlDocs.asRight[Unit].pure[IO])
 
   private val jsonDocsRoute: ServerEndpoint[Any, IO] =
-    DocsEndpoints.getJsonDocs
+    DocsEndpoints.Def.getJsonDocs
       .serverLogic(_ => jsonDocs.asRight[Unit].pure[IO])
 
   private val swaggerUIRoute: List[ServerEndpoint[Any, IO]] =
@@ -46,10 +45,25 @@ private[http] class DocsServerEndpoints private (appInfo: AppInfo, endpoints: Li
       jsonDocsRoute
     ) ++ swaggerUIRoute
 }
-private[http] object DocsServerEndpoints {
+private[http] object DocsEndpoints {
+
   def fromServerEndpoints[R](
     appInfo: AppInfo,
     serverEndpoints: List[ServerEndpoint[R, IO]]
-  ): DocsServerEndpoints =
-    new DocsServerEndpoints(appInfo, serverEndpoints.map(_.endpoint.asInstanceOf[AnyEndpoint]))
+  ): DocsEndpoints =
+    new DocsEndpoints(appInfo, serverEndpoints.map(_.endpoint.asInstanceOf[AnyEndpoint]))
+
+  object Def {
+
+    val getJsonDocs: PublicEndpoint[Unit, Unit, String, Any] =
+      endpoint
+        .in("docs" / "swagger.json")
+        .out(stringBody)
+
+    val getYamlDocs: PublicEndpoint[Unit, Unit, String, Any] =
+      endpoint
+        .in("docs" / "swagger.yaml")
+        .out(stringBody)
+
+  }
 }

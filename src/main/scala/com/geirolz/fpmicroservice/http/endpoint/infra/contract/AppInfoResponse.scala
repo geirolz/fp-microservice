@@ -1,4 +1,4 @@
-package com.geirolz.fpmicroservice.http.endpoint.api.infra.contract
+package com.geirolz.fpmicroservice.http.endpoint.infra.contract
 
 import com.geirolz.fpmicroservice.AppInfo
 import eu.timepit.refined.types.string.NonEmptyString

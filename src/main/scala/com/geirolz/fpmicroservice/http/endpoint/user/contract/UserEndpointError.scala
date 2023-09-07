@@ -1,4 +1,4 @@
-package com.geirolz.fpmicroservice.http.endpoint.api.user.contract
+package com.geirolz.fpmicroservice.http.endpoint.user.contract
 
 import com.geirolz.fpmicroservice.model.values.UserId
 
