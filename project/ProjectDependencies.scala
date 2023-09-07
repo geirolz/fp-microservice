@@ -109,7 +109,7 @@ object Versions {
   type Version = String
   val geirolzToolkitVersion: Version = "0.0.11"
   val scopeVersion: Version          = "0.0.8"
-  val catsVersion: Version           = "2.9.0"
+  val catsVersion: Version           = "2.10.0"
   val catsEffectVersion: Version     = "3.5.1"
   val http4sVersion: Version         = "0.23.23"
   val tapirVersion: Version          = "1.5.5"
@@ -118,11 +118,11 @@ object Versions {
   val doobieVersion: Version         = "1.0.0-RC2"
   val fs2RabbitVersion: Version      = "5.0.0"
   val refinedVersion: Version        = "0.11.0"
-  val circeVersion: Version          = "0.14.5"
+  val circeVersion: Version          = "0.14.6"
   val circeGenericExVersion: Version = "0.14.3"
   val slf4Version: Version           = "2.0.6"
   val log4catsVersion: Version       = "2.6.0"
-  val fly4sVersion: Version          = "0.0.18"
+  val fly4sVersion: Version          = "0.0.19"
   val munitVersion: Version          = "0.7.29"
   val munitCE3Version: Version       = "1.0.7"
 }
