@@ -107,7 +107,7 @@ object ProjectDependencies {
 
 object Versions {
   type Version = String
-  val geirolzToolkitVersion: Version = "0.0.11"
+  val geirolzToolkitVersion: Version = "0.0.12"
   val scopeVersion: Version          = "0.0.8"
   val catsVersion: Version           = "2.10.0"
   val catsEffectVersion: Version     = "3.5.1"
