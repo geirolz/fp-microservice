@@ -110,7 +110,7 @@ object Versions {
   val geirolzToolkitVersion: Version = "0.0.11"
   val scopeVersion: Version          = "0.0.8"
   val catsVersion: Version           = "2.10.0"
-  val catsEffectVersion: Version     = "3.5.1"
+  val catsEffectVersion: Version     = "3.5.3"
   val http4sVersion: Version         = "0.23.23"
   val tapirVersion: Version          = "1.5.5"
   val apiSpecOpenapiCirce: Version   = "0.4.0"
